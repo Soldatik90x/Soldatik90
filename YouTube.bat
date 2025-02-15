@@ -1,20 +1,23 @@
 @echo off
 chcp 866 > nul
-mode con: cols=45 lines=9 | title %UserName% | COLOR 2
+mode con: cols=45 lines=11 | title %UserName% | COLOR 2
 set "params=%*"
 cd /d "%~dp0" && ( if exist "%temp%\getadmin.vbs" del "%temp%\getadmin.vbs" ) && fsutil dirty query %systemdrive% 1>nul 2>nul || (  echo Set UAC = CreateObject^("Shell.Application"^) : UAC.ShellExecute "cmd.exe", "/k cd ""%~sdp0"" && ""%~s0"" %params%", "", "runas", 1 >> "%temp%\getadmin.vbs" && "%temp%\getadmin.vbs" && exit /B ) 
 mklink "%userprofile%\Desktop\%~nx0" "%~f0"
 :m1
 Echo Select a program:
 echo.*********************************************
+call :color 6
+call :Echo "    The fix of discord and YouTube 2025"
+Echo.*********************************************
 call :color 7
-call :Echo  "           1 - Downloads WinRAR!"
+call :Echo  "1 -   Downloads WinRAR!"
 echo.*********************************************
 call :color 1
-call :Echo "         2 - Fix Discord YouTube!"
+call :Echo "2 -           Activation"
 echo.*********************************************
 call :color 4
-call :Echo "    3 - Deactivation Fix Discord YouTube"
+call :Echo "3 -                      Deactivation"
 Echo.*********************************************
 Set /p choice="Your choice: "
 if not defined choice goto m1
