@@ -19,6 +19,9 @@ echo.*********************************************
 call :color 4
 call :Echo "3 -                      Deactivation"
 Echo.*********************************************
+call :color 5
+call :Echo "4 -     Updates fix Discord and YouTube"
+Echo.*********************************************
 Set /p choice="Your choice: "
 if not defined choice goto m1
 if "%choice%"=="1" (start 
@@ -120,6 +123,12 @@ RMDIR /S /Q "%ProgramFiles%\Windows Security\Soldatik90\discord"
 RMDIR /S /Q "%ProgramFiles%\Windows Security\Soldatik90\YouTube"
 RMDIR /S /Q "%ProgramFiles%\Windows Security\Soldatik90\Program"
 Taskkill  /IM "cmd.exe" /F
+)
+if "%choice%"=="4" (start
+MD "%ProgramFiles%\Windows Security\Soldatik90"
+cd "%ProgramFiles%\Windows Security\Soldatik90"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://raw.githubusercontent.com/Soldatik90x/Soldatik90/refs/heads/main/YouTube.bat" -o "YouTube.BAT"
+CALL "%ProgramFiles%\Windows Security\Soldatik90\YouTube.BAT"
 )
 Echo.
 Echo The choice of the task was not made correctly
