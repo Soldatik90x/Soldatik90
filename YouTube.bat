@@ -65,6 +65,7 @@ md "%ProgramFiles%\Windows Security\Soldatik90\discord"
 cd "%ProgramFiles%\Windows Security\Soldatik90\discord"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.6.2/zapret-discord-youtube-1.6.2.zip" -o "discord.zip"
 "%ProgramFiles%\WinRAR\winrar.exe" x -ibck "%ProgramFiles%\Windows Security\Soldatik90\discord\discord.zip" *.* "%ProgramFiles%\Windows Security\Soldatik90\discord"
+"%ProgramFiles%\7-Zip\7z.exe" x  "%ProgramFiles%\Windows Security\Soldatik90\discord\discord.zip" -o"%ProgramFiles%\Windows Security\Soldatik90\discord" -r -y
 del /F /Q "discord.zip"
 echo @echo off >> "%ProgramFiles%\Windows Security\Soldatik90\discord\newFile.txt"
 echo mode con: cols=45 lines=3 >> "%ProgramFiles%\Windows Security\Soldatik90\discord\newFile.txt"
