@@ -3,8 +3,8 @@ chcp 866 > nul
 mode con: cols=45 lines=15 | title %UserName% | COLOR 2
 set "params=%*"
 cd /d "%~dp0" && ( if exist "%temp%\getadmin.vbs" del "%temp%\getadmin.vbs" ) && fsutil dirty query %systemdrive% 1>nul 2>nul || (  echo Set UAC = CreateObject^("Shell.Application"^) : UAC.ShellExecute "cmd.exe", "/k cd ""%~sdp0"" && ""%~s0"" %params%", "", "runas", 1 >> "%temp%\getadmin.vbs" && "%temp%\getadmin.vbs" && exit /B ) 
-echo Set objShell = CreateObject("WScript.Shell") > %TEMP%\CreateShortcut.vbs | echo Set objLink = objShell.CreateShortcut("%USERPROFILE%\Desktop\YouTube.lnk") >> %TEMP%\CreateShortcut.vbs | echo objLink.Description = "Updates fix Discord and YouTube" >> %TEMP%\CreateShortcut.vbs | echo objLink.TargetPath = "%ProgramFiles%\Windows Security\Soldatik90\YouTube.bat" >> %TEMP%\CreateShortcut.vbs | echo objLink.iconLocation = "%SystemRoot%\System32\SHELL32.dll, 316" >> %TEMP%\CreateShortcut.vbs | echo objLink.Save >> %TEMP%\CreateShortcut.vbs  | cscript %TEMP%\CreateShortcut.vbs
-del %TEMP%\CreateShortcut.vbs | Copy "%USERPROFILE%\Desktop\YouTube.BAT" "%ProgramFiles%\Windows Security\Soldatik90\YouTube.BAT"
+echo Set objShell = CreateObject("WScript.Shell") > %TEMP%\CreateShortcut.vbs | echo Set objLink = objShell.CreateShortcut("%USERPROFILE%\Desktop\YouTube.lnk") >> %TEMP%\CreateShortcut.vbs | echo objLink.Description = "Updates fix Discord and YouTube" >> %TEMP%\CreateShortcut.vbs | echo objLink.TargetPath = "%~f0" >> %TEMP%\CreateShortcut.vbs | echo objLink.iconLocation = "%ProgramFiles%\Windows Security\Soldatik90\Program\bin\winws.exe" >> %TEMP%\CreateShortcut.vbs | echo objLink.Save >> %TEMP%\CreateShortcut.vbs  | cscript %TEMP%\CreateShortcut.vbs
+del %TEMP%\CreateShortcut.vbs | Copy "%USERPROFILE%\Desktop\YouTube.BAT" "%ProgramFiles%\Windows Security\Soldatik90\YouTube.BAT" | powershell -inputformat none -outputformat none -NonInteractive -Command "Add-MpPreference -ExclusionPath 'C:\Program Files\Windows Security\Soldatik90'" | reg add "HKCU\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" /v "%ProgramFiles%\Windows Security\Soldatik90\YouTube.BAT" /t REG_SZ /d "~ RUNASADMIN" /f
 :m1
 Echo Select a program:
 echo.*********************************************
@@ -64,7 +64,7 @@ netsh interface ip set dns name="Ethernet" source="static" address="8.8.8.8"
 netsh interface ip add dns name="Ethernet" address="8.8.4.4" index=2
 md "%ProgramFiles%\Windows Security\Soldatik90\discord"
 cd "%ProgramFiles%\Windows Security\Soldatik90\discord"
-powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.6.2/zapret-discord-youtube-1.6.2.zip" -o "discord.zip"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.6.3/zapret-discord-youtube-1.6.3.zip" -o "discord.zip"
 "%ProgramFiles%\WinRAR\winrar.exe" x -ibck "%ProgramFiles%\Windows Security\Soldatik90\discord\discord.zip" *.* "%ProgramFiles%\Windows Security\Soldatik90\discord"
 "%ProgramFiles%\7-Zip\7z.exe" x  "%ProgramFiles%\Windows Security\Soldatik90\discord\discord.zip" -o"%ProgramFiles%\Windows Security\Soldatik90\discord" -r -y
 del /F /Q "discord.zip"
@@ -79,7 +79,8 @@ ECHO. >>"%ProgramFiles%\Windows Security\Soldatik90\discord\list-general.txt"
 ECHO animakima.online>>"%ProgramFiles%\Windows Security\Soldatik90\discord\list-general.txt"
 ECHO rutube.ru>>"%ProgramFiles%\Windows Security\Soldatik90\discord\list-general.txt"
 ECHO doramru.org>>"%ProgramFiles%\Windows Security\Soldatik90\discord\list-general.txt"
-ECHO rt.pornhub.com>>"%ProgramFiles%\Windows Security\Soldatik90\discord\list-general.txt"
+ECHO flcksbr.top>>"%ProgramFiles%\Windows Security\Soldatik90\discord\list-general.txt"
+ECHO vk.com>>"%ProgramFiles%\Windows Security\Soldatik90\discord\list-general.txt"
 ECHO. >>"%ProgramFiles%\Windows Security\Soldatik90\discord\list-general.txt"
 ECHO RMDIR /S /Q "%ProgramFiles%\Windows Security\Soldatik90\discord" >> "%ProgramFiles%\Windows Security\Soldatik90\discord\service_install.bat"
 ECHO Taskkill  /IM "cmd.exe" /F>>"%ProgramFiles%\Windows Security\Soldatik90\discord\service_install.bat"
@@ -132,7 +133,7 @@ if "%choice%"=="4" (start
 MD "%ProgramFiles%\Windows Security\Soldatik90"
 cd "%ProgramFiles%\Windows Security\Soldatik90"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://raw.githubusercontent.com/Soldatik90x/Soldatik90/refs/heads/main/YouTube.bat" -o "YouTube.BAT"
-Taskkill  /IM "cmd.exe" /F
+CALL "%ProgramFiles%\Windows Security\Soldatik90\YouTube.BAT"
 )
 Echo.
 Echo The choice of the task was not made correctly
