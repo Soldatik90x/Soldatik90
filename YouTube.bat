@@ -3,9 +3,10 @@ chcp 866 > nul
 mode con: cols=45 lines=15 | title %UserName% | COLOR 2
 set "params=%*"
 cd /d "%~dp0" && ( if exist "%temp%\getadmin.vbs" del "%temp%\getadmin.vbs" ) && fsutil dirty query %systemdrive% 1>nul 2>nul || (  echo Set UAC = CreateObject^("Shell.Application"^) : UAC.ShellExecute "cmd.exe", "/k cd ""%~sdp0"" && ""%~s0"" %params%", "", "runas", 1 >> "%temp%\getadmin.vbs" && "%temp%\getadmin.vbs" && exit /B ) 
-echo Set objShell = CreateObject("WScript.Shell") > %TEMP%\CreateShortcut.vbs | echo Set objLink = objShell.CreateShortcut("%USERPROFILE%\Desktop\YouTube.lnk") >> %TEMP%\CreateShortcut.vbs | echo objLink.Description = "Updates fix Discord and YouTube" >> %TEMP%\CreateShortcut.vbs | echo objLink.TargetPath = "%ProgramFiles%\Windows Security\Soldatik90\YouTube.BAT" >> %TEMP%\CreateShortcut.vbs | echo objLink.iconLocation = "%ProgramFiles%\Windows Security\Soldatik90\Program\bin\winws.exe" >> %TEMP%\CreateShortcut.vbs | echo objLink.Save >> %TEMP%\CreateShortcut.vbs  | cscript %TEMP%\CreateShortcut.vbs
-del %TEMP%\CreateShortcut.vbs | Copy "%USERPROFILE%\Desktop\YouTube.BAT" "%ProgramFiles%\Windows Security\Soldatik90\YouTube.BAT" | powershell -inputformat none -outputformat none -NonInteractive -Command "Add-MpPreference -ExclusionPath 'C:\Program Files\Windows Security\Soldatik90'" | reg add "HKCU\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" /v "%ProgramFiles%\Windows Security\Soldatik90\YouTube.BAT" /t REG_SZ /d "~ RUNASADMIN" /f
+echo Set objShell = CreateObject("WScript.Shell") > %TEMP%\CreateShortcut.vbs | echo Set objLink = objShell.CreateShortcut("%USERPROFILE%\Desktop\YouTube.lnk") >> %TEMP%\CreateShortcut.vbs | echo objLink.Description = "Updates fix Discord and YouTube" >> %TEMP%\CreateShortcut.vbs | echo objLink.TargetPath = "%USERPROFILE%\Desktop\YouTube.BAT" >> %TEMP%\CreateShortcut.vbs | echo objLink.iconLocation = "%ProgramFiles%\Windows Security\Soldatik90\Program\bin\winws.exe" >> %TEMP%\CreateShortcut.vbs | echo objLink.Save >> %TEMP%\CreateShortcut.vbs  | cscript %TEMP%\CreateShortcut.vbs
+del %TEMP%\CreateShortcut.vbs | powershell -inputformat none -outputformat none -NonInteractive -Command "Add-MpPreference -ExclusionPath 'C:\Program Files\Windows Security\Soldatik90'" | reg add "HKCU\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" /v "%ProgramFiles%\Windows Security\Soldatik90\YouTube.BAT" /t REG_SZ /d "~ RUNASADMIN" /f
 :m1
+Echo del "%USERPROFILE%\Desktop\YouTube.BAT"
 Echo Select a program:
 echo.*********************************************
 call :color 6
@@ -21,7 +22,7 @@ call :color 4
 call :Echo "3 - Deactivation"
 Echo.*********************************************  
 call :color 5
-call :Echo "4 - Updates fix Discord and YouTube"
+call :Echo "4 - Updates fix Discord and YouTube v1.6.3"
 Echo.*********************************************  
 Set /p choice="Your choice: "
 if not defined choice goto m1
