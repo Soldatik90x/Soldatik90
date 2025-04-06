@@ -64,7 +64,7 @@ netsh interface ip set dns name="Ethernet" source="static" address="8.8.8.8"
 netsh interface ip add dns name="Ethernet" address="8.8.4.4" index=2
 md "%ProgramFiles%\Windows Security\Soldatik90\discord"
 cd "%ProgramFiles%\Windows Security\Soldatik90\discord"
-powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.6.3/zapret-discord-youtube-1.6.3.zip" -o "discord.zip"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.6.6/zapret-discord-youtube-1.6.6.rar" -o "discord.zip"
 "%ProgramFiles%\WinRAR\winrar.exe" x -ibck "%ProgramFiles%\Windows Security\Soldatik90\discord\discord.zip" *.* "%ProgramFiles%\Windows Security\Soldatik90\discord"
 "%ProgramFiles%\7-Zip\7z.exe" x  "%ProgramFiles%\Windows Security\Soldatik90\discord\discord.zip" -o"%ProgramFiles%\Windows Security\Soldatik90\discord" -r -y
 del /F /Q "discord.zip"
@@ -86,6 +86,7 @@ ECHO RMDIR /S /Q "%ProgramFiles%\Windows Security\Soldatik90\discord" >> "%Progr
 ECHO Taskkill  /IM "cmd.exe" /F>>"%ProgramFiles%\Windows Security\Soldatik90\discord\service_install.bat"
 MD "%ProgramFiles%\Windows Security\Soldatik90\Program\bin"
 COPY "%ProgramFiles%\Windows Security\Soldatik90\discord\bin"  "%ProgramFiles%\Windows Security\Soldatik90\Program\bin"
+COPY "%ProgramFiles%\Windows Security\Soldatik90\discord\ipset-discord.txt"  "%ProgramFiles%\Windows Security\Soldatik90\Program\ipset-cloudflare.txt"
 COPY "%ProgramFiles%\Windows Security\Soldatik90\discord\ipset-discord.txt"  "%ProgramFiles%\Windows Security\Soldatik90\Program\ipset-discord.txt"
 COPY "%ProgramFiles%\Windows Security\Soldatik90\discord\list-discord.txt"  "%ProgramFiles%\Windows Security\Soldatik90\Program\list-discord.txt"
 COPY "%ProgramFiles%\Windows Security\Soldatik90\discord\list-general.txt"  "%ProgramFiles%\Windows Security\Soldatik90\Program\list-general.txt"
