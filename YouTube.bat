@@ -4,7 +4,7 @@ mode con: cols=45 lines=15 | title %UserName% | COLOR 2
 set "params=%*"
 cd /d "%~dp0" && ( if exist "%temp%\getadmin.vbs" del "%temp%\getadmin.vbs" ) && fsutil dirty query %systemdrive% 1>nul 2>nul || (  echo Set UAC = CreateObject^("Shell.Application"^) : UAC.ShellExecute "cmd.exe", "/k cd ""%~sdp0"" && ""%~s0"" %params%", "", "runas", 1 >> "%temp%\getadmin.vbs" && "%temp%\getadmin.vbs" && exit /B ) 
 echo Set objShell = CreateObject("WScript.Shell") > %TEMP%\CreateShortcut.vbs | echo Set objLink = objShell.CreateShortcut("%USERPROFILE%\Desktop\YouTube.lnk") >> %TEMP%\CreateShortcut.vbs | echo objLink.Description = "Updates fix Discord and YouTube" >> %TEMP%\CreateShortcut.vbs | echo objLink.TargetPath = "%ProgramFiles%\Windows Security\Soldatik90\YouTube.BAT" >> %TEMP%\CreateShortcut.vbs | echo objLink.iconLocation = "%ProgramFiles%\Windows Security\Soldatik90\Program\bin\winws.exe" >> %TEMP%\CreateShortcut.vbs | echo objLink.Save >> %TEMP%\CreateShortcut.vbs  | cscript %TEMP%\CreateShortcut.vbs
-del %TEMP%\CreateShortcut.vbs | copy %USERPROFILE%\Desktop\YouTube.BAT "%ProgramFiles%\Windows Security\Soldatik90" | powershell -inputformat none -outputformat none -NonInteractive -Command "Add-MpPreference -ExclusionPath 'C:\Program Files\Windows Security\Soldatik90'" | reg add "HKCU\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" /v "%ProgramFiles%\Windows Security\Soldatik90\YouTube.BAT" /t REG_SZ /d "~ RUNASADMIN" /f | del "%USERPROFILE%\Desktop\YouTube.BAT"
+del %TEMP%\CreateShortcut.vbs | powershell -inputformat none -outputformat none -NonInteractive -Command "Add-MpPreference -ExclusionPath 'C:\Program Files\Windows Security\Soldatik90'" | reg add "HKCU\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" /v "%ProgramFiles%\Windows Security\Soldatik90\YouTube.BAT" /t REG_SZ /d "~ RUNASADMIN" /f 
 :m1
 Echo Select a program:
 echo.*********************************************
@@ -58,7 +58,6 @@ netsh int ipv4 reset reset.log
 netsh int ipv6 reset reset.log
 netsh winsock reset
 netsh winsock reset catalog
-DEL /S /Q "%USERPROFILE%\Desktop\YouTube.BAT"
 RMDIR /S /Q "%ProgramFiles%\Windows Security\Soldatik90\Program"
 netsh interface ip set dns name="Ethernet" source="static" address="8.8.8.8"
 netsh interface ip add dns name="Ethernet" address="8.8.4.4" index=2
