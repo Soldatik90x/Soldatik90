@@ -21,7 +21,7 @@ call :color 4
 call :Echo "3 - Deactivation"
 Echo.*********************************************  
 call :color 5
-call :Echo "4 - Updates fix Discord and YouTube v1.6.3"
+call :Echo "4 - Updates fix Discord and YouTube v1.6.6"
 Echo.*********************************************  
 Set /p choice="Your choice: "
 if not defined choice goto m1
