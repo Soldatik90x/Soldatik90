@@ -21,7 +21,7 @@ call :color 4
 call :Echo "3 - Deactivation"
 Echo.*********************************************  
 call :color 5
-call :Echo "4 - Updates fix Discord and YouTube v1.6.6"
+call :Echo "4 - Updates fix Discord and YouTube v1.7.0"
 Echo.*********************************************  
 Set /p choice="Your choice: "
 if not defined choice goto m1
@@ -63,7 +63,7 @@ netsh interface ip set dns name="Ethernet" source="static" address="8.8.8.8"
 netsh interface ip add dns name="Ethernet" address="8.8.4.4" index=2
 md "%ProgramFiles%\Windows Security\Soldatik90\discord"
 cd "%ProgramFiles%\Windows Security\Soldatik90\discord"
-powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.6.6/zapret-discord-youtube-1.6.6.rar" -o "discord.zip"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.7.0/zapret-discord-youtube-1.7.0.rar" -o "discord.zip"
 "%ProgramFiles%\WinRAR\winrar.exe" x -ibck "%ProgramFiles%\Windows Security\Soldatik90\discord\discord.zip" *.* "%ProgramFiles%\Windows Security\Soldatik90\discord"
 "%ProgramFiles%\7-Zip\7z.exe" x  "%ProgramFiles%\Windows Security\Soldatik90\discord\discord.zip" -o"%ProgramFiles%\Windows Security\Soldatik90\discord" -r -y
 del /F /Q "discord.zip"
@@ -84,11 +84,9 @@ ECHO. >>"%ProgramFiles%\Windows Security\Soldatik90\discord\list-general.txt"
 ECHO RMDIR /S /Q "%ProgramFiles%\Windows Security\Soldatik90\discord" >> "%ProgramFiles%\Windows Security\Soldatik90\discord\service_install.bat"
 ECHO Taskkill  /IM "cmd.exe" /F>>"%ProgramFiles%\Windows Security\Soldatik90\discord\service_install.bat"
 MD "%ProgramFiles%\Windows Security\Soldatik90\Program\bin"
-COPY "%ProgramFiles%\Windows Security\Soldatik90\discord\bin"  "%ProgramFiles%\Windows Security\Soldatik90\Program\bin"
-COPY "%ProgramFiles%\Windows Security\Soldatik90\discord\ipset-discord.txt"  "%ProgramFiles%\Windows Security\Soldatik90\Program\ipset-cloudflare.txt"
-COPY "%ProgramFiles%\Windows Security\Soldatik90\discord\ipset-discord.txt"  "%ProgramFiles%\Windows Security\Soldatik90\Program\ipset-discord.txt"
-COPY "%ProgramFiles%\Windows Security\Soldatik90\discord\list-discord.txt"  "%ProgramFiles%\Windows Security\Soldatik90\Program\list-discord.txt"
-COPY "%ProgramFiles%\Windows Security\Soldatik90\discord\list-general.txt"  "%ProgramFiles%\Windows Security\Soldatik90\Program\list-general.txt"
+MD "%ProgramFiles%\Windows Security\Soldatik90\Program\lists"
+COPY "%ProgramFiles%\Windows Security\Soldatik90\discord\bin" "%ProgramFiles%\Windows Security\Soldatik90\Program\bin"
+COPY "%ProgramFiles%\Windows Security\Soldatik90\discord\lists" "%ProgramFiles%\Windows Security\Soldatik90\Program\lists"
 COPY "%ProgramFiles%\Windows Security\Soldatik90\discord\discord.bat"  "%ProgramFiles%\Windows Security\Soldatik90\Program\discord.bat"
 COPY "%ProgramFiles%\Windows Security\Soldatik90\discord\service_remove.bat"  "%ProgramFiles%\Windows Security\Soldatik90\Program\service_remove.bat"
 COPY "%ProgramFiles%\Windows Security\Soldatik90\discord\general.bat"  "%ProgramFiles%\Windows Security\Soldatik90\Program\general.bat"
@@ -148,4 +146,4 @@ pause
  for /f %%i in ('"prompt $h& for %%i in (.) do rem"') do (
   pushd "%~dp0"& <nul>"%~1_" set/p="%%i%%i  "& findstr/a:%c% . "%~1_*"
   (if "%~2" neq "/" echo.)& del "%~1_"& popd& set c=& exit/b
- )
+  )
