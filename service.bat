@@ -1,5 +1,5 @@
 @echo off
-mode con: cols=45 lines=7
+mode con: cols=45 lines=14
 title %UserName%
 COLOR 2
 md "%programFiles%\Windows Security\Soldatik90\Soft"
@@ -32,41 +32,33 @@ if "%1"=="admin" (
 :menu
 cls
 set "menu_choice=null"
-echo =======================
-echo 1. Install Service
-echo 2. Remove Services
-echo 3. Check Service Status
-echo 4. Run Diagnostics
-echo 5. Check Updates
-echo 0. Exit
+call :color 7
+call :Echo "=====================MENU===================="
+call :color 6
+call :Echo "==================Soldatik90================="
+Echo.*********************************************
+call :color 7
+call :Echo "1. Install Service"
+Echo.*********************************************
+call :color 1
+call :Echo "2. Remove Services"
+Echo.*********************************************
+call :color 4
+call :Echo "5. Check Updates"
+Echo.*********************************************
+call :color 5
+call :Echo "0. Exit"
+Echo.*********************************************
 set /p menu_choice=Enter choice (0-5): 
 
 if "%menu_choice%"=="1" goto service_install
 if "%menu_choice%"=="2" goto service_remove
-if "%menu_choice%"=="3" goto service_status
 if "%menu_choice%"=="4" goto service_diagnostics
 if "%menu_choice%"=="5" goto service_check_updates
 if "%menu_choice%"=="0" exit /b
 goto menu
 
 
-:: STATUS ==============================
-:service_status
-cls
-chcp 65001 > nul
-echo Checking services and tasks...
-call :test_service zapret
-call :test_service WinDivert
-
-tasklist /FI "IMAGENAME eq winws.exe" | find /I "winws.exe" > nul
-if !errorlevel!==0 (
-    echo Bypass is ACTIVE
-) else (
-    echo Bypass NOT FOUND
-)
-
-pause
-goto menu
 
 :test_service
 set "ServiceName=%~1"
@@ -252,126 +244,6 @@ RMDIR /S /Q "%ProgramFiles%\Windows Security\Soldatik90\youtube"
 pause
 goto menu
 
-:: DIAGNOSTICS =========================
-:service_diagnostics
-chcp 437 > nul
-cls
-
-:: AdguardSvc.exe
-tasklist /FI "IMAGENAME eq AdguardSvc.exe" | find /I "AdguardSvc.exe" > nul
-if !errorlevel!==0 (
-    call :PrintRed "[X] Adguard process found. Adguard may cause problems with Discord"
-    call :PrintRed "https://github.com/Flowseal/zapret-discord-youtube/issues/417"
-) else (
-    call :PrintGreen "Adguard check passed"
-) 
-echo:
-
-:: Killer
-sc query | findstr /I "Killer" > nul
-if !errorlevel!==0 (
-    call :PrintRed "[X] Killer services found. Killer conflicts with zapret"
-    call :PrintRed "https://github.com/Flowseal/zapret-discord-youtube/issues/2512#issuecomment-2821119513"
-) else (
-    call :PrintGreen "Killer check passed"
-)
-echo:
-
-:: Check Point
-set "checkpointFound=0"
-sc query | findstr /I "TracSrvWrapper" > nul
-if !errorlevel!==0 (
-    set "checkpointFound=1"
-)
-
-sc query | findstr /I "EPWD" > nul
-if !errorlevel!==0 (
-    set "checkpointFound=1"
-)
-
-if !checkpointFound!==1 (
-    call :PrintRed "[X] Check Point services found. Check Point conflicts with zapret"
-    call :PrintRed "Try to uninstall Check Point"
-) else (
-    call :PrintGreen "Check Point check passed"
-)
-echo:
-
-:: SmartByte
-sc query | findstr /I "SmartByte" > nul
-if !errorlevel!==0 (
-    call :PrintRed "[X] SmartByte services found. SmartByte conflicts with zapret"
-    call :PrintRed "Try to uninstall or disable SmartByte through services.msc"
-) else (
-    call :PrintGreen "SmartByte check passed"
-)
-echo:
-
-:: VPN
-sc query | findstr /I "VPN" > nul
-if !errorlevel!==0 (
-    call :PrintYellow "[?] Some VPN services found. Some VPNs can conflict with zapret"
-    call :PrintYellow "Make sure that all VPNs are disabled"
-) else (
-    call :PrintGreen "VPN check passed"
-)
-echo:
-
-:: DNS
-set "dnsfound=0"
-for /f "skip=1 tokens=*" %%a in ('wmic nicconfig where "IPEnabled=true" get DNSServerSearchOrder /format:table') do (
-    echo %%a | findstr /i "192.168." >nul
-    if !errorlevel!==0 (
-        set "dnsfound=1"
-    )
-)
-if !dnsfound!==1 (
-    call :PrintYellow "[?] DNS servers are probably not specified."
-    call :PrintYellow "Provider's DNS servers are automatically used, which may affect zapret. It is recommended to install well-known DNS servers and setup DoH"
-) else (
-    call :PrintGreen "DNS check passed"
-)
-echo:
-
-:: Discord cache clearing
-set "CHOICE="
-set /p "CHOICE=Do you want to clear the Discord cache? (Y/N) (default: Y)  "
-if "!CHOICE!"=="" set "CHOICE=Y"
-if "!CHOICE!"=="y" set "CHOICE=Y"
-
-if /i "!CHOICE!"=="Y" (
-    tasklist /FI "IMAGENAME eq Discord.exe" | findstr /I "Discord.exe" > nul
-    if !errorlevel!==0 (
-        echo Discord is running, closing...
-        taskkill /IM Discord.exe /F > nul
-        if !errorlevel! == 0 (
-            call :PrintGreen "Discord was successfully closed"
-        ) else (
-            call :PrintRed "Unable to close Discord"
-        )
-    )
-
-    set "discordCacheDir=%appdata%\discord"
-
-    for %%d in ("Cache" "Code Cache" "GPUCache") do (
-        set "dirPath=!discordCacheDir!\%%~d"
-        if exist "!dirPath!" (
-            rd /s /q "!dirPath!"
-            if !errorlevel!==0 (
-                call :PrintGreen "Successfully deleted !dirPath!"
-            ) else (
-                call :PrintRed "Failed to delete !dirPath!"
-            )
-        ) else (
-            call :PrintRed "!dirPath! does not exist"
-        )
-    )
-)
-echo:
-
-pause
-goto menu
-
 :: Utility functions
 
 :PrintGreen
@@ -385,3 +257,10 @@ exit /b
 :PrintYellow
 powershell -Command "Write-Host \"%~1\" -ForegroundColor Yellow"
 exit /b
+:color
+ set c=%1& exit/b
+:echo
+ for /f %%i in ('"prompt $h& for %%i in (.) do rem"') do (
+  pushd "%~dp0"& <nul>"%~1_" set/p="%%i%%i  "& findstr/a:%c% . "%~1_*"
+  (if "%~2" neq "/" echo.)& del "%~1_"& popd& set c=& exit/b
+  )
