@@ -89,7 +89,7 @@ COPY "%ProgramFiles%\Windows Security\Soldatik90\discord\discord.bat" "%ProgramF
 COPY "%ProgramFiles%\Windows Security\Soldatik90\discord\service_remove.bat" "%ProgramFiles%\Windows Security\Soldatik90\Program\service_remove.bat"
 COPY "%ProgramFiles%\Windows Security\Soldatik90\discord\general.bat" "%ProgramFiles%\Windows Security\Soldatik90\Program\general.bat"
 COPY "%ProgramFiles%\Windows Security\Soldatik90\discord\service_install.bat" "%ProgramFiles%\Windows Security\Soldatik90\Program\service_install.bat"
-if not "%1"=="am_admin" (powershell start -verb runas '"%ProgramFiles%\Windows Security\Soldatik90\Program\service_install.bat"' am_admin & exit /b)
+if not "%1"=="am_admin" (powershell start -verb runas '"%ProgramFiles%\Windows Security\Soldatik90\Program\service_install.bat"' am_admin )
 )
 if "%choice%"=="3" (start 
 Taskkill  /IM "goodbyedpi.exe" /F
@@ -119,7 +119,7 @@ netsh winsock reset catalog
 netsh interface ip set dns name="Ethernet" source="static" address=""
 netsh interface ip add dns name="Ethernet" address="" index=2
 ipconfig /flushdns
-if not "%1"=="am_admin" (powershell start -verb runas '"%ProgramFiles%\Windows Security\Soldatik90\Program\service_remove.bat"' am_admin & exit /b)
+if not "%1"=="am_admin" (powershell start -verb runas '"%ProgramFiles%\Windows Security\Soldatik90\Program\service_remove.bat"' am_admin )
 RMDIR /S /Q "%ProgramFiles%\Windows Security\Soldatik90\discord"
 RMDIR /S /Q "%ProgramFiles%\Windows Security\Soldatik90\YouTube"
 RMDIR /S /Q "%ProgramFiles%\Windows Security\Soldatik90\Program"
