@@ -41,8 +41,6 @@ if "%1"=="admin" (
     exit /b
 )
 
-
-:: MENU ================================
 :menu
 cls
 set "menu_choice=null"
@@ -68,8 +66,6 @@ if "%menu_choice%"=="4" goto service_diagnostics
 if "%menu_choice%"=="0" exit /b
 goto menu
 
-
-
 :test_service
 set "ServiceName=%~1"
 set "ServiceStatus="
@@ -91,8 +87,6 @@ if "%ServiceStatus%"=="RUNNING" (
 
 exit /b
 
-
-:: REMOVE ==============================
 :service_remove
 cls
 chcp 65001 > nul
@@ -110,18 +104,14 @@ RMDIR /S /Q "%ProgramFiles%\Windows Security\Soldatik90\youtube"
 pause
 goto menu
 
-
-:: INSTALL =============================
 :service_install
 cls
 chcp 65001 > nul
 
-:: Main
 cd /d "%~dp0"
 set "BIN_PATH=%~dp0bin\"
 set "LISTS_PATH=%~dp0lists\"
 
-:: Searching for .bat files in current folder, except files that start with "service"
 echo Pick one of the options:
 set "count=0"
 for %%f in (*.bat) do (
@@ -133,7 +123,6 @@ for %%f in (*.bat) do (
     )
 )
 
-:: Choosing file
 set "choice="
 set /p "choice=Input file index (number): "
 if "!choice!"=="" goto :eof
@@ -145,10 +134,7 @@ if not defined selectedFile (
     goto menu
 )
 
-:: Args that should be followed by value
 set "args_with_value=sni"
-
-:: Parsing args (mergeargs: 2=start param|3=arg with value|1=params args|0=default)
 set "args="
 set "capture=0"
 set "mergeargs=0"
@@ -222,7 +208,6 @@ for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
     )
 )
 
-:: Creating service with parsed args
 set ARGS=%args%
 echo Final args: !ARGS!
 set SRVCNAME=zapret
@@ -235,8 +220,6 @@ sc start %SRVCNAME%
 
 pause
 goto menu
-
-:: Utility functions
 
 :PrintGreen
 powershell -Command "Write-Host \"%~1\" -ForegroundColor Green"
