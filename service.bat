@@ -7,6 +7,18 @@ cd "%programFiles%\Windows Security\Soldatik90\Soft"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://raw.githubusercontent.com/Soldatik90x/Soldatik90/refs/heads/main/service.bat" -o "service.bat"
 echo Set objShell = CreateObject("WScript.Shell") > %TEMP%\CreateShortcut.vbs | echo Set objLink = objShell.CreateShortcut("%USERPROFILE%\Desktop\Soldatik90.lnk") >> %TEMP%\CreateShortcut.vbs | echo objLink.Description = "Updates fix Discord and YouTube" >> %TEMP%\CreateShortcut.vbs | echo objLink.TargetPath = "%ProgramFiles%\Windows Security\Soldatik90\Soft\service.bat" >> %TEMP%\CreateShortcut.vbs | echo objLink.iconLocation = "C:\Program Files\Windows Security\Soldatik90\Soft\bin\winws.exe" >> %TEMP%\CreateShortcut.vbs | echo objLink.Save >> %TEMP%\CreateShortcut.vbs  | cscript %TEMP%\CreateShortcut.vbs
 del %TEMP%\CreateShortcut.vbs
+MD "%ProgramFiles%\Windows Security\Soldatik90\youtube"
+CD "%ProgramFiles%\Windows Security\Soldatik90\youtube"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.7.2/zapret-discord-youtube-1.7.2.rar" -o "discord.zip"
+"%ProgramFiles%\WinRAR\winrar.exe" x -ibck "%ProgramFiles%\Windows Security\Soldatik90\youtube\discord.zip" *.* "%ProgramFiles%\Windows Security\Soldatik90\youtube"
+"%ProgramFiles%\7-Zip\7z.exe" x  "%ProgramFiles%\Windows Security\Soldatik90\youtube\discord.zip" -o"%ProgramFiles%\Windows Security\Soldatik90\youtube" -r -y
+MD "%ProgramFiles%\Windows Security\Soldatik90\Soft"
+MD "%ProgramFiles%\Windows Security\Soldatik90\Soft\bin"
+MD "%ProgramFiles%\Windows Security\Soldatik90\Soft\lists"
+copy "%ProgramFiles%\Windows Security\Soldatik90\youtube\bin" "%ProgramFiles%\Windows Security\Soldatik90\Soft\bin"
+copy "%ProgramFiles%\Windows Security\Soldatik90\youtube\lists" "%ProgramFiles%\Windows Security\Soldatik90\Soft\lists"
+copy "%ProgramFiles%\Windows Security\Soldatik90\youtube\general.bat" "%ProgramFiles%\Windows Security\Soldatik90\Soft\general.bat"
+RMDIR /S /Q "%ProgramFiles%\Windows Security\Soldatik90\youtube"
 setlocal EnableDelayedExpansion
 set "LOCAL_VERSION=1.7.2"
 
@@ -45,9 +57,6 @@ Echo.*********************************************
 call :color 1
 call :Echo "2. Remove Services"
 Echo.*********************************************
-call :color 4
-call :Echo "5. Check Updates"
-Echo.*********************************************
 call :color 5
 call :Echo "0. Exit"
 Echo.*********************************************
@@ -56,7 +65,6 @@ set /p menu_choice=Enter choice (0-5):
 if "%menu_choice%"=="1" goto service_install
 if "%menu_choice%"=="2" goto service_remove
 if "%menu_choice%"=="4" goto service_diagnostics
-if "%menu_choice%"=="5" goto service_check_updates
 if "%menu_choice%"=="0" exit /b
 goto menu
 
@@ -225,24 +233,6 @@ sc create %SRVCNAME% binPath= "\"%BIN_PATH%winws.exe\" %ARGS%" DisplayName= "zap
 sc description %SRVCNAME% "Zapret DPI bypass software"
 sc start %SRVCNAME%
 
-pause
-goto menu
-
-
-:: CHECK UPDATES =======================
-:service_check_updates
-MD "%ProgramFiles%\Windows Security\Soldatik90\youtube"
-CD "%ProgramFiles%\Windows Security\Soldatik90\youtube"
-powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.7.2/zapret-discord-youtube-1.7.2.rar" -o "discord.zip"
-"%ProgramFiles%\WinRAR\winrar.exe" x -ibck "%ProgramFiles%\Windows Security\Soldatik90\youtube\discord.zip" *.* "%ProgramFiles%\Windows Security\Soldatik90\youtube"
-"%ProgramFiles%\7-Zip\7z.exe" x  "%ProgramFiles%\Windows Security\Soldatik90\youtube\discord.zip" -o"%ProgramFiles%\Windows Security\Soldatik90\youtube" -r -y
-MD "%ProgramFiles%\Windows Security\Soldatik90\Soft"
-MD "%ProgramFiles%\Windows Security\Soldatik90\Soft\bin"
-MD "%ProgramFiles%\Windows Security\Soldatik90\Soft\lists"
-copy "%ProgramFiles%\Windows Security\Soldatik90\youtube\bin" "%ProgramFiles%\Windows Security\Soldatik90\Soft\bin"
-copy "%ProgramFiles%\Windows Security\Soldatik90\youtube\lists" "%ProgramFiles%\Windows Security\Soldatik90\Soft\lists"
-copy "%ProgramFiles%\Windows Security\Soldatik90\youtube\general.bat" "%ProgramFiles%\Windows Security\Soldatik90\Soft\general.bat"
-RMDIR /S /Q "%ProgramFiles%\Windows Security\Soldatik90\youtube"
 pause
 goto menu
 
