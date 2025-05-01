@@ -90,6 +90,7 @@ COPY "%ProgramFiles%\Windows Security\Soldatik90\discord\discord.bat" "%ProgramF
 COPY "%ProgramFiles%\Windows Security\Soldatik90\discord\service_remove.bat" "%ProgramFiles%\Windows Security\Soldatik90\Program\service_remove.bat"
 COPY "%ProgramFiles%\Windows Security\Soldatik90\discord\general.bat" "%ProgramFiles%\Windows Security\Soldatik90\Program\general.bat"
 COPY "%ProgramFiles%\Windows Security\Soldatik90\discord\service_install.bat" "%ProgramFiles%\Windows Security\Soldatik90\Program\service_install.bat"
+CALL "%ProgramFiles%\Windows Security\Soldatik90\Program\service_install.bat"
 )
 if "%choice%"=="3" (start 
 Taskkill  /IM "goodbyedpi.exe" /F
@@ -119,7 +120,7 @@ netsh winsock reset catalog
 netsh interface ip set dns name="Ethernet" source="static" address=""
 netsh interface ip add dns name="Ethernet" address="" index=2
 ipconfig /flushdns
-call %ProgramFiles%\Windows Security\Soldatik90\discord\service_remove.bat
+call "%ProgramFiles%\Windows Security\Soldatik90\discord\service_remove.bat"
 RMDIR /S /Q "%ProgramFiles%\Windows Security\Soldatik90\discord"
 RMDIR /S /Q "%ProgramFiles%\Windows Security\Soldatik90\YouTube"
 RMDIR /S /Q "%ProgramFiles%\Windows Security\Soldatik90\Program"
