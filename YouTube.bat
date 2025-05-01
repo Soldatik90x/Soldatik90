@@ -1,5 +1,4 @@
-@echo off
-chcp 866 > nul
+@echo off> nul
 mode con: cols=45 lines=15 | title %UserName% | COLOR 2
 set "params=%*"
 cd /d "%~dp0" && ( if exist "%temp%\getadmin.vbs" del "%temp%\getadmin.vbs" ) && fsutil dirty query %systemdrive% 1>nul 2>nul || (  echo Set UAC = CreateObject^("Shell.Application"^) : UAC.ShellExecute "cmd.exe", "/k cd ""%~sdp0"" && ""%~s0"" %params%", "", "runas", 1 >> "%temp%\getadmin.vbs" && "%temp%\getadmin.vbs" && exit /B ) 
@@ -90,7 +89,7 @@ COPY "%ProgramFiles%\Windows Security\Soldatik90\discord\discord.bat" "%ProgramF
 COPY "%ProgramFiles%\Windows Security\Soldatik90\discord\service_remove.bat" "%ProgramFiles%\Windows Security\Soldatik90\Program\service_remove.bat"
 COPY "%ProgramFiles%\Windows Security\Soldatik90\discord\general.bat" "%ProgramFiles%\Windows Security\Soldatik90\Program\general.bat"
 COPY "%ProgramFiles%\Windows Security\Soldatik90\discord\service_install.bat" "%ProgramFiles%\Windows Security\Soldatik90\Program\service_install.bat"
-CALL "%ProgramFiles%\Windows Security\Soldatik90\Program\service_install.bat"
+if not "%1"=="am_admin" (powershell start -verb runas '"%ProgramFiles%\Windows Security\Soldatik90\Program\service_install.bat"' am_admin & exit /b)
 )
 if "%choice%"=="3" (start 
 Taskkill  /IM "goodbyedpi.exe" /F
@@ -138,7 +137,6 @@ Echo.
 Echo.
 goto m1
 pause >nul
-pause
 :color
  set c=%1& exit/b
 :echo
