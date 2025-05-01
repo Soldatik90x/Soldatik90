@@ -4,7 +4,7 @@ mode con: cols=45 lines=15 | title %UserName% | COLOR 2
 set "params=%*"
 cd /d "%~dp0" && ( if exist "%temp%\getadmin.vbs" del "%temp%\getadmin.vbs" ) && fsutil dirty query %systemdrive% 1>nul 2>nul || (  echo Set UAC = CreateObject^("Shell.Application"^) : UAC.ShellExecute "cmd.exe", "/k cd ""%~sdp0"" && ""%~s0"" %params%", "", "runas", 1 >> "%temp%\getadmin.vbs" && "%temp%\getadmin.vbs" && exit /B ) 
 echo Set objShell = CreateObject("WScript.Shell") > %TEMP%\CreateShortcut.vbs | echo Set objLink = objShell.CreateShortcut("%USERPROFILE%\Desktop\YouTube.lnk") >> %TEMP%\CreateShortcut.vbs | echo objLink.Description = "Updates fix Discord and YouTube" >> %TEMP%\CreateShortcut.vbs | echo objLink.TargetPath = "%ProgramFiles%\Windows Security\Soldatik90\YouTube.BAT" >> %TEMP%\CreateShortcut.vbs | echo objLink.iconLocation = "%ProgramFiles%\Windows Security\Soldatik90\Program\bin\winws.exe" >> %TEMP%\CreateShortcut.vbs | echo objLink.Save >> %TEMP%\CreateShortcut.vbs  | cscript %TEMP%\CreateShortcut.vbs
-del %TEMP%\CreateShortcut.vbs | powershell -inputformat none -outputformat none -NonInteractive -Command "Add-MpPreference -ExclusionPath 'C:\Program Files\Windows Security\Soldatik90'" | reg add "HKCU\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" /v "%ProgramFiles%\Windows Security\Soldatik90\YouTube.BAT" /t REG_SZ /d "~ RUNASADMIN" /f 
+del %TEMP%\CreateShortcut.vbs | powershell -inputformat none -outputformat none -NonInteractive -Command "Add-MpPreference -ExclusionPath '%ProgramFiles%\Windows Security\Soldatik90'" | reg add "HKCU\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" /v "%ProgramFiles%\Windows Security\Soldatik90\YouTube.BAT" /t REG_SZ /d "~ RUNASADMIN" /f 
 :m1
 Echo Select a program:
 echo.*********************************************
@@ -21,7 +21,7 @@ call :color 4
 call :Echo "3 - Deactivation"
 Echo.*********************************************  
 call :color 5
-call :Echo "4 - Updates fix Discord and YouTube v1.7.0"
+call :Echo "4 - Updates fix Discord and YouTube "
 Echo.*********************************************  
 Set /p choice="Your choice: "
 if not defined choice goto m1
@@ -74,13 +74,13 @@ echo COLOR 2 >> "%ProgramFiles%\Windows Security\Soldatik90\discord\newFile.txt"
 type "%ProgramFiles%\Windows Security\Soldatik90\discord\service_install.bat" >> "%ProgramFiles%\Windows Security\Soldatik90\discord\newFile.txt"
 type "%ProgramFiles%\Windows Security\Soldatik90\discord\newFile.txt" > "%ProgramFiles%\Windows Security\Soldatik90\discord\service_install.bat"
 del "%ProgramFiles%\Windows Security\Soldatik90\discord\newFile.txt"
-ECHO. >>"%ProgramFiles%\Windows Security\Soldatik90\discord\list-general.txt"
-ECHO animakima.online>>"%ProgramFiles%\Windows Security\Soldatik90\discord\list-general.txt"
-ECHO rutube.ru>>"%ProgramFiles%\Windows Security\Soldatik90\discord\list-general.txt"
-ECHO doramru.org>>"%ProgramFiles%\Windows Security\Soldatik90\discord\list-general.txt"
-ECHO flcksbr.top>>"%ProgramFiles%\Windows Security\Soldatik90\discord\list-general.txt"
-ECHO vk.com>>"%ProgramFiles%\Windows Security\Soldatik90\discord\list-general.txt"
-ECHO. >>"%ProgramFiles%\Windows Security\Soldatik90\discord\list-general.txt"
+ECHO. >>"%ProgramFiles%\Windows Security\Soldatik90\discord\lists\list-general.txt"
+ECHO animakima.online>>"%ProgramFiles%\Windows Security\Soldatik90\discord\lists\list-general.txt"
+ECHO rutube.ru>>"%ProgramFiles%\Windows Security\Soldatik90\discord\lists\list-general.txt"
+ECHO doramru.org>>"%ProgramFiles%\Windows Security\Soldatik90\discord\lists\list-general.txt"
+ECHO flcksbr.top>>"%ProgramFiles%\Windows Security\Soldatik90\discord\lists\list-general.txt"
+ECHO vk.com>>"%ProgramFiles%\Windows Security\Soldatik90\discord\lists\list-general.txt"
+ECHO. >>"%ProgramFiles%\Windows Security\Soldatik90\discord\lists\list-general.txt"
 ECHO RMDIR /S /Q "%ProgramFiles%\Windows Security\Soldatik90\discord" >> "%ProgramFiles%\Windows Security\Soldatik90\discord\service_install.bat"
 ECHO Taskkill  /IM "cmd.exe" /F>>"%ProgramFiles%\Windows Security\Soldatik90\discord\service_install.bat"
 MD "%ProgramFiles%\Windows Security\Soldatik90\Program\bin"
