@@ -119,7 +119,7 @@ netsh winsock reset catalog
 netsh interface ip set dns name="Ethernet" source="static" address=""
 netsh interface ip add dns name="Ethernet" address="" index=2
 ipconfig /flushdns
-call "%ProgramFiles%\Windows Security\Soldatik90\discord\service_remove.bat"
+if not "%1"=="am_admin" (powershell start -verb runas '"%ProgramFiles%\Windows Security\Soldatik90\Program\service_remove.bat"' am_admin & exit /b)
 RMDIR /S /Q "%ProgramFiles%\Windows Security\Soldatik90\discord"
 RMDIR /S /Q "%ProgramFiles%\Windows Security\Soldatik90\YouTube"
 RMDIR /S /Q "%ProgramFiles%\Windows Security\Soldatik90\Program"
