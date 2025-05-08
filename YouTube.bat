@@ -74,6 +74,8 @@ type "%ProgramFiles%\Windows Security\Soldatik90\discord\service_install.bat" >>
 type "%ProgramFiles%\Windows Security\Soldatik90\discord\newFile.txt" > "%ProgramFiles%\Windows Security\Soldatik90\discord\service_install.bat"
 del "%ProgramFiles%\Windows Security\Soldatik90\discord\newFile.txt"
 ECHO animakima.online>>"%ProgramFiles%\Windows Security\Soldatik90\discord\lists\list-general.txt"
+ECHO animakima.fun>>"%ProgramFiles%\Windows Security\Soldatik90\discord\lists\list-general.txt"
+ECHO animakima.top>>"%ProgramFiles%\Windows Security\Soldatik90\discord\lists\list-general.txt"
 ECHO rutube.ru>>"%ProgramFiles%\Windows Security\Soldatik90\discord\lists\list-general.txt"
 ECHO doramru.org>>"%ProgramFiles%\Windows Security\Soldatik90\discord\lists\list-general.txt"
 ECHO flcksbr.top>>"%ProgramFiles%\Windows Security\Soldatik90\discord\lists\list-general.txt"
