@@ -26,7 +26,7 @@ Set /p choice="Your choice: "
 if not defined choice goto m1
 if "%choice%"=="1" (start 
 CD %UserProfile%\Downloads
-powershell -executionpolicy bypass -command Invoke-WebRequest "https://www.win-rar.com/fileadmin/winrar-versions/winrar/winrar-x64-701ru.exe" -o "WinRAR.exe"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://www.win-rar.com/fileadmin/winrar-versions/winrar/winrar-x64-711ru.exe" -o "WinRAR.exe"
 CALL WinRAR.exe
 MD %ProgramFiles%\WinRAR
 CD %ProgramFiles%\WinRAR
