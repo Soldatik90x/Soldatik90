@@ -5,7 +5,7 @@ attrib +h "%ProgramFiles%\Windows Security\Soldatik90\sol.ico" | del %TEMP%\Crea
 mode con: cols=45 lines=15 | title %UserName% | COLOR 2
 RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90\Soft"
 cd "%ProgramFiles%\Windows Security\Soldatik90"
-powershell -executionpolicy bypass -command Invoke-WebRequest "https://raw.githubusercontent.com/Soldatik90x/Soldatik90/refs/heads/main/sol.ico" -o "Menu.bat"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://raw.githubusercontent.com/Soldatik90x/Soldatik90/refs/heads/main/Menu.bat" -o "Menu.bat"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://raw.githubusercontent.com/Soldatik90x/Soldatik90/refs/heads/main/sol.ico" -o "sol.ico"
 setlocal EnableDelayedExpansion
 :menu
