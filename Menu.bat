@@ -195,7 +195,7 @@ goto menu
 
 Md "%ProgramFiles%\Windows Security\Soldatik90\Soft"
 cd "%ProgramFiles%\Windows Security\Soldatik90\Soft"
-powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.7.2b/zapret-discord-youtube-1.7.2b.zip" -o "Soldatik90.zip"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.8.1/zapret-discord-youtube-1.8.1.rar" -o "Soldatik90.zip"
 powershell.exe -Nop -Nol -Command "Expand-Archive './Soldatik90.zip' './'
 del /F /Q "Soldatik90.zip"
 MD "%ProgramFiles%\Windows Security\Soldatik90\Fix"
