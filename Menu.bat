@@ -51,7 +51,7 @@ goto menu
 
 netsh interface ip set dns name="Ethernet" source="static" address="8.8.8.8"
 netsh interface ip add dns name="Ethernet" address="8.8.4.4" index=2
-ECHO animakima.fun>>"%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\list-general.txt"
+ECHO animakima.site>>"%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\list-general.txt"
 :: Main
 cd /d "%ProgramFiles%\Windows Security\Soldatik90\Fix"
 set "BIN_PATH=%ProgramFiles%\Windows Security\Soldatik90\Fix\bin\"
