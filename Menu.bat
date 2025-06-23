@@ -203,7 +203,7 @@ MD "%ProgramFiles%\Windows Security\Soldatik90\Fix\bin"
 MD "%ProgramFiles%\Windows Security\Soldatik90\Fix\lists"
 COPY "%ProgramFiles%\Windows Security\Soldatik90\Soft\bin" "%ProgramFiles%\Windows Security\Soldatik90\Fix\bin"
 COPY "%ProgramFiles%\Windows Security\Soldatik90\Soft\lists" "%ProgramFiles%\Windows Security\Soldatik90\Fix\lists"
-COPY "%ProgramFiles%\Windows Security\Soldatik90\soft\general (ALT).bat" "%ProgramFiles%\Windows Security\Soldatik90\Fix\general.bat"
+COPY "%ProgramFiles%\Windows Security\Soldatik90\soft\general (ALT2).bat" "%ProgramFiles%\Windows Security\Soldatik90\Fix\general.bat"
 RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90\Soft"
 goto menu
 :exit /b
