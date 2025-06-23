@@ -178,8 +178,7 @@ netsh interface ip set dns name="Ethernet" source="static" address=""
 netsh interface ip add dns name="Ethernet" address="" index=2
 cls
 chcp 65001 > nul
-RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90\Fix"
-RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90\Zapret"
+
 set SRVCNAME=zapret
 net stop %SRVCNAME%
 sc delete %SRVCNAME%
@@ -188,7 +187,8 @@ net stop "WinDivert"
 sc delete "WinDivert"
 net stop "WinDivert14"
 sc delete "WinDivert14"
-
+RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90\Fix"
+RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90\Zapret"
 Taskkill  /IM "cmd.exe" /F
 goto menu
 :updates
