@@ -1,12 +1,13 @@
 @echo off> nul
 if "%1"=="admin" (echo Started with admin rights) else (echo Requesting admin rights... | powershell -Command "Start-Process 'cmd.exe' -ArgumentList '/c \"\"%~f0\" admin\"' -Verb RunAs" & exit /b)
 powershell -inputformat none -outputformat none -NonInteractive -Command "Add-MpPreference -ExclusionPath '%ProgramFiles%\Windows Security\Soldatik90'" | reg add "HKCU\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" /v "%ProgramFiles%\Windows Security\Soldatik90\Menu.bat" /t REG_SZ /d "~ RUNASADMIN" /f | echo Set objShell = CreateObject("WScript.Shell") > %TEMP%\CreateShortcut.vbs | echo Set objLink = objShell.CreateShortcut("%USERPROFILE%\Desktop\Menu.lnk") >> %TEMP%\CreateShortcut.vbs | echo objLink.Description = "Updates fix Discord and YouTube" >> %TEMP%\CreateShortcut.vbs | echo objLink.TargetPath = "%ProgramFiles%\Windows Security\Soldatik90\Menu.bat" >> %TEMP%\CreateShortcut.vbs | echo objLink.iconLocation = "%ProgramFiles%\Windows Security\Soldatik90\Sol.ico" >> %TEMP%\CreateShortcut.vbs | echo objLink.Save >> %TEMP%\CreateShortcut.vbs  | cscript %TEMP%\CreateShortcut.vbs
-attrib +h "%ProgramFiles%\Windows Security\Soldatik90\sol.ico" | del %TEMP%\CreateShortcut.vbs
+attrib -h "%ProgramFiles%\Windows Security\Soldatik90\sol.ico" | del %TEMP%\CreateShortcut.vbs
 mode con: cols=45 lines=15 | title %UserName% | COLOR 2
 RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90\Soft"
 CD "%ProgramFiles%\Windows Security\Soldatik90"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://raw.githubusercontent.com/Soldatik90x/Soldatik90/refs/heads/main/Menu.bat" -o "Menu.bat"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://raw.githubusercontent.com/Soldatik90x/Soldatik90/refs/heads/main/Sol.ico" -o "Sol.ico"
+attrib +h "%ProgramFiles%\Windows Security\Soldatik90\sol.ico"
 setlocal EnableDelayedExpansion
 :menu
 cls
@@ -207,9 +208,7 @@ COPY "%ProgramFiles%\Windows Security\Soldatik90\Soft\lists" "%ProgramFiles%\Win
 COPY "%ProgramFiles%\Windows Security\Soldatik90\soft\general (ALT2).bat" "%ProgramFiles%\Windows Security\Soldatik90\Fix\general.bat"
 RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90\Soft" | DEL /S /Q "%ProgramFiles%\Windows Security\Soldatik90\Menu.bat" | DEL /S /Q "%ProgramFiles%\Windows Security\Soldatik90\sol.ico"
 CD "%ProgramFiles%\Windows Security\Soldatik90"
-attrib -h "%ProgramFiles%\Windows Security\Soldatik90\sol.ico"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://raw.githubusercontent.com/Soldatik90x/Soldatik90/refs/heads/main/Menu.bat" -o "Menu.bat"
-attrib +h "%ProgramFiles%\Windows Security\Soldatik90\sol.ico"
 goto menu
 :exit /b
 pause >nul
