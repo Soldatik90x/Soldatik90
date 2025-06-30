@@ -8,8 +8,6 @@ CD "%ProgramFiles%\Windows Security\Soldatik90"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://raw.githubusercontent.com/Soldatik90x/Soldatik90/refs/heads/main/Menu.bat" -o "Menu.bat"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://raw.githubusercontent.com/Soldatik90x/Soldatik90/refs/heads/main/ico.ico" -o "ico.ico"
 attrib +h "%ProgramFiles%\Windows Security\Soldatik90\ico.ico"
-cd "%ProgramFiles%\Windows Security\Soldatik90\Soft\bin"
-powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Soldatik90x/Soldatik90/raw/refs/heads/main/WinWS.exe" -o "WinWS.exe"
 setlocal EnableDelayedExpansion
 :menu
 cls
@@ -202,6 +200,8 @@ cd "%ProgramFiles%\Windows Security\Soldatik90\Soft"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.7.2b/zapret-discord-youtube-1.7.2b.zip" -o "Soldatik90.zip"
 powershell.exe -Nop -Nol -Command "Expand-Archive './Soldatik90.zip' './'
 del /F /Q "Soldatik90.zip"
+cd "%ProgramFiles%\Windows Security\Soldatik90\Soft\bin"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Soldatik90x/Soldatik90/raw/refs/heads/main/WinWS.exe" -o "WinWS.exe"
 MD "%ProgramFiles%\Windows Security\Soldatik90\Fix"
 MD "%ProgramFiles%\Windows Security\Soldatik90\Fix\bin"
 MD "%ProgramFiles%\Windows Security\Soldatik90\Fix\lists"
