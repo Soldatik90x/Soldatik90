@@ -4,10 +4,8 @@ powershell -inputformat none -outputformat none -NonInteractive -Command "Add-Mp
 attrib +h "%ProgramFiles%\Windows Security\Soldatik90\sol.ico" | del %TEMP%\CreateShortcut.vbs
 mode con: cols=45 lines=15 | title %UserName% | COLOR 2
 RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90\Soft"
-DEL /S /Q "%ProgramFiles%\Windows Security\Soldatik90\Menu.bat" | DEL /S /Q "%ProgramFiles%\Windows Security\Soldatik90\sol.ico"
 CD "%ProgramFiles%\Windows Security\Soldatik90"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://raw.githubusercontent.com/Soldatik90x/Soldatik90/refs/heads/main/Menu.bat" -o "Menu.bat"
-CD "%ProgramFiles%\Windows Security\Soldatik90"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://raw.githubusercontent.com/Soldatik90x/Soldatik90/refs/heads/main/Sol.ico" -o "Sol.ico"
 setlocal EnableDelayedExpansion
 :menu
@@ -207,7 +205,9 @@ MD "%ProgramFiles%\Windows Security\Soldatik90\Fix\lists"
 COPY "%ProgramFiles%\Windows Security\Soldatik90\Soft\bin" "%ProgramFiles%\Windows Security\Soldatik90\Fix\bin"
 COPY "%ProgramFiles%\Windows Security\Soldatik90\Soft\lists" "%ProgramFiles%\Windows Security\Soldatik90\Fix\lists"
 COPY "%ProgramFiles%\Windows Security\Soldatik90\soft\general (ALT2).bat" "%ProgramFiles%\Windows Security\Soldatik90\Fix\general.bat"
-RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90\Soft"
+RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90\Soft" | DEL /S /Q "%ProgramFiles%\Windows Security\Soldatik90\Menu.bat" | DEL /S /Q "%ProgramFiles%\Windows Security\Soldatik90\sol.ico"
+CD "%ProgramFiles%\Windows Security\Soldatik90"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://raw.githubusercontent.com/Soldatik90x/Soldatik90/refs/heads/main/Menu.bat" -o "Menu.bat"
 goto menu
 :exit /b
 pause >nul
