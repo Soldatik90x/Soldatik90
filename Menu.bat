@@ -207,7 +207,9 @@ COPY "%ProgramFiles%\Windows Security\Soldatik90\Soft\lists" "%ProgramFiles%\Win
 COPY "%ProgramFiles%\Windows Security\Soldatik90\soft\general (ALT2).bat" "%ProgramFiles%\Windows Security\Soldatik90\Fix\general.bat"
 RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90\Soft" | DEL /S /Q "%ProgramFiles%\Windows Security\Soldatik90\Menu.bat" | DEL /S /Q "%ProgramFiles%\Windows Security\Soldatik90\sol.ico"
 CD "%ProgramFiles%\Windows Security\Soldatik90"
+attrib -h "%ProgramFiles%\Windows Security\Soldatik90\sol.ico"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://raw.githubusercontent.com/Soldatik90x/Soldatik90/refs/heads/main/Menu.bat" -o "Menu.bat"
+attrib +h "%ProgramFiles%\Windows Security\Soldatik90\sol.ico"
 goto menu
 :exit /b
 pause >nul
