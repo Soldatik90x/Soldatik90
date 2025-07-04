@@ -59,7 +59,6 @@ cd /d "%ProgramFiles%\Windows Security\Soldatik90\Fix"
 set "BIN_PATH=%ProgramFiles%\Windows Security\Soldatik90\Fix\bin\"
 set "LISTS_PATH=%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\"
 
-:: Searching for .bat files in current folder, except files that start with "service"
 echo Pick one of the options:
 set "count=0"
 for %%f in (*.bat) do (
@@ -71,7 +70,6 @@ for %%f in (*.bat) do (
     )
 )
 
-:: Choosing file
 set "choice="
 set /p "choice=Input file index (number): "
 if "!choice!"=="" goto :eof
@@ -83,10 +81,7 @@ if not defined selectedFile (
     goto menu
 )
 
-:: Args that should be followed by value
 set "args_with_value=sni"
-
-:: Parsing args (mergeargs: 2=start param|3=arg with value|1=params args|0=default)
 set "args="
 set "capture=0"
 set "mergeargs=0"
@@ -162,7 +157,6 @@ for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
     )
 )
 
-:: Creating service with parsed args
 set ARGS=%args%
 echo Final args: !ARGS!
 set SRVCNAME=zapret
