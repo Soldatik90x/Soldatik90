@@ -52,7 +52,6 @@ netsh interface ip add dns name="Ethernet" address="8.8.4.4" index=2
 ECHO animakima.site>>"%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\list-general.txt"
 ECHO googleusercontent.com>>"%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\list-general.txt"
 ECHO vk.com>>"%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\list-general.txt"
-ECHO rutube.ru>>"%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\list-general.txt"
 del /S /Q "C:\Users\%username%\Downloads\Menu.bat" | del /S /Q "C:\Users\%username%\Desktop\Menu.bat"
 cd /d "%ProgramFiles%\Windows Security\Soldatik90\Fix"
 set "BIN_PATH=%ProgramFiles%\Windows Security\Soldatik90\Fix\bin\"
