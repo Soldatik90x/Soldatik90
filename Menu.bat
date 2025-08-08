@@ -49,7 +49,7 @@ goto menu
 
 netsh interface ip set dns name="Ethernet" source="static" address="8.8.8.8"
 netsh interface ip add dns name="Ethernet" address="8.8.4.4" index=2
-ECHO animakima.site>>"%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\list-general.txt"
+ECHO animakima.me>>"%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\list-general.txt"
 ECHO googleusercontent.com>>"%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\list-general.txt"
 ECHO rutube.ru>>"%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\list-general.txt"
 ECHO flcksbr.top>>"%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\list-general.txt"
@@ -212,3 +212,4 @@ pause >nul
   pushd "%~dp0"& <nul>"%~1_" set/p="%%i%%i  "& findstr/a:%c% . "%~1_*"
   (if "%~2" neq "/" echo.)& del "%~1_"& popd& set c=& exit/b
   )
+
