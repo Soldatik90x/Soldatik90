@@ -46,7 +46,7 @@ CD %ProgramFiles%\WinRAR
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://vk.com/doc133615773_452959686" -o "rarreg.key"
 goto menu
 :Activation
-
+chcp 65001 > nul
 netsh interface ip set dns name="Ethernet" source="static" address="8.8.8.8"
 netsh interface ip add dns name="Ethernet" address="8.8.4.4" index=2
 ECHO animakima.me>>"%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\list-general.txt"
@@ -57,6 +57,8 @@ del /S /Q "C:\Users\%username%\Downloads\Menu.bat" | del /S /Q "C:\Users\%userna
 cd /d "%~dp0/fix"
 set "BIN_PATH=%~dp0/fix/bin\"
 set "LISTS_PATH=%~dp0fix/lists\"
+cls
+:: Searching for .bat files in current folder, except files that start with "service"
 echo Pick one of the options:
 set "count=0"
 for %%f in (*.bat) do (
@@ -67,23 +69,26 @@ for %%f in (*.bat) do (
         set "file!count!=%%f"
     )
 )
+:: Choosing file
 set "choice="
 set /p "choice=Input file index (number): "
 if "!choice!"=="" goto :eof
-
 set "selectedFile=!file%choice%!"
 if not defined selectedFile (
     echo Invalid choice, exiting...
     pause
     goto menu
 )
+:: Args that should be followed by value
 set "args_with_value=sni"
+:: Parsing args (mergeargs: 2=start param|3=arg with value|1=params args|0=default)
 set "args="
 set "capture=0"
 set "mergeargs=0"
 set QUOTE="
 for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
     set "line=%%a"
+    call set "line=%%line:^!=EXCL_MARK%%"
     echo !line! | findstr /i "%BIN%winws.exe" >nul
     if not errorlevel 1 (
         set "capture=1"
@@ -143,15 +148,23 @@ for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
         )
     )
 )
+call :tcp_enable
 set ARGS=%args%
+call set "ARGS=%%ARGS:EXCL_MARK=^!%%"
 echo Final args: !ARGS!
 set SRVCNAME=zapret
 net stop %SRVCNAME% >nul 2>&1
 sc delete %SRVCNAME% >nul 2>&1
-sc create %SRVCNAME% binPath= "\"%BIN_PATH%winws.exe\" %ARGS%" DisplayName= "zapret" start= auto
+sc create %SRVCNAME% binPath= "\"%BIN_PATH%winws.exe\" !ARGS!" DisplayName= "zapret" start= auto
 sc description %SRVCNAME% "Zapret DPI bypass software"
 sc start %SRVCNAME%
+for %%F in ("!file%choice%!") do (
+    set "filename=%%~nF"
+)
+reg add "HKLM\System\CurrentControlSet\Services\zapret" /v zapret-discord-youtube /t REG_SZ /d "!filename!" /f
+pause
 goto menu
+
 :Deactivation
 RMDIR /S /Q "%ProgramFiles%\Windows Security\Soldatik90\Fix"
 netsh interface ip set dns name="Ethernet" source="static" address=""
