@@ -1,12 +1,10 @@
 @echo off> nul
 if "%1"=="admin" (echo Started with admin rights) else (echo Requesting admin rights... | powershell -Command "Start-Process 'cmd.exe' -ArgumentList '/c \"\"%~f0\" admin\"' -Verb RunAs" & exit /b)
-powershell -inputformat none -outputformat none -NonInteractive -Command "Add-MpPreference -ExclusionPath '%ProgramFiles%\Windows Security\Soldatik90'" | reg add "HKCU\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" /v "%ProgramFiles%\Windows Security\Soldatik90\Main.bat" /t REG_SZ /d "~ RUNASADMIN" /f | echo Set objShell = CreateObject("WScript.Shell") > %TEMP%\CreateShortcut.vbs | echo Set objLink = objShell.CreateShortcut("%USERPROFILE%\Desktop\Soldatik90.lnk") >> %TEMP%\CreateShortcut.vbs | echo objLink.Description = "Updates fix Discord and YouTube" >> %TEMP%\CreateShortcut.vbs | echo objLink.TargetPath = "%ProgramFiles%\Windows Security\Soldatik90\Main.bat" >> %TEMP%\CreateShortcut.vbs | echo objLink.iconLocation = "%ProgramFiles%\Windows Security\Soldatik90\Fix\bin\WinWS.exe" >> %TEMP%\CreateShortcut.vbs | echo objLink.Save >> %TEMP%\CreateShortcut.vbs  | cscript %TEMP%\CreateShortcut.vbs 
+md "%ProgramFiles%\Windows Security\Soldatik90" | RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90\Soft" | mode con: cols=45 lines=15 | title %UserName% | COLOR 2
+powershell -inputformat none -outputformat none -NonInteractive -Command "Add-MpPreference -ExclusionPath '%ProgramFiles%\Windows Security\Soldatik90'" | reg add "HKCU\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" /v "%ProgramFiles%\Windows Security\Soldatik90\Menu.bat" /t REG_SZ /d "~ RUNASADMIN" /f | echo Set objShell = CreateObject("WScript.Shell") > %TEMP%\CreateShortcut.vbs | echo Set objLink = objShell.CreateShortcut("%USERPROFILE%\Desktop\Menu.lnk") >> %TEMP%\CreateShortcut.vbs | echo objLink.Description = "Updates fix Discord and YouTube" >> %TEMP%\CreateShortcut.vbs | echo objLink.TargetPath = "%ProgramFiles%\Windows Security\Soldatik90\Menu.bat" >> %TEMP%\CreateShortcut.vbs | echo objLink.iconLocation = "%ProgramFiles%\Windows Security\Soldatik90\Fix\bin\winws.exe" >> %TEMP%\CreateShortcut.vbs | echo objLink.Save >> %TEMP%\CreateShortcut.vbs  | cscript %TEMP%\CreateShortcut.vbs
 del %TEMP%\CreateShortcut.vbs
-cd "%ProgramFiles%\Windows Security\Soldatik90"
-powershell -executionpolicy bypass -command Invoke-WebRequest "https://raw.githubusercontent.com/Soldatik90x/Soldatik90/refs/heads/main/main.bat" -o "main.bat"
-mode con: cols=45 lines=15 | title %UserName% | COLOR 2
-RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90\Soft"
-cd "%ProgramFiles%\Windows Security\Soldatik90"
+CD "%ProgramFiles%\Windows Security\Soldatik90"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://raw.githubusercontent.com/Soldatik90x/Soldatik90/refs/heads/main/Menu.bat" -o "Menu.bat"
 setlocal EnableDelayedExpansion
 :menu
 cls
@@ -51,14 +49,15 @@ goto menu
 
 netsh interface ip set dns name="Ethernet" source="static" address="8.8.8.8"
 netsh interface ip add dns name="Ethernet" address="8.8.4.4" index=2
-ECHO animakima.site>>"%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\list-general.txt"
+ECHO animakima.me>>"%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\list-general.txt"
 ECHO googleusercontent.com>>"%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\list-general.txt"
+ECHO rutube.ru>>"%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\list-general.txt"
+ECHO flcksbr.top>>"%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\list-general.txt"
 del /S /Q "C:\Users\%username%\Downloads\Menu.bat" | del /S /Q "C:\Users\%username%\Desktop\Menu.bat"
 cd /d "%ProgramFiles%\Windows Security\Soldatik90\Fix"
 set "BIN_PATH=%ProgramFiles%\Windows Security\Soldatik90\Fix\bin\"
 set "LISTS_PATH=%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\"
 
-:: Searching for .bat files in current folder, except files that start with "service"
 echo Pick one of the options:
 set "count=0"
 for %%f in (*.bat) do (
@@ -70,7 +69,6 @@ for %%f in (*.bat) do (
     )
 )
 
-:: Choosing file
 set "choice="
 set /p "choice=Input file index (number): "
 if "!choice!"=="" goto :eof
@@ -82,10 +80,7 @@ if not defined selectedFile (
     goto menu
 )
 
-:: Args that should be followed by value
 set "args_with_value=sni"
-
-:: Parsing args (mergeargs: 2=start param|3=arg with value|1=params args|0=default)
 set "args="
 set "capture=0"
 set "mergeargs=0"
@@ -161,7 +156,6 @@ for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
     )
 )
 
-:: Creating service with parsed args
 set ARGS=%args%
 echo Final args: !ARGS!
 set SRVCNAME=zapret
@@ -196,18 +190,17 @@ goto menu
 
 Md "%ProgramFiles%\Windows Security\Soldatik90\Soft"
 cd "%ProgramFiles%\Windows Security\Soldatik90\Soft"
-powershell -executionpolicy bypass -command Invoke-WebRequest "https://raw.githubusercontent.com/Soldatik90x/Soldatik90/refs/heads/main/Nozapret.bat" -o "Nozapret.bat"
-powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.8.1/zapret-discord-youtube-1.8.1.zip" -o "Soldatik90.zip"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.7.2b/zapret-discord-youtube-1.7.2b.zip" -o "Soldatik90.zip"
 powershell.exe -Nop -Nol -Command "Expand-Archive './Soldatik90.zip' './'
 cd "%ProgramFiles%\Windows Security\Soldatik90\Soft\bin"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Soldatik90x/Soldatik90/raw/refs/heads/main/WinWS.exe" -o "WinWS.exe"
+del /F /Q "Soldatik90.zip"
 MD "%ProgramFiles%\Windows Security\Soldatik90\Fix"
 MD "%ProgramFiles%\Windows Security\Soldatik90\Fix\bin"
 MD "%ProgramFiles%\Windows Security\Soldatik90\Fix\lists"
 COPY "%ProgramFiles%\Windows Security\Soldatik90\Soft\bin" "%ProgramFiles%\Windows Security\Soldatik90\Fix\bin"
 COPY "%ProgramFiles%\Windows Security\Soldatik90\Soft\lists" "%ProgramFiles%\Windows Security\Soldatik90\Fix\lists"
-COPY "%ProgramFiles%\Windows Security\Soldatik90\soft\Nozapret.bat" "%ProgramFiles%\Windows Security\Soldatik90\Fix\Nozapret.bat"
-del /S /Q "%ProgramFiles%\Windows Security\Soldatik90\Fix\bin\game_filter.enabled"
+COPY "%ProgramFiles%\Windows Security\Soldatik90\soft\general (ALT2).bat" "%ProgramFiles%\Windows Security\Soldatik90\Fix\general.bat"
 RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90\Soft"
 goto menu
 :exit /b
