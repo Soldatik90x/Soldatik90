@@ -37,6 +37,7 @@ if "%menu_choice%"=="3" goto Deactivation
 if "%menu_choice%"=="4" goto updates
 if "%menu_choice%"=="0" exit /b
 goto menu
+
 :Downloads_WinRAR
 
 CD "%UserProfile%\Downloads"
@@ -45,7 +46,9 @@ CALL WinRAR.exe
 CD %ProgramFiles%\WinRAR
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://vk.com/doc133615773_452959686" -o "rarreg.key"
 goto menu
+
 :Activation
+
 chcp 65001 > nul
 netsh interface ip set dns name="Ethernet" source="static" address="8.8.8.8"
 netsh interface ip add dns name="Ethernet" address="8.8.4.4" index=2
@@ -166,6 +169,7 @@ pause
 goto menu
 
 :Deactivation
+
 RMDIR /S /Q "%ProgramFiles%\Windows Security\Soldatik90\Fix"
 netsh interface ip set dns name="Ethernet" source="static" address=""
 netsh interface ip add dns name="Ethernet" address="" index=2
@@ -194,6 +198,7 @@ if !errorlevel!==0 (
 net stop "WinDivert14" >nul 2>&1
 sc delete "WinDivert14" >nul 2>&1
 goto menu
+
 :updates
 
 Md "%ProgramFiles%\Windows Security\Soldatik90\Soft"
