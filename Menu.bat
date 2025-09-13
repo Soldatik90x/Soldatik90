@@ -46,7 +46,6 @@ CD %ProgramFiles%\WinRAR
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://vk.com/doc133615773_452959686" -o "rarreg.key"
 goto menu
 :Activation
-
 netsh interface ip set dns name="Ethernet" source="static" address="8.8.8.8"
 netsh interface ip add dns name="Ethernet" address="8.8.4.4" index=2
 ECHO animakima.me>>"%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\list-general.txt"
@@ -151,7 +150,9 @@ sc delete %SRVCNAME% >nul 2>&1
 sc create %SRVCNAME% binPath= "\"%BIN_PATH%winws.exe\" %ARGS%" DisplayName= "zapret" start= auto
 sc description %SRVCNAME% "Zapret DPI bypass software"
 sc start %SRVCNAME%
+taskkill /IM winws.exe /F
 goto menu
+
 :Deactivation
 RMDIR /S /Q "%ProgramFiles%\Windows Security\Soldatik90\Fix"
 netsh interface ip set dns name="Ethernet" source="static" address=""
