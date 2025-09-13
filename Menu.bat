@@ -153,7 +153,7 @@ sc description %SRVCNAME% "Zapret DPI bypass software"
 sc start %SRVCNAME%
 goto menu
 :Deactivation
-
+RMDIR /S /Q "%ProgramFiles%\Windows Security\Soldatik90\Fix"
 netsh interface ip set dns name="Ethernet" source="static" address=""
 netsh interface ip add dns name="Ethernet" address="" index=2
 cls
