@@ -57,7 +57,6 @@ del /S /Q "C:\Users\%username%\Downloads\Menu.bat" | del /S /Q "C:\Users\%userna
 cd /d "%~dp0"
 set "BIN_PATH=%~dp0bin\"
 set "LISTS_PATH=%~dp0lists\"
-
 echo Pick one of the options:
 set "count=0"
 for %%f in (*.bat) do (
@@ -68,7 +67,6 @@ for %%f in (*.bat) do (
         set "file!count!=%%f"
     )
 )
-
 set "choice="
 set /p "choice=Input file index (number): "
 if "!choice!"=="" goto :eof
@@ -79,38 +77,30 @@ if not defined selectedFile (
     pause
     goto menu
 )
-
 set "args_with_value=sni"
 set "args="
 set "capture=0"
 set "mergeargs=0"
 set QUOTE="
-
 for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
     set "line=%%a"
-
     echo !line! | findstr /i "%BIN%winws.exe" >nul
     if not errorlevel 1 (
         set "capture=1"
     )
-
     if !capture!==1 (
         if not defined args (
             set "line=!line:*%BIN%winws.exe"=!"
         )
-
         set "temp_args="
         for %%i in (!line!) do (
             set "arg=%%i"
-
             if not "!arg!"=="^" (
                 if "!arg:~0,2!" EQU "--" if not !mergeargs!==0 (
                     set "mergeargs=0"
                 )
-
                 if "!arg:~0,1!" EQU "!QUOTE!" (
                     set "arg=!arg:~1,-1!"
-
                     echo !arg! | findstr ":" >nul
                     if !errorlevel!==0 (
                         set "arg=\!QUOTE!!arg!\!QUOTE!"
@@ -126,7 +116,6 @@ for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
                 ) else if "!arg:~0,12!" EQU "%%GameFilter%%" (
                     set "arg=%GameFilter%"
                 )
-
                 if !mergeargs!==1 (
                     set "temp_args=!temp_args!,!arg!"
                 ) else if !mergeargs!==3 (
@@ -135,7 +124,6 @@ for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
                 ) else (
                     set "temp_args=!temp_args! !arg!"
                 )
-
                 if "!arg:~0,2!" EQU "--" (
                     set "mergeargs=2"
                 ) else if !mergeargs!==2 (
@@ -155,17 +143,14 @@ for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
         )
     )
 )
-
 set ARGS=%args%
 echo Final args: !ARGS!
 set SRVCNAME=zapret
-
 net stop %SRVCNAME% >nul 2>&1
 sc delete %SRVCNAME% >nul 2>&1
 sc create %SRVCNAME% binPath= "\"%BIN_PATH%winws.exe\" %ARGS%" DisplayName= "zapret" start= auto
 sc description %SRVCNAME% "Zapret DPI bypass software"
 sc start %SRVCNAME%
-Taskkill  /IM "cmd.exe" /F
 goto menu
 :Deactivation
 
@@ -173,7 +158,6 @@ netsh interface ip set dns name="Ethernet" source="static" address=""
 netsh interface ip add dns name="Ethernet" address="" index=2
 cls
 chcp 65001 > nul
-
 set SRVCNAME=zapret
 sc query "!SRVCNAME!" >nul 2>&1
 if !errorlevel!==0 (
@@ -182,16 +166,13 @@ if !errorlevel!==0 (
 ) else (
     echo Service "%SRVCNAME%" is not installed.
 )
-
 tasklist /FI "IMAGENAME eq winws.exe" | find /I "winws.exe" > nul
 if !errorlevel!==0 (
     taskkill /IM winws.exe /F > nul
 )
-
 sc query "WinDivert" >nul 2>&1
 if !errorlevel!==0 (
     net stop "WinDivert"
-
     sc query "WinDivert" >nul 2>&1
     if !errorlevel!==0 (
         sc delete "WinDivert"
@@ -199,8 +180,6 @@ if !errorlevel!==0 (
 )
 net stop "WinDivert14" >nul 2>&1
 sc delete "WinDivert14" >nul 2>&1
-
-Taskkill  /IM "cmd.exe" /F
 goto menu
 :updates
 
