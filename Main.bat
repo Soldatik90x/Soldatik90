@@ -1,6 +1,6 @@
 @echo off> nul
 if "%1"=="admin" (echo Started with admin rights) else (echo Requesting admin rights... | powershell -Command "Start-Process 'cmd.exe' -ArgumentList '/c \"\"%~f0\" admin\"' -Verb RunAs" & exit /b)
-md "%ProgramFiles%\Windows Security\Soldatik90" | RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90\Soft" | mode con: cols=45 lines=15 | title %UserName% | COLOR 2
+md "%ProgramFiles%\Windows Security\Soldatik90" | RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90\Soft" | mode con: cols=45 lines=15 | title %UserName% | COLOR 2 | cls
 powershell -inputformat none -outputformat none -NonInteractive -Command "Add-MpPreference -ExclusionPath '%ProgramFiles%\Windows Security\Soldatik90'" | reg add "HKCU\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" /v "%ProgramFiles%\Windows Security\Soldatik90\Main.bat" /t REG_SZ /d "~ RUNASADMIN" /f | echo Set objShell = CreateObject("WScript.Shell") > %TEMP%\CreateShortcut.vbs | echo Set objLink = objShell.CreateShortcut("%USERPROFILE%\Desktop\Main.lnk") >> %TEMP%\CreateShortcut.vbs | echo objLink.Description = "Updates fix Discord and YouTube" >> %TEMP%\CreateShortcut.vbs | echo objLink.TargetPath = "%ProgramFiles%\Windows Security\Soldatik90\Main.bat" >> %TEMP%\CreateShortcut.vbs | echo objLink.iconLocation = "%ProgramFiles%\Windows Security\Soldatik90\Fix\bin\winws.exe" >> %TEMP%\CreateShortcut.vbs | echo objLink.Save >> %TEMP%\CreateShortcut.vbs  | cscript %TEMP%\CreateShortcut.vbs
 del %TEMP%\CreateShortcut.vbs
 CD "%ProgramFiles%\Windows Security\Soldatik90"
@@ -141,7 +141,6 @@ for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
                 )
             )
         )
-
         if not "!temp_args!"=="" (
             set "args=!args! !temp_args!"
         )
@@ -221,5 +220,3 @@ pause >nul
   pushd "%~dp0"& <nul>"%~1_" set/p="%%i%%i  "& findstr/a:%c% . "%~1_*"
   (if "%~2" neq "/" echo.)& del "%~1_"& popd& set c=& exit/b
   )
-
-
