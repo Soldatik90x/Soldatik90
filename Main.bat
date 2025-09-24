@@ -10,6 +10,7 @@ setlocal EnableDelayedExpansion
 cls
 call :ipset_switch_status
 call :game_switch_status
+del "%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\ipset-all.txt.backup"
 set "menu_choice=null"
 echo.*********************************************
 call :color 6
@@ -220,4 +221,5 @@ pause >nul
   pushd "%~dp0"& <nul>"%~1_" set/p="%%i%%i  "& findstr/a:%c% . "%~1_*"
   (if "%~2" neq "/" echo.)& del "%~1_"& popd& set c=& exit/b
   )
+
 
