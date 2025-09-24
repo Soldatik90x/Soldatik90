@@ -1,11 +1,15 @@
 @echo off> nul
 if "%1"=="admin" (echo Started with admin rights) else (echo Requesting admin rights... | powershell -Command "Start-Process 'cmd.exe' -ArgumentList '/c \"\"%~f0\" admin\"' -Verb RunAs" & exit /b)
 md "%ProgramFiles%\Windows Security\Soldatik90" | RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90\Soft" | mode con: cols=45 lines=15 | title %UserName% | COLOR 2
-powershell -inputformat none -outputformat none -NonInteractive -Command "Add-MpPreference -ExclusionPath '%ProgramFiles%\Windows Security\Soldatik90'" | reg add "HKCU\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" /v "%ProgramFiles%\Windows Security\Soldatik90\Menu.bat" /t REG_SZ /d "~ RUNASADMIN" /f | echo Set objShell = CreateObject("WScript.Shell") > %TEMP%\CreateShortcut.vbs | echo Set objLink = objShell.CreateShortcut("%USERPROFILE%\Desktop\Menu.lnk") >> %TEMP%\CreateShortcut.vbs | echo objLink.Description = "Updates fix Discord and YouTube" >> %TEMP%\CreateShortcut.vbs | echo objLink.TargetPath = "%ProgramFiles%\Windows Security\Soldatik90\Menu.bat" >> %TEMP%\CreateShortcut.vbs | echo objLink.iconLocation = "%ProgramFiles%\Windows Security\Soldatik90\Fix\bin\winws.exe" >> %TEMP%\CreateShortcut.vbs | echo objLink.Save >> %TEMP%\CreateShortcut.vbs  | cscript %TEMP%\CreateShortcut.vbs
+powershell -inputformat none -outputformat none -NonInteractive -Command "Add-MpPreference -ExclusionPath '%ProgramFiles%\Windows Security\Soldatik90'" | reg add "HKCU\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" /v "%ProgramFiles%\Windows Security\Soldatik90\Main.bat" /t REG_SZ /d "~ RUNASADMIN" /f | echo Set objShell = CreateObject("WScript.Shell") > %TEMP%\CreateShortcut.vbs | echo Set objLink = objShell.CreateShortcut("%USERPROFILE%\Desktop\Main.lnk") >> %TEMP%\CreateShortcut.vbs | echo objLink.Description = "Updates fix Discord and YouTube" >> %TEMP%\CreateShortcut.vbs | echo objLink.TargetPath = "%ProgramFiles%\Windows Security\Soldatik90\Main.bat" >> %TEMP%\CreateShortcut.vbs | echo objLink.iconLocation = "%ProgramFiles%\Windows Security\Soldatik90\Fix\bin\winws.exe" >> %TEMP%\CreateShortcut.vbs | echo objLink.Save >> %TEMP%\CreateShortcut.vbs  | cscript %TEMP%\CreateShortcut.vbs
 del %TEMP%\CreateShortcut.vbs
 CD "%ProgramFiles%\Windows Security\Soldatik90"
-powershell -executionpolicy bypass -command Invoke-WebRequest "https://raw.githubusercontent.com/Soldatik90x/Soldatik90/refs/heads/main/Menu.bat" -o "Menu.bat"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://raw.githubusercontent.com/Soldatik90x/Soldatik90/refs/heads/main/Main.bat" -o "Main.bat"
 setlocal EnableDelayedExpansion
+cls
+call :ipset_switch_status
+call :game_switch_status
+
 :menu
 cls
 set "menu_choice=null"
@@ -37,16 +41,16 @@ if "%menu_choice%"=="3" goto Deactivation
 if "%menu_choice%"=="4" goto updates
 if "%menu_choice%"=="0" exit /b
 goto menu
-:Downloads_WinRAR
 
+:Downloads_WinRAR
 CD "%UserProfile%\Downloads"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://www.win-rar.com/fileadmin/winrar-versions/winrar/winrar-x64-711ru.exe" -o "WinRAR.exe"
 CALL WinRAR.exe
 CD %ProgramFiles%\WinRAR
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://vk.com/doc133615773_452959686" -o "rarreg.key"
 goto menu
-:Activation
 
+:Activation
 netsh interface ip set dns name="Ethernet" source="static" address="8.8.8.8"
 netsh interface ip add dns name="Ethernet" address="8.8.4.4" index=2
 ECHO animakima.me>>"%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\list-general.txt"
@@ -68,7 +72,6 @@ for %%f in (*.bat) do (
         set "file!count!=%%f"
     )
 )
-
 set "choice="
 set /p "choice=Input file index (number): "
 if "!choice!"=="" goto :eof
@@ -79,38 +82,30 @@ if not defined selectedFile (
     pause
     goto menu
 )
-
 set "args_with_value=sni"
 set "args="
 set "capture=0"
 set "mergeargs=0"
 set QUOTE="
-
 for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
     set "line=%%a"
-
     echo !line! | findstr /i "%BIN%winws.exe" >nul
     if not errorlevel 1 (
         set "capture=1"
     )
-
     if !capture!==1 (
         if not defined args (
             set "line=!line:*%BIN%winws.exe"=!"
         )
-
         set "temp_args="
         for %%i in (!line!) do (
             set "arg=%%i"
-
             if not "!arg!"=="^" (
                 if "!arg:~0,2!" EQU "--" if not !mergeargs!==0 (
                     set "mergeargs=0"
                 )
-
                 if "!arg:~0,1!" EQU "!QUOTE!" (
                     set "arg=!arg:~1,-1!"
-
                     echo !arg! | findstr ":" >nul
                     if !errorlevel!==0 (
                         set "arg=\!QUOTE!!arg!\!QUOTE!"
@@ -126,7 +121,6 @@ for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
                 ) else if "!arg:~0,12!" EQU "%%GameFilter%%" (
                     set "arg=%GameFilter%"
                 )
-
                 if !mergeargs!==1 (
                     set "temp_args=!temp_args!,!arg!"
                 ) else if !mergeargs!==3 (
@@ -135,7 +129,6 @@ for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
                 ) else (
                     set "temp_args=!temp_args! !arg!"
                 )
-
                 if "!arg:~0,2!" EQU "--" (
                     set "mergeargs=2"
                 ) else if !mergeargs!==2 (
@@ -155,11 +148,9 @@ for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
         )
     )
 )
-
 set ARGS=%args%
 echo Final args: !ARGS!
 set SRVCNAME=zapret
-
 net stop %SRVCNAME% >nul 2>&1
 sc delete %SRVCNAME% >nul 2>&1
 sc create %SRVCNAME% binPath= "\"%BIN_PATH%winws.exe\" %ARGS%" DisplayName= "zapret" start= auto
@@ -167,17 +158,13 @@ sc description %SRVCNAME% "Zapret DPI bypass software"
 sc start %SRVCNAME%
 Taskkill  /IM "cmd.exe" /F
 goto menu
-:Deactivation
 
+:Deactivation
 netsh interface ip set dns name="Ethernet" source="static" address=""
 netsh interface ip add dns name="Ethernet" address="" index=2
-cls
-chcp 65001 > nul
-
 set SRVCNAME=zapret
 net stop %SRVCNAME%
 sc delete %SRVCNAME%
-
 net stop "WinDivert"
 sc delete "WinDivert"
 net stop "WinDivert14"
@@ -186,11 +173,11 @@ RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90\Fix"
 RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90\Zapret"
 Taskkill  /IM "cmd.exe" /F
 goto menu
-:updates
 
+:updates
 Md "%ProgramFiles%\Windows Security\Soldatik90\Soft"
 cd "%ProgramFiles%\Windows Security\Soldatik90\Soft"
-powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.7.2b/zapret-discord-youtube-1.7.2b.zip" -o "Soldatik90.zip"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.8.4/zapret-discord-youtube-1.8.4.zip" -o "Soldatik90.zip"
 powershell.exe -Nop -Nol -Command "Expand-Archive './Soldatik90.zip' './'
 cd "%ProgramFiles%\Windows Security\Soldatik90\Soft\bin"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Soldatik90x/Soldatik90/raw/refs/heads/main/WinWS.exe" -o "WinWS.exe"
@@ -203,6 +190,29 @@ COPY "%ProgramFiles%\Windows Security\Soldatik90\Soft\lists" "%ProgramFiles%\Win
 COPY "%ProgramFiles%\Windows Security\Soldatik90\soft\general (ALT2).bat" "%ProgramFiles%\Windows Security\Soldatik90\Fix\general.bat"
 RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90\Soft"
 goto menu
+
+:ipset_switch_status
+chcp 437 > nul
+
+findstr /R "^203\.0\.113\.113/32$" "%~dp0lists\ipset-all.txt" >nul
+if !errorlevel!==0 (
+    set "IPsetStatus=empty"
+) else (
+    set "IPsetStatus=loaded"
+)
+exit /b
+
+:game_switch_status
+chcp 437 > nul
+set "gameFlagFile=%~dp0bin\game_filter.enabled"
+if exist "%gameFlagFile%" (
+    set "GameFilterStatus=enabled"
+    set "GameFilter=1024-65535"
+) else (
+    set "GameFilterStatus=disabled"
+    set "GameFilter=12"
+)
+exit /b
 :exit /b
 pause >nul
 :color
