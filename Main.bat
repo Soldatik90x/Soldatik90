@@ -24,10 +24,7 @@ call :Echo "2 - Activation"
 echo.*********************************************
 call :color 4 
 call :Echo "3 - Deactivation"
-Echo.*********************************************  
-call :color 5
-call :Echo "4 - Updates fix Discord and YouTube "
-Echo.********************************************* 
+Echo.*********************************************   
 call :color 5
 call :Echo "0 - exit "
 Echo.*********************************************
@@ -217,3 +214,4 @@ pause >nul
   pushd "%~dp0"& <nul>"%~1_" set/p="%%i%%i  "& findstr/a:%c% . "%~1_*"
   (if "%~2" neq "/" echo.)& del "%~1_"& popd& set c=& exit/b
   )
+
