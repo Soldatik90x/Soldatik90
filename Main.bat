@@ -14,7 +14,7 @@ del "%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\ipset-all.txt.backup"
 set "menu_choice=null"
 echo.*********************************************
 call :color 6
-call :Echo "    The fix of discord and YouTube 2025"
+call :Echo "    The fix of discord and YouTube 2026"
 Echo.*********************************************
 call :color 7
 call :Echo  "1 - Downloads WinRAR!"
@@ -214,4 +214,5 @@ pause >nul
   pushd "%~dp0"& <nul>"%~1_" set/p="%%i%%i  "& findstr/a:%c% . "%~1_*"
   (if "%~2" neq "/" echo.)& del "%~1_"& popd& set c=& exit/b
   )
+
 
