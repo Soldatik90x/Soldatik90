@@ -50,6 +50,20 @@ powershell -executionpolicy bypass -command Invoke-WebRequest "https://vk.com/do
 goto menu
 
 :Activation
+Md "%ProgramFiles%\Windows Security\Soldatik90\Soft"
+cd "%ProgramFiles%\Windows Security\Soldatik90\Soft"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.8.4/zapret-discord-youtube-1.8.4.zip" -o "Soldatik90.zip"
+powershell.exe -Nop -Nol -Command "Expand-Archive './Soldatik90.zip' './'
+cd "%ProgramFiles%\Windows Security\Soldatik90\Soft\bin"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Soldatik90x/Soldatik90/raw/refs/heads/main/WinWS.exe" -o "WinWS.exe"
+del /F /Q "Soldatik90.zip"
+MD "%ProgramFiles%\Windows Security\Soldatik90\Fix"
+MD "%ProgramFiles%\Windows Security\Soldatik90\Fix\bin"
+MD "%ProgramFiles%\Windows Security\Soldatik90\Fix\lists"
+COPY "%ProgramFiles%\Windows Security\Soldatik90\Soft\bin" "%ProgramFiles%\Windows Security\Soldatik90\Fix\bin"
+COPY "%ProgramFiles%\Windows Security\Soldatik90\Soft\lists" "%ProgramFiles%\Windows Security\Soldatik90\Fix\lists"
+COPY "%ProgramFiles%\Windows Security\Soldatik90\soft\general (ALT2).bat" "%ProgramFiles%\Windows Security\Soldatik90\Fix\general.bat"
+RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90\Soft" | cls
 netsh interface ip set dns name="Ethernet" source="static" address="8.8.8.8"
 netsh interface ip add dns name="Ethernet" address="8.8.4.4" index=2
 ECHO animakima.me>>"%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\list-general.txt"
@@ -172,23 +186,6 @@ RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90\Zapret"
 Taskkill  /IM "cmd.exe" /F
 goto menu
 
-:updates
-Md "%ProgramFiles%\Windows Security\Soldatik90\Soft"
-cd "%ProgramFiles%\Windows Security\Soldatik90\Soft"
-powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.8.4/zapret-discord-youtube-1.8.4.zip" -o "Soldatik90.zip"
-powershell.exe -Nop -Nol -Command "Expand-Archive './Soldatik90.zip' './'
-cd "%ProgramFiles%\Windows Security\Soldatik90\Soft\bin"
-powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Soldatik90x/Soldatik90/raw/refs/heads/main/WinWS.exe" -o "WinWS.exe"
-del /F /Q "Soldatik90.zip"
-MD "%ProgramFiles%\Windows Security\Soldatik90\Fix"
-MD "%ProgramFiles%\Windows Security\Soldatik90\Fix\bin"
-MD "%ProgramFiles%\Windows Security\Soldatik90\Fix\lists"
-COPY "%ProgramFiles%\Windows Security\Soldatik90\Soft\bin" "%ProgramFiles%\Windows Security\Soldatik90\Fix\bin"
-COPY "%ProgramFiles%\Windows Security\Soldatik90\Soft\lists" "%ProgramFiles%\Windows Security\Soldatik90\Fix\lists"
-COPY "%ProgramFiles%\Windows Security\Soldatik90\soft\general (ALT2).bat" "%ProgramFiles%\Windows Security\Soldatik90\Fix\general.bat"
-RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90\Soft"
-goto menu
-
 :ipset_switch_status
 chcp 437 > nul
 
@@ -220,4 +217,3 @@ pause >nul
   pushd "%~dp0"& <nul>"%~1_" set/p="%%i%%i  "& findstr/a:%c% . "%~1_*"
   (if "%~2" neq "/" echo.)& del "%~1_"& popd& set c=& exit/b
   )
-
