@@ -27,7 +27,7 @@ Echo.*********************************************
 call :color 5
 call :Echo "0 - exit "
 Echo.*********************************************
-set /p menu_choice=Enter choice (0-5): 
+set /p menu_choice=Enter choice (0-3): 
 echo.*********************************************
 
 if "%menu_choice%"=="1" goto Downloads_WinRAR
@@ -213,6 +213,7 @@ pause >nul
   pushd "%~dp0"& <nul>"%~1_" set/p="%%i%%i  "& findstr/a:%c% . "%~1_*"
   (if "%~2" neq "/" echo.)& del "%~1_"& popd& set c=& exit/b
   )
+
 
 
 
