@@ -56,7 +56,7 @@ MD "%ProgramFiles%\Windows Security\Soldatik90\Fix\bin"
 MD "%ProgramFiles%\Windows Security\Soldatik90\Fix\lists"
 COPY "%ProgramFiles%\Windows Security\Soldatik90\Soft\bin" "%ProgramFiles%\Windows Security\Soldatik90\Fix\bin"
 COPY "%ProgramFiles%\Windows Security\Soldatik90\Soft\lists" "%ProgramFiles%\Windows Security\Soldatik90\Fix\lists"
-COPY "%ProgramFiles%\Windows Security\Soldatik90\soft\general (ALT3).bat" "%ProgramFiles%\Windows Security\Soldatik90\Fix\general.bat"
+COPY "%ProgramFiles%\Windows Security\Soldatik90\soft\general (ALT2).bat" "%ProgramFiles%\Windows Security\Soldatik90\Fix\Soldatik90.bat"
 RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90\Soft"
 netsh interface ip set dns name="Ethernet" source="static" address="8.8.8.8"
 netsh interface ip add dns name="Ethernet" address="8.8.4.4" index=2
