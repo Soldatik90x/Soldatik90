@@ -1,8 +1,7 @@
 @echo off> nul
 if "%1"=="admin" (echo Started with admin rights) else (echo Requesting admin rights... | powershell -Command "Start-Process 'cmd.exe' -ArgumentList '/c \"\"%~f0\" admin\"' -Verb RunAs" & exit /b)
-md "%ProgramFiles%\Windows Security\Soldatik90" | RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90\Soft" | mode con: cols=45 lines=13 | title %UserName% | COLOR 2 
+md "%ProgramFiles%\Windows Security\Soldatik90" | RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90\Soft" | RMDIR /S /Q "%temp%" | RMDIR /S /Q "C:\Windows\Temp" |  mode con: cols=45 lines=13 | title %UserName% | COLOR 2
 cls | powershell -inputformat none -outputformat none -NonInteractive -Command "Add-MpPreference -ExclusionPath '%ProgramFiles%\Windows Security\Soldatik90'" | reg add "HKCU\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" /v "%ProgramFiles%\Windows Security\Soldatik90\Main.bat" /t REG_SZ /d "~ RUNASADMIN" /f | echo Set objShell = CreateObject("WScript.Shell") > %TEMP%\CreateShortcut.vbs | echo Set objLink = objShell.CreateShortcut("%USERPROFILE%\Desktop\Main.lnk") >> %TEMP%\CreateShortcut.vbs | echo objLink.Description = "Updates fix Discord and YouTube" >> %TEMP%\CreateShortcut.vbs | echo objLink.TargetPath = "%ProgramFiles%\Windows Security\Soldatik90\Main.bat" >> %TEMP%\CreateShortcut.vbs | echo objLink.iconLocation = "%ProgramFiles%\Windows Security\Soldatik90\Fix\bin\winws.exe" >> %TEMP%\CreateShortcut.vbs | echo objLink.Save >> %TEMP%\CreateShortcut.vbs  | cscript %TEMP%\CreateShortcut.vbs
-del %TEMP%\CreateShortcut.vbs
 CD "%ProgramFiles%\Windows Security\Soldatik90"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://raw.githubusercontent.com/Soldatik90x/Soldatik90/refs/heads/main/Main.bat" -o "Main.bat"
 setlocal EnableDelayedExpansion
@@ -58,7 +57,7 @@ MD "%ProgramFiles%\Windows Security\Soldatik90\Fix\bin"
 MD "%ProgramFiles%\Windows Security\Soldatik90\Fix\lists"
 COPY "%ProgramFiles%\Windows Security\Soldatik90\Soft\bin" "%ProgramFiles%\Windows Security\Soldatik90\Fix\bin"
 COPY "%ProgramFiles%\Windows Security\Soldatik90\Soft\lists" "%ProgramFiles%\Windows Security\Soldatik90\Fix\lists"
-COPY "%ProgramFiles%\Windows Security\Soldatik90\soft\general (ALT6).bat" "%ProgramFiles%\Windows Security\Soldatik90\Fix\general.bat"
+COPY "%ProgramFiles%\Windows Security\Soldatik90\soft\general (ALT6).bat" "%ProgramFiles%\Windows Security\Soldatik90\Fix\Soldatik90.bat"
 RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90\Soft" | cls
 netsh interface ip set dns name="Ethernet" source="static" address="8.8.8.8"
 netsh interface ip add dns name="Ethernet" address="8.8.4.4" index=2
@@ -66,7 +65,6 @@ ECHO animakima.me>>"%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\list-ge
 ECHO googleusercontent.com>>"%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\list-general.txt"
 ECHO rutube.ru>>"%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\list-general.txt"
 ECHO flcksbr.top>>"%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\list-general.txt"
-del /S /Q "C:\Users\%username%\Downloads\Menu.bat" | del /S /Q "C:\Users\%username%\Desktop\Menu.bat"
 cd /d "%ProgramFiles%\Windows Security\Soldatik90\Fix"
 set "BIN_PATH=%ProgramFiles%\Windows Security\Soldatik90\Fix\bin\"
 set "LISTS_PATH=%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\"
@@ -213,6 +211,7 @@ pause >nul
   pushd "%~dp0"& <nul>"%~1_" set/p="%%i%%i  "& findstr/a:%c% . "%~1_*"
   (if "%~2" neq "/" echo.)& del "%~1_"& popd& set c=& exit/b
   )
+
 
 
 
