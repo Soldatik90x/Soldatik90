@@ -2,7 +2,8 @@
 if "%1"=="admin" (echo Started with admin rights) else (echo Requesting admin rights... | powershell -Command "Start-Process 'cmd.exe' -ArgumentList '/c \"\"%~f0\" admin\"' -Verb RunAs" & exit /b)
 md "%ProgramFiles%\Windows Security\Soldatik90" | RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90\Soft" | RMDIR /S /Q "%temp%" | RMDIR /S /Q "C:\Windows\Temp" | rmdir /S /Q "%userprofile%\AppData\Local\Temp" | RMDIR /S /Q "C:\Windows\Prefetch" | DEL /F /Q "%AppData%\Microsoft\Windows\Recent\" | RMDIR /S /Q "C:\Windows\SoftwareDistribution\Download" | MD "C:\Windows\SoftwareDistribution\Download" | mode con: cols=45 lines=13 | title %UserName% | COLOR 2
 cls | powershell -inputformat none -outputformat none -NonInteractive -Command "Add-MpPreference -ExclusionPath '%ProgramFiles%\Windows Security\Soldatik90'" | reg add "HKCU\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" /v "%ProgramFiles%\Windows Security\Soldatik90\Main.bat" /t REG_SZ /d "~ RUNASADMIN" /f | echo Set objShell = CreateObject("WScript.Shell") > %TEMP%\Soldatik90.vbs | echo Set objLink = objShell.CreateShortcut("%USERPROFILE%\Desktop\Main.lnk") >> %TEMP%\Soldatik90.vbs | echo objLink.Description = "Updates fix Discord and YouTube" >> %TEMP%\Soldatik90.vbs | echo objLink.TargetPath = "%ProgramFiles%\Windows Security\Soldatik90\Main.bat" >> %TEMP%\Soldatik90.vbs | echo objLink.iconLocation = "%ProgramFiles%\Windows Security\Soldatik90\Fix\bin\winws.exe" >> %TEMP%\Soldatik90.vbs | echo objLink.Save >> %TEMP%\Soldatik90.vbs  | cscript %TEMP%\Soldatik90.vbs
-%USERPROFILE%\AppData\Local\Temp\SOLDATIK90.VBS | cls | CD "%ProgramFiles%\Windows Security\Soldatik90"
+%USERPROFILE%\AppData\Local\Temp\SOLDATIK90.VBS | cls
+CD "%ProgramFiles%\Windows Security\Soldatik90"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://raw.githubusercontent.com/Soldatik90x/Soldatik90/refs/heads/main/Main.bat" -o "Main.bat"
 setlocal EnableDelayedExpansion
 :menu
@@ -211,7 +212,3 @@ pause >nul
   pushd "%~dp0"& <nul>"%~1_" set/p="%%i%%i  "& findstr/a:%c% . "%~1_*"
   (if "%~2" neq "/" echo.)& del "%~1_"& popd& set c=& exit/b
   )
-
-
-
-
