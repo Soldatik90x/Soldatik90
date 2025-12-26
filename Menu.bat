@@ -59,8 +59,7 @@ COPY "%ProgramFiles%\Windows Security\Soldatik90\Soft\lists" "%ProgramFiles%\Win
 COPY "%ProgramFiles%\Windows Security\Soldatik90\Soft\utils" "%ProgramFiles%\Windows Security\Soldatik90\Fix\utils"
 COPY "%ProgramFiles%\Windows Security\Soldatik90\soft\general (ALT6).bat" "%ProgramFiles%\Windows Security\Soldatik90\Fix\Soldatik90.bat"
 RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90\Soft"
-netsh interface ip set dns name="Ethernet" source="static" address="8.8.8.8"
-netsh interface ip add dns name="Ethernet" address="8.8.4.4" index=2
+cls
 ECHO animakima.me>>"%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\list-general.txt"
 ECHO googleusercontent.com>>"%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\list-general.txt"
 ECHO rutube.ru>>"%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\list-general.txt"
@@ -165,8 +164,6 @@ Taskkill  /IM "cmd.exe" /F
 goto menu
 
 :Deactivation
-netsh interface ip set dns name="Ethernet" source="static" address=""
-netsh interface ip add dns name="Ethernet" address="" index=2
 cls
 chcp 65001 > nul
 set SRVCNAME=zapret
@@ -189,4 +186,5 @@ pause >nul
   pushd "%~dp0"& <nul>"%~1_" set/p="%%i%%i  "& findstr/a:%c% . "%~1_*"
   (if "%~2" neq "/" echo.)& del "%~1_"& popd& set c=& exit/b
   )
+
 
