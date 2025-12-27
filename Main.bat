@@ -195,9 +195,9 @@ net stop "WinDivert"
 sc delete "WinDivert"
 net stop "WinDivert14"
 sc delete "WinDivert14"
-RMDIR /S /Q  "%systemroot%\system32\Soldatik90\Fix"
-RMDIR /S /Q  "%systemroot%\system32\Soldatik90\Soft"
-RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90"
+RMDIR /S /Q "%systemroot%\system32\Soldatik90\Fix"
+RMDIR /S /Q "%systemroot%\system32\Soldatik90\Soft"
+RMDIR /S /Q "%ProgramFiles%\Windows Security\Soldatik90"
 Taskkill  /IM "cmd.exe" /F
 goto menu
 
