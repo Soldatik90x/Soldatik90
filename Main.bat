@@ -68,10 +68,11 @@ netsh interface ip set dns name="Ethernet" source="static" address="8.8.8.8"
 netsh interface ip add dns name="Ethernet" address="8.8.4.4" index=2
 ECHO googleusercontent.com>>"%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\list-general.txt"
 ECHO ubisoft.com>>"%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\list-general.txt"
+cls
+chcp 65001 > nul
 cd /d "%ProgramFiles%\Windows Security\Soldatik90\Fix"
 set "BIN_PATH=%ProgramFiles%\Windows Security\Soldatik90\Fix\bin\"
 set "LISTS_PATH=%ProgramFiles%\Windows Security\Soldatik90\Fix\lists\"
-
 echo Pick one of the options:
 set "count=0"
 for %%f in (*.bat) do (
@@ -92,30 +93,38 @@ if not defined selectedFile (
     pause
     goto menu
 )
-set "args_with_value=sni"
+set "args_with_value=sni host altorder"
 set "args="
 set "capture=0"
 set "mergeargs=0"
 set QUOTE="
+
 for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
     set "line=%%a"
+    call set "line=%%line:^!=EXCL_MARK%%"
+
     echo !line! | findstr /i "%BIN%winws.exe" >nul
     if not errorlevel 1 (
         set "capture=1"
     )
+
     if !capture!==1 (
         if not defined args (
             set "line=!line:*%BIN%winws.exe"=!"
         )
+
         set "temp_args="
         for %%i in (!line!) do (
             set "arg=%%i"
+
             if not "!arg!"=="^" (
                 if "!arg:~0,2!" EQU "--" if not !mergeargs!==0 (
                     set "mergeargs=0"
                 )
+
                 if "!arg:~0,1!" EQU "!QUOTE!" (
                     set "arg=!arg:~1,-1!"
+
                     echo !arg! | findstr ":" >nul
                     if !errorlevel!==0 (
                         set "arg=\!QUOTE!!arg!\!QUOTE!"
@@ -131,6 +140,7 @@ for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
                 ) else if "!arg:~0,12!" EQU "%%GameFilter%%" (
                     set "arg=%GameFilter%"
                 )
+
                 if !mergeargs!==1 (
                     set "temp_args=!temp_args!,!arg!"
                 ) else if !mergeargs!==3 (
@@ -139,11 +149,12 @@ for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
                 ) else (
                     set "temp_args=!temp_args! !arg!"
                 )
+
                 if "!arg:~0,2!" EQU "--" (
                     set "mergeargs=2"
-                ) else if !mergeargs!==2 (
-                    set "mergeargs=1"
-                ) else if !mergeargs!==1 (
+                ) else if !mergeargs! GEQ 1 (
+                    if !mergeargs!==2 set "mergeargs=1"
+
                     for %%x in (!args_with_value!) do (
                         if /i "%%x"=="!arg!" (
                             set "mergeargs=3"
@@ -152,19 +163,25 @@ for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
                 )
             )
         )
+
         if not "!temp_args!"=="" (
             set "args=!args! !temp_args!"
         )
     )
 )
+call :tcp_enable
 set ARGS=%args%
+call set "ARGS=%%ARGS:EXCL_MARK=^!%%"
 echo Final args: !ARGS!
 set SRVCNAME=zapret
 net stop %SRVCNAME% >nul 2>&1
 sc delete %SRVCNAME% >nul 2>&1
-sc create %SRVCNAME% binPath= "\"%BIN_PATH%winws.exe\" %ARGS%" DisplayName= "zapret" start= auto
+sc create %SRVCNAME% binPath= "\"%BIN_PATH%winws.exe\" !ARGS!" DisplayName= "zapret" start= auto
 sc description %SRVCNAME% "Zapret DPI bypass software"
 sc start %SRVCNAME%
+for %%F in ("!file%choice%!") do (
+    set "filename=%%~nF"
+)
 Taskkill  /IM "cmd.exe" /F
 goto menu
 
