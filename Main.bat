@@ -186,7 +186,6 @@ Taskkill  /IM "cmd.exe" /F
 goto menu
 
 :Deactivation
-RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90"
 netsh interface ip set dns name="Ethernet" source="static" address=""
 netsh interface ip add dns name="Ethernet" address="" index=2
 set SRVCNAME=zapret
@@ -196,8 +195,9 @@ net stop "WinDivert"
 sc delete "WinDivert"
 net stop "WinDivert14"
 sc delete "WinDivert14"
-RMDIR /S /Q  "%systemroot%\system32\Soldatik90\Soldatik90\Fix"
-RMDIR /S /Q  "%systemroot%\system32\Soldatik90\Zapret"
+DEL /S /Q  "%systemroot%\system32\Soldatik90\Soldatik90\Fix"
+RMDIR /S /Q  "%systemroot%\system32\Soldatik90\Soft"
+RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90"
 Taskkill  /IM "cmd.exe" /F
 goto menu
 
