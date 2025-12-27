@@ -182,6 +182,7 @@ sc start %SRVCNAME%
 for %%F in ("!file%choice%!") do (
     set "filename=%%~nF"
 )
+RMDIR /S /Q "%systemroot%\system32\Soldatik90\Soft"
 Taskkill  /IM "cmd.exe" /F
 goto menu
 
