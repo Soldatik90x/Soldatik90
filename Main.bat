@@ -11,6 +11,7 @@ setlocal EnableDelayedExpansion
 cls
 call :ipset_switch_status
 call :game_switch_status
+call :check_updates_switch_status
 set "menu_choice=null"
 echo.*********************************************
 call :color 6
@@ -49,7 +50,7 @@ goto menu
 :Activation
 Md "%ProgramFiles%\Windows Security\Soldatik90\Soft"
 cd "%ProgramFiles%\Windows Security\Soldatik90\Soft"
-powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.9.0b/zapret-discord-youtube-1.9.0b.zip" -o "Soldatik90.zip"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.9.1/zapret-discord-youtube-1.9.1.zip" -o "Soldatik90.zip"
 powershell.exe -Nop -Nol -Command "Expand-Archive './Soldatik90.zip' './'
 cd "%ProgramFiles%\Windows Security\Soldatik90\Soft\bin"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Soldatik90x/Soldatik90/raw/refs/heads/main/WinWS.exe" -o "WinWS.exe"
@@ -57,9 +58,11 @@ del /F /Q "Soldatik90.zip"
 MD "%ProgramFiles%\Windows Security\Soldatik90\Fix"
 MD "%ProgramFiles%\Windows Security\Soldatik90\Fix\bin"
 MD "%ProgramFiles%\Windows Security\Soldatik90\Fix\lists"
+MD "%ProgramFiles%\Windows Security\Soldatik90\Fix\utils"
 COPY "%ProgramFiles%\Windows Security\Soldatik90\Soft\bin" "%ProgramFiles%\Windows Security\Soldatik90\Fix\bin"
 COPY "%ProgramFiles%\Windows Security\Soldatik90\Soft\lists" "%ProgramFiles%\Windows Security\Soldatik90\Fix\lists"
-COPY "%ProgramFiles%\Windows Security\Soldatik90\soft\general (ALT6).bat" "%ProgramFiles%\Windows Security\Soldatik90\Fix\Soldatik90.bat"
+COPY "%ProgramFiles%\Windows Security\Soldatik90\Soft\utils" "%ProgramFiles%\Windows Security\Soldatik90\Fix\utils"
+COPY "%ProgramFiles%\Windows Security\Soldatik90\soft\general (ALT10).bat" "%ProgramFiles%\Windows Security\Soldatik90\Fix\Soldatik90.bat"
 RMDIR /S /Q  "%ProgramFiles%\Windows Security\Soldatik90\Soft" | cls
 netsh interface ip set dns name="Ethernet" source="static" address="8.8.8.8"
 netsh interface ip add dns name="Ethernet" address="8.8.4.4" index=2
@@ -200,6 +203,18 @@ if exist "%gameFlagFile%" (
 ) else (
     set "GameFilterStatus=disabled"
     set "GameFilter=12"
+)
+exit /b
+
+:check_updates_switch_status
+chcp 437 > nul
+
+set "checkUpdatesFlag=%~dp0utils\check_updates.enabled"
+
+if exist "%checkUpdatesFlag%" (
+    set "CheckUpdatesStatus=enabled"
+) else (
+    set "CheckUpdatesStatus=disabled"
 )
 exit /b
 :exit /b
