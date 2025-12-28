@@ -219,7 +219,6 @@ rmdir /S /Q %userprofile%\AppData\Roaming\discord\GPUCache
 ipconfig /release
 ipconfig /renew
 ipconfig /flushdns
-%userprofile%\AppData\Local\Discord\Update.exe --processStart Discord.exe
 exit /b
 goto menu
 
