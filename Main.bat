@@ -208,7 +208,6 @@ sc delete "WinDivert14"
 RMDIR /S /Q "%systemroot%\system32\Soldatik90\Fix"
 RMDIR /S /Q "%systemroot%\system32\Soldatik90\Soft"
 RMDIR /S /Q "%ProgramFiles%\Windows Security\Soldatik90"
-Taskkill  /IM "cmd.exe" /F
 goto menu
 
 :DNS
@@ -219,7 +218,6 @@ rmdir /S /Q %userprofile%\AppData\Roaming\discord\GPUCache
 ipconfig /release
 ipconfig /renew
 ipconfig /flushdns
-exit /b
 goto menu
 
 :test_service
@@ -287,4 +285,3 @@ pause >nul
   pushd "%~dp0"& <nul>"%~1_" set/p="%%i%%i  "& findstr/a:%c% . "%~1_*"
   (if "%~2" neq "/" echo.)& del "%~1_"& popd& set c=& exit/b
   )
-
