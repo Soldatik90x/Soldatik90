@@ -12,6 +12,7 @@ cls
 call :ipset_switch_status
 call :game_switch_status
 call :check_updates_switch_status
+call :tcp_enable
 set "menu_choice=null"
 echo.*********************************************
 call :color 6
@@ -201,6 +202,10 @@ RMDIR /S /Q "%systemroot%\system32\Soldatik90\Soft"
 RMDIR /S /Q "%ProgramFiles%\Windows Security\Soldatik90"
 Taskkill  /IM "cmd.exe" /F
 goto menu
+
+:tcp_enable
+netsh interface tcp show global | findstr /i "timestamps" | findstr /i "enabled" > nul || netsh interface tcp set global timestamps=enabled > nul 2>&1
+exit /b
 
 :ipset_switch_status
 chcp 437 > nul
