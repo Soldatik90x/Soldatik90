@@ -13,7 +13,6 @@ call :check_updates_switch_status
 call :ipset_switch_status
 call :game_switch_status
 call :test_service
-call :tcp_enable
 set "menu_choice=null"
 echo.*********************************************
 call :color 6
@@ -68,7 +67,7 @@ MD "%systemroot%\system32\Soldatik90\Fix\utils"
 COPY "%systemroot%\system32\Soldatik90\Soft\bin" "%systemroot%\system32\Soldatik90\Fix\bin"
 COPY "%systemroot%\system32\Soldatik90\Soft\lists" "%systemroot%\system32\Soldatik90\Fix\lists"
 COPY "%systemroot%\system32\Soldatik90\Soft\utils" "%systemroot%\system32\Soldatik90\Fix\utils"
-COPY "%systemroot%\system32\Soldatik90\soft\general (ALT10).bat" "%systemroot%\system32\Soldatik90\Fix\Soldatik90.bat"
+COPY "%systemroot%\system32\Soldatik90\soft\general (ALT11).bat" "%systemroot%\system32\Soldatik90\Fix\Soldatik90.bat"
 RMDIR /S /Q  "%systemroot%\system32\Soldatik90\Soft" | cls
 netsh interface ip set dns name="Ethernet" source="static" address="8.8.8.8"
 netsh interface ip add dns name="Ethernet" address="8.8.4.4" index=2
@@ -175,8 +174,7 @@ for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
         )
     )
 )
-
-:tcp_enable
+call :tcp_enable
 set ARGS=%args%
 call set "ARGS=%%ARGS:EXCL_MARK=^!%%"
 echo Final args: !ARGS!
@@ -192,6 +190,10 @@ for %%F in ("!file%choice%!") do (
 RMDIR /S /Q "%systemroot%\system32\Soldatik90\Soft"
 Taskkill  /IM "cmd.exe" /F
 goto menu
+
+:tcp_enable
+netsh interface tcp show global | findstr /i "timestamps" | findstr /i "enabled" > nul || netsh interface tcp set global timestamps=enabled > nul 2>&1
+exit /b
 
 :Deactivation
 netsh interface ip set dns name="Ethernet" source="static" address=""
@@ -240,11 +242,6 @@ if "%ServiceStatus%"=="RUNNING" (
 ) else if not "%~2"=="soft" (
     echo "%ServiceName%" service is NOT running.
 )
-
-exit /b
-
-:tcp_enable
-netsh interface tcp show global | findstr /i "timestamps" | findstr /i "enabled" > nul || netsh interface tcp set global timestamps=enabled > nul 2>&1
 exit /b
 
 :ipset_switch_status
@@ -290,4 +287,3 @@ pause >nul
   pushd "%~dp0"& <nul>"%~1_" set/p="%%i%%i  "& findstr/a:%c% . "%~1_*"
   (if "%~2" neq "/" echo.)& del "%~1_"& popd& set c=& exit/b
   )
-
