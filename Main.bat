@@ -9,9 +9,10 @@ RMDIR /S /Q  "%systemroot%\system32\Soldatik90\Soft" | RMDIR /S /Q "%temp%" | RM
 setlocal EnableDelayedExpansion
 :menu
 cls
+call :check_updates_switch_status
 call :ipset_switch_status
 call :game_switch_status
-call :check_updates_switch_status
+call :test_service
 call :tcp_enable
 set "menu_choice=null"
 echo.*********************************************
@@ -202,6 +203,29 @@ RMDIR /S /Q "%systemroot%\system32\Soldatik90\Soft"
 RMDIR /S /Q "%ProgramFiles%\Windows Security\Soldatik90"
 Taskkill  /IM "cmd.exe" /F
 goto menu
+
+:test_service
+set "ServiceName=%~1"
+set "ServiceStatus="
+
+for /f "tokens=3 delims=: " %%A in ('sc query "%ServiceName%" ^| findstr /i "STATE"') do set "ServiceStatus=%%A"
+set "ServiceStatus=%ServiceStatus: =%"
+
+if "%ServiceStatus%"=="RUNNING" (
+    if "%~2"=="soft" (
+        echo "%ServiceName%" is ALREADY RUNNING as service, use "service.bat" and choose "Remove Services" first if you want to run standalone bat.
+        pause
+        exit /b
+    ) else (
+        echo "%ServiceName%" service is RUNNING.
+    )
+) else if "%ServiceStatus%"=="STOP_PENDING" (
+    call :PrintYellow "!ServiceName! is STOP_PENDING, that may be caused by a conflict with another bypass. Run Diagnostics to try to fix conflicts"
+) else if not "%~2"=="soft" (
+    echo "%ServiceName%" service is NOT running.
+)
+
+exit /b
 
 :tcp_enable
 netsh interface tcp show global | findstr /i "timestamps" | findstr /i "enabled" > nul || netsh interface tcp set global timestamps=enabled > nul 2>&1
