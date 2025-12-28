@@ -175,6 +175,7 @@ for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
         )
     )
 )
+
 :tcp_enable
 set ARGS=%args%
 call set "ARGS=%%ARGS:EXCL_MARK=^!%%"
