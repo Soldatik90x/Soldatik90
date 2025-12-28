@@ -50,7 +50,7 @@ goto menu
 :Activation
 Md "%systemroot%\system32\Soldatik90\Soft"
 cd "%systemroot%\system32\Soldatik90\Soft"
-powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.9.1/zapret-discord-youtube-1.9.1.zip" -o "Soldatik90.zip"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.9.2/zapret-discord-youtube-1.9.2.zip" -o "Soldatik90.zip"
 powershell.exe -Nop -Nol -Command "Expand-Archive './Soldatik90.zip' './'
 cd "%systemroot%\system32\Soldatik90\Soft\bin"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Soldatik90x/Soldatik90/raw/refs/heads/main/WinWS.exe" -o "WinWS.exe"
@@ -62,7 +62,7 @@ MD "%systemroot%\system32\Soldatik90\Fix\utils"
 COPY "%systemroot%\system32\Soldatik90\Soft\bin" "%systemroot%\system32\Soldatik90\Fix\bin"
 COPY "%systemroot%\system32\Soldatik90\Soft\lists" "%systemroot%\system32\Soldatik90\Fix\lists"
 COPY "%systemroot%\system32\Soldatik90\Soft\utils" "%systemroot%\system32\Soldatik90\Fix\utils"
-COPY "%systemroot%\system32\Soldatik90\soft\general (ALT10).bat" "%systemroot%\system32\Soldatik90\Fix\Soldatik90.bat"
+COPY "%systemroot%\system32\Soldatik90\soft\general (ALT11).bat" "%systemroot%\system32\Soldatik90\Fix\Soldatik90.bat"
 RMDIR /S /Q  "%systemroot%\system32\Soldatik90\Soft" | cls
 netsh interface ip set dns name="Ethernet" source="static" address="8.8.8.8"
 netsh interface ip add dns name="Ethernet" address="8.8.4.4" index=2
