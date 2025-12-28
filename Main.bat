@@ -209,7 +209,6 @@ goto menu
 ipconfig /release
 ipconfig /renew
 ipconfig /flushdns
-goto menu
 exit /b
 
 :test_service
