@@ -221,6 +221,7 @@ ipconfig /renew
 ipconfig /flushdns
 %userprofile%\AppData\Local\Discord\Update.exe --processStart Discord.exe
 exit /b
+goto menu
 
 :test_service
 set "ServiceName=%~1"
