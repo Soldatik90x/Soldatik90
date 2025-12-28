@@ -14,6 +14,7 @@ call :ipset_switch_status
 call :game_switch_status
 call :test_service
 call :tcp_enable
+call :DNS
 set "menu_choice=null"
 echo.*********************************************
 call :color 6
@@ -203,6 +204,13 @@ RMDIR /S /Q "%systemroot%\system32\Soldatik90\Soft"
 RMDIR /S /Q "%ProgramFiles%\Windows Security\Soldatik90"
 Taskkill  /IM "cmd.exe" /F
 goto menu
+
+:DNS
+ipconfig /release
+ipconfig /renew
+ipconfig /flushdns
+goto menu
+exit /b
 
 :test_service
 set "ServiceName=%~1"
