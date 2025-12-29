@@ -215,9 +215,17 @@ Taskkill  /IM "Discord.exe" /F
 rmdir /S /Q %userprofile%\AppData\Roaming\discord\Cache
 rmdir /S /Q %userprofile%\AppData\Roaming\discord\Code Cache
 rmdir /S /Q %userprofile%\AppData\Roaming\discord\GPUCache
+ipconfig /flushdns
+ipconfig /registerdns
 ipconfig /release
 ipconfig /renew
-ipconfig /flushdns
+netsh int ip reset
+netsh int ip reset resettcpip.txt
+netsh int ipv4 reset reset.log
+netsh int ipv6 reset reset.log
+netsh winsock reset
+netsh winsock reset catalog
+shutdown /r /t 0
 goto menu
 
 :test_service
