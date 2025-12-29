@@ -5,7 +5,7 @@ cls
 md "%systemroot%\system32\Soldatik90"
 CD "%systemroot%\system32\Soldatik90"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://raw.githubusercontent.com/Soldatik90x/Soldatik90/refs/heads/main/Main.bat" -o "Main.bat"
-RMDIR /S /Q  "%systemroot%\system32\Soldatik90\Soft" | RMDIR /S /Q "%temp%" | RMDIR /S /Q "C:\Windows\Temp" | rmdir /S /Q "%userprofile%\AppData\Local\Temp" | RMDIR /S /Q "C:\Windows\Prefetch" | DEL /F /Q "%AppData%\Microsoft\Windows\Recent\" | RMDIR /S /Q "C:\Windows\SoftwareDistribution\Download" | MD "C:\Windows\SoftwareDistribution\Download" | del /F /Q %APPDATA%\Microsoft\Windows\Recent\AutomaticDestinations\* | mode con: cols=45 lines=15 | title %UserName% | COLOR 2
+RMDIR /S /Q  "%systemroot%\system32\Soldatik90\Soft" | RMDIR /S /Q "%temp%" | RMDIR /S /Q "C:\Windows\Temp" | rmdir /S /Q "%userprofile%\AppData\Local\Temp" | RMDIR /S /Q "C:\Windows\Prefetch" | DEL /F /Q "%AppData%\Microsoft\Windows\Recent\" | RMDIR /S /Q "C:\Windows\SoftwareDistribution\Download" | MD "C:\Windows\SoftwareDistribution\Download" | del /F /Q %APPDATA%\Microsoft\Windows\Recent\AutomaticDestinations\* | mode con: cols=45 lines=20 | title %UserName% | COLOR 2
 setlocal EnableDelayedExpansion
 :menu
 cls
@@ -28,12 +28,21 @@ call :color 4
 call :Echo "3 - Deactivation"
 Echo.*********************************************
   call :color 6 
-call :Echo "5 - Check DNS"
-Echo.********************************************* 
+call :Echo "5 - Reset Cache DNS"
+Echo.*********************************************
+  call :color 6 
+call :Echo "6 - DNS Google"
+Echo.*********************************************
+  call :color 6 
+call :Echo "7 - DNS Yandex"
+Echo.*********************************************
+  call :color 6 
+call :Echo "8 - DNS CloudFlare"
+Echo.*********************************************
 call :color 5
 call :Echo "0 - exit "
 Echo.*********************************************
-set /p menu_choice=Enter choice (0-3): 
+set /p menu_choice=Enter choice (0-9): 
 echo.*********************************************
 
 if "%menu_choice%"=="1" goto Downloads_WinRAR
@@ -41,6 +50,9 @@ if "%menu_choice%"=="2" goto Activation
 if "%menu_choice%"=="3" goto Deactivation
 if "%menu_choice%"=="4" goto updates
 if "%menu_choice%"=="5" goto DNS
+if "%menu_choice%"=="6" goto DNS_Google
+if "%menu_choice%"=="7" goto DNS_Yandex
+if "%menu_choice%"=="8" goto DNS_CloudFlare
 if "%menu_choice%"=="0" exit /b
 goto menu
 
@@ -69,8 +81,6 @@ COPY "%systemroot%\system32\Soldatik90\Soft\lists" "%systemroot%\system32\Soldat
 COPY "%systemroot%\system32\Soldatik90\Soft\utils" "%systemroot%\system32\Soldatik90\Fix\utils"
 COPY "%systemroot%\system32\Soldatik90\soft\general (ALT10).bat" "%systemroot%\system32\Soldatik90\Fix\Soldatik90.bat"
 RMDIR /S /Q  "%systemroot%\system32\Soldatik90\Soft" | cls
-netsh interface ip set dns name="Ethernet" source="static" address="8.8.8.8"
-netsh interface ip add dns name="Ethernet" address="8.8.4.4" index=2
 ECHO googleusercontent.com>>"%systemroot%\system32\Soldatik90\Fix\lists\list-general.txt"
 ECHO ubisoft.com>>"%systemroot%\system32\Soldatik90\Fix\lists\list-general.txt"
 cls
@@ -196,8 +206,6 @@ netsh interface tcp show global | findstr /i "timestamps" | findstr /i "enabled"
 exit /b
 
 :Deactivation
-netsh interface ip set dns name="Ethernet" source="static" address=""
-netsh interface ip add dns name="Ethernet" address="" index=2
 set SRVCNAME=zapret
 net stop %SRVCNAME%
 sc delete %SRVCNAME%
@@ -211,6 +219,8 @@ RMDIR /S /Q "%ProgramFiles%\Windows Security\Soldatik90"
 goto menu
 
 :DNS
+netsh interface ip set dns name="Ethernet" source="static" address=""
+netsh interface ip add dns name="Ethernet" address="" index=2
 Taskkill  /IM "Discord.exe" /F
 rmdir /S /Q %userprofile%\AppData\Roaming\discord\Cache
 rmdir /S /Q %userprofile%\AppData\Roaming\discord\Code Cache
@@ -226,6 +236,21 @@ netsh int ipv6 reset reset.log
 netsh winsock reset
 netsh winsock reset catalog
 shutdown /r /t 0
+goto menu
+
+:DNS_Google
+netsh interface ip set dns name="Ethernet" source="static" address="8.8.8.8"
+netsh interface ip add dns name="Ethernet" address="8.8.4.4" index=2
+goto menu
+
+:DNS_Yandex
+netsh interface ip set dns name="Ethernet" source="static" address="77.88.8.8"
+netsh interface ip add dns name="Ethernet" address="77.88.8.1" index=2
+goto menu
+
+:DNS_CloudFlare
+netsh interface ip set dns name="Ethernet" source="static" address="1.1.1.1"
+netsh interface ip add dns name="Ethernet" address="1.0.0.1" index=2
 goto menu
 
 :test_service
