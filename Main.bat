@@ -34,12 +34,6 @@ Echo.*********************************************
   call :color 6 
 call :Echo "6 - DNS Google"
 Echo.*********************************************
-  call :color 6 
-call :Echo "7 - DNS Yandex"
-Echo.*********************************************
-  call :color 6 
-call :Echo "8 - DNS CloudFlare"
-Echo.*********************************************
 call :color 5
 call :Echo "0 - exit "
 Echo.*********************************************
@@ -52,8 +46,6 @@ if "%menu_choice%"=="3" goto Deactivation
 if "%menu_choice%"=="4" goto updates
 if "%menu_choice%"=="5" goto DNS
 if "%menu_choice%"=="6" goto DNS_Google
-if "%menu_choice%"=="7" goto DNS_Yandex
-if "%menu_choice%"=="8" goto DNS_CloudFlare
 if "%menu_choice%"=="0" exit /b
 goto menu
 
@@ -68,7 +60,7 @@ goto menu
 :Activation
 Md "%systemroot%\system32\Soldatik90\Soft"
 cd "%systemroot%\system32\Soldatik90\Soft"
-powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.9.2/zapret-discord-youtube-1.9.2.zip" -o "Soldatik90.zip"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.9.5/zapret-discord-youtube-1.9.5.zip" -o "Soldatik90.zip"
 powershell.exe -Nop -Nol -Command "Expand-Archive './Soldatik90.zip' './'
 cd "%systemroot%\system32\Soldatik90\Soft\bin"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Soldatik90x/Soldatik90/raw/refs/heads/main/WinWS.exe" -o "WinWS.exe"
@@ -244,16 +236,6 @@ netsh interface ip set dns name="Ethernet" source="static" address="8.8.8.8"
 netsh interface ip add dns name="Ethernet" address="8.8.4.4" index=2
 goto menu
 
-:DNS_Yandex
-netsh interface ip set dns name="Ethernet" source="static" address="77.88.8.8"
-netsh interface ip add dns name="Ethernet" address="77.88.8.1" index=2
-goto menu
-
-:DNS_CloudFlare
-netsh interface ip set dns name="Ethernet" source="static" address="1.1.1.1"
-netsh interface ip add dns name="Ethernet" address="1.0.0.1" index=2
-goto menu
-
 :test_service
 set "ServiceName=%~1"
 set "ServiceStatus="
@@ -319,4 +301,3 @@ pause >nul
   pushd "%~dp0"& <nul>"%~1_" set/p="%%i%%i  "& findstr/a:%c% . "%~1_*"
   (if "%~2" neq "/" echo.)& del "%~1_"& popd& set c=& exit/b
   )
-
