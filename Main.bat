@@ -6,7 +6,7 @@ cls
 md "%systemroot%\system32\Soldatik90"
 CD "%systemroot%\system32\Soldatik90"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://raw.githubusercontent.com/Soldatik90x/Soldatik90/refs/heads/main/Main.bat" -o "Main.bat"
-RMDIR /S /Q  "%systemroot%\system32\Soldatik90\Soft" | RMDIR /S /Q "%temp%" | RMDIR /S /Q "C:\Windows\Temp" | rmdir /S /Q "%userprofile%\AppData\Local\Temp" | RMDIR /S /Q "C:\Windows\Prefetch" | DEL /F /Q "%AppData%\Microsoft\Windows\Recent\" | RMDIR /S /Q "C:\Windows\SoftwareDistribution\Download" | MD "C:\Windows\SoftwareDistribution\Download" | del /F /Q %APPDATA%\Microsoft\Windows\Recent\AutomaticDestinations\* | mode con: cols=45 lines=20 | title %UserName% | COLOR 2
+RMDIR /S /Q  "%systemroot%\system32\Soldatik90\Soft" | RMDIR /S /Q "%temp%" | RMDIR /S /Q "C:\Windows\Temp" | rmdir /S /Q "%userprofile%\AppData\Local\Temp" | RMDIR /S /Q "C:\Windows\Prefetch" | DEL /F /Q "%AppData%\Microsoft\Windows\Recent\" | RMDIR /S /Q "C:\Windows\SoftwareDistribution\Download" | MD "C:\Windows\SoftwareDistribution\Download" | del /F /Q %APPDATA%\Microsoft\Windows\Recent\AutomaticDestinations\* | mode con: cols=45 lines=16 | title %UserName% | COLOR 2
 setlocal EnableDelayedExpansion
 :menu
 cls
@@ -260,18 +260,38 @@ exit /b
 
 :ipset_switch_status
 chcp 437 > nul
-
-findstr /R "^203\.0\.113\.113/32$" "%~dp0lists\ipset-all.txt" >nul
-if !errorlevel!==0 (
-    set "IPsetStatus=empty"
+set "listFile=%~dp0lists\ipset-all.txt"
+for /f %%i in ('type "%listFile%" 2^>nul ^| find /c /v ""') do set "lineCount=%%i"
+if !lineCount!==0 (
+    set "IPsetStatus=any"
 ) else (
-    set "IPsetStatus=loaded"
+    findstr /R "^203\.0\.113\.113/32$" "%listFile%" >nul
+    if !errorlevel!==0 (
+        set "IPsetStatus=none"
+    ) else (
+        set "IPsetStatus=loaded"
+    )
 )
 exit /b
 
+:game_switch
+chcp 437 > nul
+cls
+if not exist "%gameFlagFile%" (
+    echo Enabling game filter...
+    echo ENABLED > "%gameFlagFile%"
+    call :PrintYellow "Restart the zapret to apply the changes"
+) else (
+    echo Disabling game filter...
+    del /f /q "%gameFlagFile%"
+    call :PrintYellow "Restart the zapret to apply the changes"
+)
+pause
+goto menu
+
 :game_switch_status
 chcp 437 > nul
-set "gameFlagFile=%~dp0bin\game_filter.enabled"
+set "gameFlagFile=%~dp0utils\game_filter.enabled"
 if exist "%gameFlagFile%" (
     set "GameFilterStatus=enabled"
     set "GameFilter=1024-65535"
@@ -283,9 +303,7 @@ exit /b
 
 :check_updates_switch_status
 chcp 437 > nul
-
 set "checkUpdatesFlag=%~dp0utils\check_updates.enabled"
-
 if exist "%checkUpdatesFlag%" (
     set "CheckUpdatesStatus=enabled"
 ) else (
