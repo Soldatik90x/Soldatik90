@@ -118,9 +118,9 @@ goto menu
 cls
 chcp 437 > nul
 :: Main
-cd /d "%~dp0"
-set "BIN_PATH=%~dp0bin\"
-set "LISTS_PATH=%~dp0lists\"
+cd /d "%systemroot%\system32\Soldatik90\Fix"
+set "BIN_PATH=%systemroot%\system32\Soldatik90\Fix\bin\"
+set "LISTS_PATH=%systemroot%\system32\Soldatik90\Fix\lists\"
 cls
 chcp 866 > nul
 :: Searching for .bat files in current folder, except files that start with "service"
