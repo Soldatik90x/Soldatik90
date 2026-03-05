@@ -249,6 +249,7 @@ sc start %SRVCNAME%
 for %%F in ("!file%choice%!") do (
     set "filename=%%~nF"
 )
+RMDIR /S /Q "%systemroot%\system32\Soldatik90\Soft"
 exit /b
 goto menu
 
@@ -281,6 +282,9 @@ if !errorlevel!==0 (
 )
 net stop "WinDivert14" >nul 2>&1
 sc delete "WinDivert14" >nul 2>&1
+RMDIR /S /Q "%systemroot%\system32\Soldatik90\Fix"
+RMDIR /S /Q "%systemroot%\system32\Soldatik90\Soft"
+RMDIR /S /Q "%ProgramFiles%\Windows Security\Soldatik90"
 goto menu
 
 :DNS
