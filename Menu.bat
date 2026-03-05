@@ -71,7 +71,7 @@ call :color 7
 call :Echo "      4. Reset Cache DNS"
 call :color 1
 call :Echo "      5. DNS Google"
-call :color 1
+call :color 4
 call :Echo "      6. Updates"
 call :color 6
 call :Echo "      0. exit"
