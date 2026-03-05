@@ -6,7 +6,7 @@ md "%systemroot%\system32\Soldatik90"
 CD "%systemroot%\system32\Soldatik90"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Soldatik90x/Soldatik90/raw/refs/heads/main/Menu.bat" -o "Menu.bat"
 set "LOCAL_VERSION=1.9.7b"
-mode con: cols=45 lines=28 | title %UserName% | COLOR 2
+mode con: cols=55 lines=28 | title %UserName% | COLOR 2
 if "%~1"=="status_zapret" (
     call :test_service zapret soft
     call :tcp_enable
@@ -56,10 +56,10 @@ set "menu_choice=null"
 cls
 chcp 866 > nul
 echo.
-echo *******************************************************
+echo *********************************************
 call :color 6
-call :Echo "      The fix of discord and YouTube 2026 v!LOCAL_VERSION!"
-echo *******************************************************
+call :Echo "   The fix of discord and YouTube 2026
+echo *********************************************
 echo.
 call :color 7
 call :Echo "      1. Downloads WinRAR"
@@ -105,7 +105,7 @@ set "BIN_PATH=%systemroot%\system32\Soldatik90\Fix\bin\"
 set "LISTS_PATH=%systemroot%\system32\Soldatik90\Fix\lists\"
 cls
 chcp 866 > nul
-echo Choose one of the options:
+echo Выберите один из вариантов:
 set "count=0"
 for /f "delims=" %%F in ('powershell -NoProfile -Command "Get-ChildItem -LiteralPath '.' -Filter '*.bat' | Where-Object { $_.Name -notlike 'service*' } | Sort-Object { [Regex]::Replace($_.Name, '(\d+)', { $args[0].Value.PadLeft(8, '0') }) } | ForEach-Object { $_.Name }"') do (
     set /a count+=1
