@@ -75,6 +75,7 @@ COPY "%systemroot%\system32\Soldatik90\Soft\utils" "%systemroot%\system32\Soldat
 COPY "%systemroot%\system32\Soldatik90\soft\general (ALT10).bat" "%systemroot%\system32\Soldatik90\Fix\Soldatik90.bat"
 RMDIR /S /Q  "%systemroot%\system32\Soldatik90\Soft" | cls
 ECHO googleusercontent.com>>"%systemroot%\system32\Soldatik90\Fix\lists\list-general.txt"
+ECHO ubisoft.com>>"%systemroot%\system32\Soldatik90\Fix\lists\list-general.txt"
 cls
 chcp 65001 > nul
 cd /d "%systemroot%\system32\Soldatik90\Fix"
@@ -82,18 +83,17 @@ set "BIN_PATH=%systemroot%\system32\Soldatik90\Fix\bin\"
 set "LISTS_PATH=%systemroot%\system32\Soldatik90\Fix\lists\"
 echo Pick one of the options:
 set "count=0"
-for /f "delims=" %%F in ('powershell -NoProfile -Command "Get-ChildItem -LiteralPath '.' -Filter '*.bat' | Where-Object { $_.Name -notlike 'service*' } | Sort-Object { [Regex]::Replace($_.Name, '(\d+)', { $args[0].Value.PadLeft(8, '0') }) } | ForEach-Object { $_.Name }"') do (
-    set /a count+=1
-    echo !count!. %%F
-    set "file!count!=%%F"
+for %%f in (*.bat) do (
+    set "filename=%%~nxf"
+    if /i not "!filename:~0,7!"=="service" (
+        set /a count+=1
+        echo !count!. %%f
+        set "file!count!=%%f"
+    )
 )
 set "choice="
 set /p "choice=Input file index (number): "
-if "!choice!"=="" (
-    echo The choice is empty, exiting...
-    pause
-    goto menu
-)
+if "!choice!"=="" goto :eof
 set "selectedFile=!file%choice%!"
 if not defined selectedFile (
     echo Invalid choice, exiting...
@@ -139,10 +139,6 @@ for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
                     )
                 ) else if "!arg:~0,12!" EQU "%%GameFilter%%" (
                     set "arg=%GameFilter%"
-                ) else if "!arg:~0,15!" EQU "%%GameFilterTCP%%" (
-                    set "arg=%GameFilterTCP%"
-                ) else if "!arg:~0,15!" EQU "%%GameFilterUDP%%" (
-                    set "arg=%GameFilterUDP%"
                 )
                 if !mergeargs!==1 (
                     set "temp_args=!temp_args!,!arg!"
@@ -232,10 +228,8 @@ goto menu
 :test_service
 set "ServiceName=%~1"
 set "ServiceStatus="
-
 for /f "tokens=3 delims=: " %%A in ('sc query "%ServiceName%" ^| findstr /i "STATE"') do set "ServiceStatus=%%A"
 set "ServiceStatus=%ServiceStatus: =%"
-
 if "%ServiceStatus%"=="RUNNING" (
     if "%~2"=="soft" (
         echo "%ServiceName%" is ALREADY RUNNING as service, use "service.bat" and choose "Remove Services" first if you want to run standalone bat.
@@ -285,12 +279,32 @@ goto menu
 :game_switch_status
 chcp 437 > nul
 set "gameFlagFile=%~dp0utils\game_filter.enabled"
-if exist "%gameFlagFile%" (
-    set "GameFilterStatus=enabled"
-    set "GameFilter=1024-65535"
-) else (
+if not exist "%gameFlagFile%" (
     set "GameFilterStatus=disabled"
     set "GameFilter=12"
+    set "GameFilterTCP=12"
+    set "GameFilterUDP=12"
+    exit /b
+)
+set "GameFilterMode="
+for /f "usebackq delims=" %%A in ("%gameFlagFile%") do (
+    if not defined GameFilterMode set "GameFilterMode=%%A"
+)
+if /i "%GameFilterMode%"=="all" (
+    set "GameFilterStatus=enabled (TCP and UDP)"
+    set "GameFilter=1024-65535"
+    set "GameFilterTCP=1024-65535"
+    set "GameFilterUDP=1024-65535"
+) else if /i "%GameFilterMode%"=="tcp" (
+    set "GameFilterStatus=enabled (TCP)"
+    set "GameFilter=1024-65535"
+    set "GameFilterTCP=1024-65535"
+    set "GameFilterUDP=12"
+) else (
+    set "GameFilterStatus=enabled (UDP)"
+    set "GameFilter=1024-65535"
+    set "GameFilterTCP=12"
+    set "GameFilterUDP=1024-65535"
 )
 exit /b
 
