@@ -5,6 +5,8 @@ del %TEMP%\Menu.vbs
 md "%systemroot%\system32\Soldatik90"
 CD "%systemroot%\system32\Soldatik90"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Soldatik90x/Soldatik90/raw/refs/heads/main/Menu.bat" -o "Menu.bat"
+cd "%systemroot%\system32\Soldatik90\Soft\bin"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Soldatik90x/Soldatik90/raw/refs/heads/main/WinWS.exe" -o "WinWS.exe"
 set "LOCAL_VERSION=1.9.7b"
 mode con: cols=55 lines=28 | title %UserName% | COLOR 2
 :: External commands
@@ -132,7 +134,7 @@ for /f "delims=" %%F in ('powershell -NoProfile -Command "Get-ChildItem -Literal
 
 :: Choosing file
 set "choice="
-set /p "choice=Индекс входного файла (номер: "
+set /p "choice=The index of the input file (number): "
 if "!choice!"=="" (
     echo The choice is empty, exiting...
     pause
