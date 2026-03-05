@@ -10,9 +10,9 @@ RMDIR /S /Q  "%systemroot%\system32\Soldatik90\Soft" | RMDIR /S /Q "%temp%" | RM
 setlocal EnableDelayedExpansion
 :menu
 cls
+call :check_updates_switch_status
 call :ipset_switch_status
 call :game_switch_status
-call :check_updates_switch_status
 call :test_service
 set "menu_choice=null"
 echo.*********************************************
@@ -60,7 +60,7 @@ goto menu
 :Activation
 Md "%systemroot%\system32\Soldatik90\Soft"
 cd "%systemroot%\system32\Soldatik90\Soft"
-powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.9.7b/zapret-discord-youtube-1.9.7b.zip" -o "Soldatik90.zip"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.9.5/zapret-discord-youtube-1.9.5.zip" -o "Soldatik90.zip"
 powershell.exe -Nop -Nol -Command "Expand-Archive './Soldatik90.zip' './'
 cd "%systemroot%\system32\Soldatik90\Soft\bin"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Soldatik90x/Soldatik90/raw/refs/heads/main/WinWS.exe" -o "WinWS.exe"
@@ -94,6 +94,7 @@ for %%f in (*.bat) do (
 set "choice="
 set /p "choice=Input file index (number): "
 if "!choice!"=="" goto :eof
+
 set "selectedFile=!file%choice%!"
 if not defined selectedFile (
     echo Invalid choice, exiting...
@@ -105,26 +106,33 @@ set "args="
 set "capture=0"
 set "mergeargs=0"
 set QUOTE="
+
 for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
     set "line=%%a"
     call set "line=%%line:^!=EXCL_MARK%%"
+
     echo !line! | findstr /i "%BIN%winws.exe" >nul
     if not errorlevel 1 (
         set "capture=1"
     )
+
     if !capture!==1 (
         if not defined args (
             set "line=!line:*%BIN%winws.exe"=!"
         )
+
         set "temp_args="
         for %%i in (!line!) do (
             set "arg=%%i"
+
             if not "!arg!"=="^" (
                 if "!arg:~0,2!" EQU "--" if not !mergeargs!==0 (
                     set "mergeargs=0"
                 )
+
                 if "!arg:~0,1!" EQU "!QUOTE!" (
                     set "arg=!arg:~1,-1!"
+
                     echo !arg! | findstr ":" >nul
                     if !errorlevel!==0 (
                         set "arg=\!QUOTE!!arg!\!QUOTE!"
@@ -140,6 +148,7 @@ for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
                 ) else if "!arg:~0,12!" EQU "%%GameFilter%%" (
                     set "arg=%GameFilter%"
                 )
+
                 if !mergeargs!==1 (
                     set "temp_args=!temp_args!,!arg!"
                 ) else if !mergeargs!==3 (
@@ -148,6 +157,7 @@ for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
                 ) else (
                     set "temp_args=!temp_args! !arg!"
                 )
+
                 if "!arg:~0,2!" EQU "--" (
                     set "mergeargs=2"
                 ) else if !mergeargs! GEQ 1 (
@@ -161,6 +171,7 @@ for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
                 )
             )
         )
+
         if not "!temp_args!"=="" (
             set "args=!args! !temp_args!"
         )
@@ -228,8 +239,10 @@ goto menu
 :test_service
 set "ServiceName=%~1"
 set "ServiceStatus="
+
 for /f "tokens=3 delims=: " %%A in ('sc query "%ServiceName%" ^| findstr /i "STATE"') do set "ServiceStatus=%%A"
 set "ServiceStatus=%ServiceStatus: =%"
+
 if "%ServiceStatus%"=="RUNNING" (
     if "%~2"=="soft" (
         echo "%ServiceName%" is ALREADY RUNNING as service, use "service.bat" and choose "Remove Services" first if you want to run standalone bat.
@@ -279,32 +292,12 @@ goto menu
 :game_switch_status
 chcp 437 > nul
 set "gameFlagFile=%~dp0utils\game_filter.enabled"
-if not exist "%gameFlagFile%" (
+if exist "%gameFlagFile%" (
+    set "GameFilterStatus=enabled"
+    set "GameFilter=1024-65535"
+) else (
     set "GameFilterStatus=disabled"
     set "GameFilter=12"
-    set "GameFilterTCP=12"
-    set "GameFilterUDP=12"
-    exit /b
-)
-set "GameFilterMode="
-for /f "usebackq delims=" %%A in ("%gameFlagFile%") do (
-    if not defined GameFilterMode set "GameFilterMode=%%A"
-)
-if /i "%GameFilterMode%"=="all" (
-    set "GameFilterStatus=enabled (TCP and UDP)"
-    set "GameFilter=1024-65535"
-    set "GameFilterTCP=1024-65535"
-    set "GameFilterUDP=1024-65535"
-) else if /i "%GameFilterMode%"=="tcp" (
-    set "GameFilterStatus=enabled (TCP)"
-    set "GameFilter=1024-65535"
-    set "GameFilterTCP=1024-65535"
-    set "GameFilterUDP=12"
-) else (
-    set "GameFilterStatus=enabled (UDP)"
-    set "GameFilter=1024-65535"
-    set "GameFilterTCP=12"
-    set "GameFilterUDP=1024-65535"
 )
 exit /b
 
