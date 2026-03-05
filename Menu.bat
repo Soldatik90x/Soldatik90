@@ -5,17 +5,13 @@ del %TEMP%\Menu.vbs
 md "%systemroot%\system32\Soldatik90"
 CD "%systemroot%\system32\Soldatik90"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Soldatik90x/Soldatik90/raw/refs/heads/main/Menu.bat" -o "Menu.bat"
-cd "%systemroot%\system32\Soldatik90\Soft\bin"
-powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Soldatik90x/Soldatik90/raw/refs/heads/main/WinWS.exe" -o "WinWS.exe"
 set "LOCAL_VERSION=1.9.7b"
 mode con: cols=55 lines=28 | title %UserName% | COLOR 2
-:: External commands
 if "%~1"=="status_zapret" (
     call :test_service zapret soft
     call :tcp_enable
     exit /b
 )
-
 if "%~1"=="check_updates" (
     if defined NO_UPDATE_CHECK exit /b
 
@@ -26,47 +22,36 @@ if "%~1"=="check_updates" (
             call :service_check_updates soft
         )
     )
-
     exit /b
 )
-
 if "%~1"=="load_game_filter" (
     call :game_switch_status
     exit /b
 )
-
 if "%~1"=="load_user_lists" (
     call :load_user_lists
     exit /b
 )
-
 if "%1"=="admin" (
     call :check_command chcp
     call :check_command find
     call :check_command findstr
     call :check_command netsh
-    
     call :load_user_lists
-
     echo Started with admin rights
 ) else (
     call :check_extracted
     call :check_command powershell
-
     echo Requesting admin rights...
     powershell -NoProfile -Command "Start-Process 'cmd.exe' -ArgumentList '/c \"\"%~f0\" admin\"' -Verb RunAs"
     exit
 )
-
-
-:: MENU ================================
 setlocal EnableDelayedExpansion
 :menu
 cls
 call :ipset_switch_status
 call :game_switch_status
 call :check_updates_switch_status
-
 set "menu_choice=null"
 cls
 chcp 866 > nul
@@ -93,9 +78,7 @@ call :Echo "      0. exit"
 echo.
 echo *******************************************************
 echo.
-
 set /p menu_choice=Enter choice (0-7): 
-
 if "%menu_choice%"=="1" goto Downloads WinRAR
 if "%menu_choice%"=="2" goto Activation
 if "%menu_choice%"=="3" goto Deactivation
@@ -117,22 +100,18 @@ goto menu
 :Activation
 cls
 chcp 437 > nul
-:: Main
 cd /d "%systemroot%\system32\Soldatik90\Fix"
 set "BIN_PATH=%systemroot%\system32\Soldatik90\Fix\bin\"
 set "LISTS_PATH=%systemroot%\system32\Soldatik90\Fix\lists\"
 cls
 chcp 866 > nul
-:: Searching for .bat files in current folder, except files that start with "service"
-echo Choose one of the options:
+echo Выберите один из вариантов:
 set "count=0"
 for /f "delims=" %%F in ('powershell -NoProfile -Command "Get-ChildItem -LiteralPath '.' -Filter '*.bat' | Where-Object { $_.Name -notlike 'service*' } | Sort-Object { [Regex]::Replace($_.Name, '(\d+)', { $args[0].Value.PadLeft(8, '0') }) } | ForEach-Object { $_.Name }"') do (
     set /a count+=1
     echo !count!. %%F
     set "file!count!=%%F"
 )
-
-:: Choosing file
 set "choice="
 set /p "choice=The index of the input file (number): "
 if "!choice!"=="" (
@@ -140,37 +119,28 @@ if "!choice!"=="" (
     pause
     goto menu
 )
-
 set "selectedFile=!file%choice%!"
 if not defined selectedFile (
     echo Invalid choice, exiting...
     pause
     goto menu
 )
-
-:: Args that should be followed by value
 set "args_with_value=sni host altorder"
-
-:: Parsing args (mergeargs: 2=start param|3=arg with value|1=params args|0=default)
 set "args="
 set "capture=0"
 set "mergeargs=0"
 set QUOTE="
-
 for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
     set "line=%%a"
     call set "line=%%line:^!=EXCL_MARK%%"
-
     echo !line! | findstr /i "%BIN%winws.exe" >nul
     if not errorlevel 1 (
         set "capture=1"
     )
-
     if !capture!==1 (
         if not defined args (
             set "line=!line:*%BIN%winws.exe"=!"
         )
-
         set "temp_args="
         for %%i in (!line!) do (
             set "arg=%%i"
@@ -179,10 +149,8 @@ for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
                 if "!arg:~0,2!" EQU "--" if not !mergeargs!==0 (
                     set "mergeargs=0"
                 )
-
                 if "!arg:~0,1!" EQU "!QUOTE!" (
                     set "arg=!arg:~1,-1!"
-
                     echo !arg! | findstr ":" >nul
                     if !errorlevel!==0 (
                         set "arg=\!QUOTE!!arg!\!QUOTE!"
@@ -202,7 +170,6 @@ for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
                 ) else if "!arg:~0,15!" EQU "%%GameFilterUDP%%" (
                     set "arg=%GameFilterUDP%"
                 )
-
                 if !mergeargs!==1 (
                     set "temp_args=!temp_args!,!arg!"
                 ) else if !mergeargs!==3 (
@@ -211,7 +178,6 @@ for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
                 ) else (
                     set "temp_args=!temp_args! !arg!"
                 )
-
                 if "!arg:~0,2!" EQU "--" (
                     set "mergeargs=2"
                 ) else if !mergeargs! GEQ 1 (
@@ -225,21 +191,16 @@ for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
                 )
             )
         )
-
         if not "!temp_args!"=="" (
             set "args=!args! !temp_args!"
         )
     )
 )
-
-:: Creating service with parsed args
 call :tcp_enable
-
 set ARGS=%args%
 call set "ARGS=%%ARGS:EXCL_MARK=^!%%"
 echo Final args: !ARGS!
 set SRVCNAME=zapret
-
 net stop %SRVCNAME% >nul 2>&1
 sc delete %SRVCNAME% >nul 2>&1
 sc create %SRVCNAME% binPath= "\"%BIN_PATH%winws.exe\" !ARGS!" DisplayName= "zapret" start= auto
@@ -255,7 +216,6 @@ goto menu
 :Deactivation
 cls
 chcp 65001 > nul
-
 set SRVCNAME=zapret
 sc query "!SRVCNAME!" >nul 2>&1
 if !errorlevel!==0 (
@@ -264,16 +224,13 @@ if !errorlevel!==0 (
 ) else (
     echo Service "%SRVCNAME%" is not installed.
 )
-
 tasklist /FI "IMAGENAME eq winws.exe" | find /I "winws.exe" > nul
 if !errorlevel!==0 (
     taskkill /IM winws.exe /F > nul
 )
-
 sc query "WinDivert" >nul 2>&1
 if !errorlevel!==0 (
     net stop "WinDivert"
-
     sc query "WinDivert" >nul 2>&1
     if !errorlevel!==0 (
         sc delete "WinDivert"
@@ -345,11 +302,8 @@ if not exist "%LISTS_PATH%list-general-user.txt" (
 if not exist "%LISTS_PATH%list-exclude-user.txt" (
     echo domain.example.abc>"%LISTS_PATH%list-exclude-user.txt"
 )
-
 exit /b
 
-
-:: TCP ENABLE ==========================
 :tcp_enable
 netsh interface tcp show global | findstr /i "timestamps" | findstr /i "enabled" > nul || netsh interface tcp set global timestamps=enabled > nul 2>&1
 exit /b
@@ -360,7 +314,6 @@ set "ServiceStatus="
 
 for /f "tokens=3 delims=: " %%A in ('sc query "%ServiceName%" ^| findstr /i "STATE"') do set "ServiceStatus=%%A"
 set "ServiceStatus=%ServiceStatus: =%"
-
 if "%ServiceStatus%"=="RUNNING" (
     if "%~2"=="soft" (
         echo "%ServiceName%" is ALREADY RUNNING as service, use "service.bat" and choose "Remove Services" first if you want to run standalone bat.
@@ -374,16 +327,12 @@ if "%ServiceStatus%"=="RUNNING" (
 ) else if not "%~2"=="soft" (
     echo "%ServiceName%" service is NOT running.
 )
-
 exit /b
 goto menu
 
-:: GAME SWITCH ========================
 :game_switch_status
 chcp 437 > nul
-
 set "gameFlagFile=%~dp0utils\game_filter.enabled"
-
 if not exist "%gameFlagFile%" (
     set "GameFilterStatus=disabled"
     set "GameFilter=12"
@@ -391,12 +340,10 @@ if not exist "%gameFlagFile%" (
     set "GameFilterUDP=12"
     exit /b
 )
-
 set "GameFilterMode="
 for /f "usebackq delims=" %%A in ("%gameFlagFile%") do (
     if not defined GameFilterMode set "GameFilterMode=%%A"
 )
-
 if /i "%GameFilterMode%"=="all" (
     set "GameFilterStatus=enabled (TCP and UDP)"
     set "GameFilter=1024-65535"
@@ -418,7 +365,6 @@ exit /b
 :check_updates_switch
 chcp 437 > nul
 cls
-
 if not exist "%checkUpdatesFlag%" (
     echo Enabling check updates...
     echo ENABLED > "%checkUpdatesFlag%"
@@ -426,18 +372,13 @@ if not exist "%checkUpdatesFlag%" (
     echo Disabling check updates...
     del /f /q "%checkUpdatesFlag%"
 )
-
 pause
 goto menu
 
-
-:: IPSET SWITCH =======================
 :ipset_switch_status
 chcp 437 > nul
-
 set "listFile=%~dp0lists\ipset-all.txt"
 for /f %%i in ('type "%listFile%" 2^>nul ^| find /c /v ""') do set "lineCount=%%i"
-
 if !lineCount!==0 (
     set "IPsetStatus=any"
 ) else (
@@ -454,10 +395,8 @@ exit /b
 :ipset_switch
 chcp 437 > nul
 cls
-
 set "listFile=%~dp0lists\ipset-all.txt"
 set "backupFile=%listFile%.backup"
-
 if "%IPsetStatus%"=="loaded" (
     echo Switching to none mode...
     
@@ -467,21 +406,16 @@ if "%IPsetStatus%"=="loaded" (
         del /f /q "%backupFile%"
         ren "%listFile%" "ipset-all.txt.backup"
     )
-    
     >"%listFile%" (
         echo 203.0.113.113/32
     )
-    
 ) else if "%IPsetStatus%"=="none" (
     echo Switching to any mode...
-    
     >"%listFile%" (
         rem Creating empty file
     )
-    
 ) else if "%IPsetStatus%"=="any" (
     echo Switching to loaded mode...
-    
     if exist "%backupFile%" (
         del /f /q "%listFile%"
         ren "%backupFile%" "ipset-all.txt"
@@ -490,16 +424,10 @@ if "%IPsetStatus%"=="loaded" (
         pause
         goto menu
     )
-    
 )
 
 pause
 goto menu
-
-
-:: IPSET UPDATE =======================
-
-:: Utility functions
 
 :PrintGreen
 powershell -NoProfile -Command "Write-Host \"%~1\" -ForegroundColor Green"
@@ -525,9 +453,7 @@ exit /b 0
 
 :check_extracted
 set "extracted=1"
-
 if not exist "%~dp0bin\" set "extracted=0"
-
 if "%extracted%"=="0" (
     echo Zapret must be extracted from archive first or bin folder not found for some reason
     pause
