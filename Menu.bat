@@ -1,6 +1,6 @@
 @echo off> nul
 if "%1"=="admin" (echo Started with admin rights) else (echo Requesting admin rights... | powershell -Command "Start-Process 'cmd.exe' -ArgumentList '/c \"\"%~f0\" admin\"' -Verb RunAs" & exit /b)
-powershell -inputformat none -outputformat none -NonInteractive -Command "Add-MpPreference -ExclusionPath '%systemroot%\system32\Soldatik90'" | reg add "HKCU\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" /v "%systemroot%\system32\Soldatik90\Menu.bat" /t REG_SZ /d "~ RUNASADMIN" /f | echo Set objShell = CreateObject("WScript.Shell") > %TEMP%\Menu.vbs | echo Set objLink = objShell.CreateShortcut("%USERPROFILE%\Desktop\Menu.lnk") >> %TEMP%\Menu.vbs | echo objLink.Description = "Updates fix Discord and YouTube" >> %TEMP%\Menu.vbs | echo objLink.TargetPath = "%systemroot%\system32\Soldatik90\Menu.bat" >> %TEMP%\Soldatik90.vbs | echo objLink.iconLocation = "%systemroot%\system32\Soldatik90\Fix\bin\winws.exe" >> %TEMP%\Menu.vbs | echo objLink.Save >> %TEMP%\Menu.vbs  | cscript %TEMP%\Menu.vbs  | %TEMP%\Menu.vbs
+powershell -inputformat none -outputformat none -NonInteractive -Command "Add-MpPreference -ExclusionPath '%systemroot%\system32\Soldatik90'" | reg add "HKCU\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" /v "%systemroot%\system32\Soldatik90\Menu.bat" /t REG_SZ /d "~ RUNASADMIN" /f | echo Set objShell = CreateObject("WScript.Shell") > %TEMP%\Menu.vbs | echo Set objLink = objShell.CreateShortcut("%USERPROFILE%\Desktop\Menu.lnk") >> %TEMP%\Menu.vbs | echo objLink.Description = "Updates fix Discord and YouTube" >> %TEMP%\Menu.vbs | echo objLink.TargetPath = "%systemroot%\system32\Soldatik90\Menu.bat" >> %TEMP%\Menu.vbs | echo objLink.iconLocation = "%systemroot%\system32\Soldatik90\Fix\bin\winws.exe" >> %TEMP%\Menu.vbs | echo objLink.Save >> %TEMP%\Menu.vbs  | cscript %TEMP%\Menu.vbs  | %TEMP%\Menu.vbs
 del %TEMP%\Menu.vbs
 md "%systemroot%\system32\Soldatik90"
 CD "%systemroot%\system32\Soldatik90"
@@ -94,7 +94,7 @@ echo.
 echo *******************************************************
 echo.
 
-set /p menu_choice=   Выберите опцию (0-6): 
+set /p menu_choice=Enter choice (0-7): 
 
 if "%menu_choice%"=="1" goto Downloads WinRAR
 if "%menu_choice%"=="2" goto Activation
@@ -117,7 +117,6 @@ goto menu
 :Activation
 cls
 chcp 437 > nul
-
 :: Main
 cd /d "%~dp0"
 set "BIN_PATH=%~dp0bin\"
