@@ -76,13 +76,13 @@ call :Echo "      6. Updates"
 call :color 6
 call :Echo "      0. exit"
 echo.
-echo *******************************************************
+echo *********************************************
 echo.
 set /p menu_choice=Enter choice (0-7): 
 if "%menu_choice%"=="1" goto Downloads WinRAR
 if "%menu_choice%"=="2" goto Activation
 if "%menu_choice%"=="3" goto Deactivation
-if "%menu_choice%"=="4" goto Reset Cache DNS
+if "%menu_choice%"=="4" goto DNS
 if "%menu_choice%"=="5" goto DNS Google
 if "%menu_choice%"=="6" goto Updates
 if "%menu_choice%"=="0" exit /b
@@ -469,4 +469,5 @@ pause >nul
   pushd "%~dp0"& <nul>"%~1_" set/p="%%i%%i  "& findstr/a:%c% . "%~1_*"
   (if "%~2" neq "/" echo.)& del "%~1_"& popd& set c=& exit/b
   )
+
 
