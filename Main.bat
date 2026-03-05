@@ -75,7 +75,6 @@ COPY "%systemroot%\system32\Soldatik90\Soft\utils" "%systemroot%\system32\Soldat
 COPY "%systemroot%\system32\Soldatik90\soft\general (ALT10).bat" "%systemroot%\system32\Soldatik90\Fix\Soldatik90.bat"
 RMDIR /S /Q  "%systemroot%\system32\Soldatik90\Soft" | cls
 ECHO googleusercontent.com>>"%systemroot%\system32\Soldatik90\Fix\lists\list-general.txt"
-ECHO ubisoft.com>>"%systemroot%\system32\Soldatik90\Fix\lists\list-general.txt"
 cls
 chcp 65001 > nul
 cd /d "%systemroot%\system32\Soldatik90\Fix"
@@ -83,18 +82,18 @@ set "BIN_PATH=%systemroot%\system32\Soldatik90\Fix\bin\"
 set "LISTS_PATH=%systemroot%\system32\Soldatik90\Fix\lists\"
 echo Pick one of the options:
 set "count=0"
-for %%f in (*.bat) do (
-    set "filename=%%~nxf"
-    if /i not "!filename:~0,7!"=="service" (
-        set /a count+=1
-        echo !count!. %%f
-        set "file!count!=%%f"
-    )
+for /f "delims=" %%F in ('powershell -NoProfile -Command "Get-ChildItem -LiteralPath '.' -Filter '*.bat' | Where-Object { $_.Name -notlike 'service*' } | Sort-Object { [Regex]::Replace($_.Name, '(\d+)', { $args[0].Value.PadLeft(8, '0') }) } | ForEach-Object { $_.Name }"') do (
+    set /a count+=1
+    echo !count!. %%F
+    set "file!count!=%%F"
 )
 set "choice="
 set /p "choice=Input file index (number): "
-if "!choice!"=="" goto :eof
-
+if "!choice!"=="" (
+    echo The choice is empty, exiting...
+    pause
+    goto menu
+)
 set "selectedFile=!file%choice%!"
 if not defined selectedFile (
     echo Invalid choice, exiting...
@@ -106,33 +105,26 @@ set "args="
 set "capture=0"
 set "mergeargs=0"
 set QUOTE="
-
 for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
     set "line=%%a"
     call set "line=%%line:^!=EXCL_MARK%%"
-
     echo !line! | findstr /i "%BIN%winws.exe" >nul
     if not errorlevel 1 (
         set "capture=1"
     )
-
     if !capture!==1 (
         if not defined args (
             set "line=!line:*%BIN%winws.exe"=!"
         )
-
         set "temp_args="
         for %%i in (!line!) do (
             set "arg=%%i"
-
             if not "!arg!"=="^" (
                 if "!arg:~0,2!" EQU "--" if not !mergeargs!==0 (
                     set "mergeargs=0"
                 )
-
                 if "!arg:~0,1!" EQU "!QUOTE!" (
                     set "arg=!arg:~1,-1!"
-
                     echo !arg! | findstr ":" >nul
                     if !errorlevel!==0 (
                         set "arg=\!QUOTE!!arg!\!QUOTE!"
@@ -147,8 +139,11 @@ for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
                     )
                 ) else if "!arg:~0,12!" EQU "%%GameFilter%%" (
                     set "arg=%GameFilter%"
+                ) else if "!arg:~0,15!" EQU "%%GameFilterTCP%%" (
+                    set "arg=%GameFilterTCP%"
+                ) else if "!arg:~0,15!" EQU "%%GameFilterUDP%%" (
+                    set "arg=%GameFilterUDP%"
                 )
-
                 if !mergeargs!==1 (
                     set "temp_args=!temp_args!,!arg!"
                 ) else if !mergeargs!==3 (
@@ -157,7 +152,6 @@ for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
                 ) else (
                     set "temp_args=!temp_args! !arg!"
                 )
-
                 if "!arg:~0,2!" EQU "--" (
                     set "mergeargs=2"
                 ) else if !mergeargs! GEQ 1 (
@@ -171,7 +165,6 @@ for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
                 )
             )
         )
-
         if not "!temp_args!"=="" (
             set "args=!args! !temp_args!"
         )
