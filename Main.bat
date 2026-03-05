@@ -10,9 +10,9 @@ RMDIR /S /Q  "%systemroot%\system32\Soldatik90\Soft" | RMDIR /S /Q "%temp%" | RM
 setlocal EnableDelayedExpansion
 :menu
 cls
-call :check_updates_switch_status
 call :ipset_switch_status
 call :game_switch_status
+call :check_updates_switch_status
 call :test_service
 set "menu_choice=null"
 echo.*********************************************
