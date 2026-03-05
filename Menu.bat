@@ -6,7 +6,7 @@ md "%systemroot%\system32\Soldatik90"
 CD "%systemroot%\system32\Soldatik90"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Soldatik90x/Soldatik90/raw/refs/heads/main/Menu.bat" -o "Menu.bat"
 set "LOCAL_VERSION=1.9.7b"
-mode con: cols=55 lines=28 | title %UserName% | COLOR 2
+mode con: cols=45 lines=28 | title %UserName% | COLOR 2
 if "%~1"=="status_zapret" (
     call :test_service zapret soft
     call :tcp_enable
@@ -469,3 +469,4 @@ pause >nul
   pushd "%~dp0"& <nul>"%~1_" set/p="%%i%%i  "& findstr/a:%c% . "%~1_*"
   (if "%~2" neq "/" echo.)& del "%~1_"& popd& set c=& exit/b
   )
+
