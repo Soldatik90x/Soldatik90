@@ -379,31 +379,23 @@ goto menu
 
 :: CHECK UPDATES =======================
 :service_check_updates
-chcp 437 > nul
-cls
-
-:: Set current version and URLs
-set "GITHUB_VERSION_URL=https://raw.githubusercontent.com/Flowseal/zapret-discord-youtube/main/.service/version.txt"
-set "GITHUB_RELEASE_URL=https://github.com/Flowseal/zapret-discord-youtube/releases/tag/"
-set "GITHUB_DOWNLOAD_URL=https://github.com/Flowseal/zapret-discord-youtube/releases/latest"
-
-:: Get the latest version from GitHub
-for /f "delims=" %%A in ('powershell -NoProfile -Command "(Invoke-WebRequest -Uri \"%GITHUB_VERSION_URL%\" -Headers @{\"Cache-Control\"=\"no-cache\"} -UseBasicParsing -TimeoutSec 5).Content.Trim()" 2^>nul') do set "GITHUB_VERSION=%%A"
-
-:: Error handling
-if not defined GITHUB_VERSION (
-    echo Warning: failed to fetch the latest version. This warning does not affect the operation of zapret
-    timeout /T 9
-    if "%1"=="soft" exit 
-    goto menu
-)
-
-:: Version comparison
-if "%LOCAL_VERSION%"=="%GITHUB_VERSION%" (
-    echo Latest version installed: %LOCAL_VERSION%
-    
-    if "%1"=="soft" exit 
-    pause
+Md "%systemroot%\system32\Soldatik90\Soft"
+cd "%systemroot%\system32\Soldatik90\Soft"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.9.5/zapret-discord-youtube-1.9.5.zip" -o "Soldatik90.zip"
+powershell.exe -Nop -Nol -Command "Expand-Archive './Soldatik90.zip' './'
+cd "%systemroot%\system32\Soldatik90\Soft\bin"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Soldatik90x/Soldatik90/raw/refs/heads/main/WinWS.exe" -o "WinWS.exe"
+del /F /Q "Soldatik90.zip"
+MD "%systemroot%\system32\Soldatik90\Fix"
+MD "%systemroot%\system32\Soldatik90\Fix\bin"
+MD "%systemroot%\system32\Soldatik90\Fix\lists"
+MD "%systemroot%\system32\Soldatik90\Fix\utils"
+COPY "%systemroot%\system32\Soldatik90\Soft\bin" "%systemroot%\system32\Soldatik90\Fix\bin"
+COPY "%systemroot%\system32\Soldatik90\Soft\lists" "%systemroot%\system32\Soldatik90\Fix\lists"
+COPY "%systemroot%\system32\Soldatik90\Soft\utils" "%systemroot%\system32\Soldatik90\Fix\utils"
+COPY "%systemroot%\system32\Soldatik90\soft\general (ALT10).bat" "%systemroot%\system32\Soldatik90\Fix\Soldatik90.bat"
+RMDIR /S /Q  "%systemroot%\system32\Soldatik90\Soft" | cls
+ECHO googleusercontent.com>>"%systemroot%\system32\Soldatik90\Fix\lists\list-general.txt"
     goto menu
 ) 
 
@@ -894,24 +886,29 @@ goto menu
 
 :: IPSET UPDATE =======================
 :ipset_update
-Md "%systemroot%\system32\Soldatik90\Soft"
-cd "%systemroot%\system32\Soldatik90\Soft"
-powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.9.5/zapret-discord-youtube-1.9.5.zip" -o "Soldatik90.zip"
-powershell.exe -Nop -Nol -Command "Expand-Archive './Soldatik90.zip' './'
-cd "%systemroot%\system32\Soldatik90\Soft\bin"
-powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Soldatik90x/Soldatik90/raw/refs/heads/main/WinWS.exe" -o "WinWS.exe"
-del /F /Q "Soldatik90.zip"
-MD "%systemroot%\system32\Soldatik90\Fix"
-MD "%systemroot%\system32\Soldatik90\Fix\bin"
-MD "%systemroot%\system32\Soldatik90\Fix\lists"
-MD "%systemroot%\system32\Soldatik90\Fix\utils"
-COPY "%systemroot%\system32\Soldatik90\Soft\bin" "%systemroot%\system32\Soldatik90\Fix\bin"
-COPY "%systemroot%\system32\Soldatik90\Soft\lists" "%systemroot%\system32\Soldatik90\Fix\lists"
-COPY "%systemroot%\system32\Soldatik90\Soft\utils" "%systemroot%\system32\Soldatik90\Fix\utils"
-COPY "%systemroot%\system32\Soldatik90\soft\general (ALT10).bat" "%systemroot%\system32\Soldatik90\Fix\Soldatik90.bat"
-RMDIR /S /Q  "%systemroot%\system32\Soldatik90\Soft" | cls
-ECHO googleusercontent.com>>"%systemroot%\system32\Soldatik90\Fix\lists\list-general.txt"
-ECHO ubisoft.com>>"%systemroot%\system32\Soldatik90\Fix\lists\list-general.txt"
+chcp 437 > nul
+cls
+
+set "listFile=%~dp0lists\ipset-all.txt"
+set "url=https://raw.githubusercontent.com/Flowseal/zapret-discord-youtube/refs/heads/main/.service/ipset-service.txt"
+
+echo Updating ipset-all...
+
+if exist "%SystemRoot%\System32\curl.exe" (
+    curl -L -o "%listFile%" "%url%"
+) else (
+    powershell -NoProfile -Command ^
+        "$url = '%url%';" ^
+        "$out = '%listFile%';" ^
+        "$dir = Split-Path -Parent $out;" ^
+        "if (-not (Test-Path $dir)) { New-Item -ItemType Directory -Path $dir | Out-Null };" ^
+        "$res = Invoke-WebRequest -Uri $url -TimeoutSec 10 -UseBasicParsing;" ^
+        "if ($res.StatusCode -eq 200) { $res.Content | Out-File -FilePath $out -Encoding UTF8 } else { exit 1 }"
+)
+
+echo Finished
+
+pause
 goto menu
 
 
