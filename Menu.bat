@@ -124,7 +124,7 @@ set "LISTS_PATH=%systemroot%\system32\Soldatik90\Fix\lists\"
 cls
 chcp 866 > nul
 :: Searching for .bat files in current folder, except files that start with "service"
-echo Выберите один из вариантов:
+echo Choose one of the options:
 set "count=0"
 for /f "delims=" %%F in ('powershell -NoProfile -Command "Get-ChildItem -LiteralPath '.' -Filter '*.bat' | Where-Object { $_.Name -notlike 'service*' } | Sort-Object { [Regex]::Replace($_.Name, '(\d+)', { $args[0].Value.PadLeft(8, '0') }) } | ForEach-Object { $_.Name }"') do (
     set /a count+=1
