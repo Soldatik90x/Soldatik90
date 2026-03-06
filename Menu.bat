@@ -1,124 +1,104 @@
 @echo off> nul
 if "%1"=="admin" (echo Started with admin rights) else (echo Requesting admin rights... | powershell -Command "Start-Process 'cmd.exe' -ArgumentList '/c \"\"%~f0\" admin\"' -Verb RunAs" & exit /b)
-powershell -inputformat none -outputformat none -NonInteractive -Command "Add-MpPreference -ExclusionPath '%systemroot%\system32\Soldatik90'" | reg add "HKCU\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" /v "%systemroot%\system32\Soldatik90\Menu.bat" /t REG_SZ /d "~ RUNASADMIN" /f | echo Set objShell = CreateObject("WScript.Shell") > %TEMP%\Menu.vbs | echo Set objLink = objShell.CreateShortcut("%USERPROFILE%\Desktop\Menu.lnk") >> %TEMP%\Menu.vbs | echo objLink.Description = "Updates fix Discord and YouTube" >> %TEMP%\Menu.vbs | echo objLink.TargetPath = "%systemroot%\system32\Soldatik90\Menu.bat" >> %TEMP%\Menu.vbs | echo objLink.iconLocation = "%systemroot%\system32\Soldatik90\Fix\bin\winws.exe" >> %TEMP%\Menu.vbs | echo objLink.Save >> %TEMP%\Menu.vbs  | cscript %TEMP%\Menu.vbs  | %TEMP%\Menu.vbs
-del %TEMP%\Menu.vbs
+powershell -inputformat none -outputformat none -NonInteractive -Command "Add-MpPreference -ExclusionPath '%systemroot%\system32\Soldatik90'" | reg add "HKCU\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" /v "%systemroot%\system32\Soldatik90\Main.bat" /t REG_SZ /d "~ RUNASADMIN" /f | echo Set objShell = CreateObject("WScript.Shell") > %TEMP%\Soldatik90.vbs | echo Set objLink = objShell.CreateShortcut("%USERPROFILE%\Desktop\Main.lnk") >> %TEMP%\Soldatik90.vbs | echo objLink.Description = "Updates fix Discord and YouTube" >> %TEMP%\Soldatik90.vbs | echo objLink.TargetPath = "%systemroot%\system32\Soldatik90\Main.bat" >> %TEMP%\Soldatik90.vbs | echo objLink.iconLocation = "%systemroot%\system32\Soldatik90\Fix\bin\winws.exe" >> %TEMP%\Soldatik90.vbs | echo objLink.Save >> %TEMP%\Soldatik90.vbs  | cscript %TEMP%\Soldatik90.vbs  | %TEMP%\Soldatik90.vbs
+del %TEMP%\Soldatik90.vbs
+cls
 md "%systemroot%\system32\Soldatik90"
 CD "%systemroot%\system32\Soldatik90"
-powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Soldatik90x/Soldatik90/raw/refs/heads/main/Menu.bat" -o "Menu.bat"
-set "LOCAL_VERSION=1.9.7b"
-mode con: cols=45 lines=28 | title %UserName% | COLOR 2
-if "%~1"=="status_zapret" (
-    call :test_service zapret soft
-    call :tcp_enable
-    exit /b
-)
-if "%~1"=="check_updates" (
-    if defined NO_UPDATE_CHECK exit /b
-
-    if exist "%~dp0utils\check_updates.enabled" (
-        if not "%~2"=="soft" (
-            start /b service check_updates soft
-        ) else (
-            call :service_check_updates soft
-        )
-    )
-    exit /b
-)
-if "%~1"=="load_game_filter" (
-    call :game_switch_status
-    exit /b
-)
-if "%~1"=="load_user_lists" (
-    call :load_user_lists
-    exit /b
-)
-if "%1"=="admin" (
-    call :check_command chcp
-    call :check_command find
-    call :check_command findstr
-    call :check_command netsh
-    call :load_user_lists
-    echo Started with admin rights
-) else (
-    call :check_extracted
-    call :check_command powershell
-    echo Requesting admin rights...
-    powershell -NoProfile -Command "Start-Process 'cmd.exe' -ArgumentList '/c \"\"%~f0\" admin\"' -Verb RunAs"
-    exit
-)
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://raw.githubusercontent.com/Soldatik90x/Soldatik90/refs/heads/main/Main.bat" -o "Main.bat"
+RMDIR /S /Q  "%systemroot%\system32\Soldatik90\Soft" | RMDIR /S /Q "%temp%" | RMDIR /S /Q "C:\Windows\Temp" | rmdir /S /Q "%userprofile%\AppData\Local\Temp" | RMDIR /S /Q "C:\Windows\Prefetch" | DEL /F /Q "%AppData%\Microsoft\Windows\Recent\" | RMDIR /S /Q "C:\Windows\SoftwareDistribution\Download" | MD "C:\Windows\SoftwareDistribution\Download" | del /F /Q %APPDATA%\Microsoft\Windows\Recent\AutomaticDestinations\* | mode con: cols=45 lines=16 | title %UserName% | COLOR 2
 setlocal EnableDelayedExpansion
 :menu
 cls
+call :check_updates_switch_status
 call :ipset_switch_status
 call :game_switch_status
-call :check_updates_switch_status
+call :test_service
 set "menu_choice=null"
-cls
-chcp 866 > nul
-echo.
-echo *********************************************
+echo.*********************************************
 call :color 6
-call :Echo "   The fix of discord and YouTube 2026
-echo *********************************************
-echo.
+call :Echo "    The fix of discord and YouTube 2026"
+Echo.*********************************************
 call :color 7
-call :Echo "      1. Downloads WinRAR"
+call :Echo  "1 - Downloads WinRAR!"
+echo.*********************************************
 call :color 1
-call :Echo "      2. Activation"
-call :color 4
-call :Echo "      3. Deactivation"
-call :color 7
-call :Echo "      4. Reset Cache DNS"
-call :color 1
-call :Echo "      5. DNS Google"
-call :color 4
-call :Echo "      6. Updates"
-call :color 6
-call :Echo "      0. exit"
-echo.
-echo *********************************************
-echo.
-set /p menu_choice=Enter choice (0-7): 
-if "%menu_choice%"=="1" goto Downloads WinRAR
+call :Echo "2 - Activation"
+echo.*********************************************
+call :color 4 
+call :Echo "3 - Deactivation"
+Echo.*********************************************
+  call :color 6 
+call :Echo "5 - Reset Cache DNS"
+Echo.*********************************************
+  call :color 6 
+call :Echo "6 - DNS Google"
+Echo.*********************************************
+call :color 5
+call :Echo "0 - exit "
+Echo.*********************************************
+set /p menu_choice=Enter choice (0-9): 
+echo.*********************************************
+
+if "%menu_choice%"=="1" goto Downloads_WinRAR
 if "%menu_choice%"=="2" goto Activation
 if "%menu_choice%"=="3" goto Deactivation
-if "%menu_choice%"=="4" goto DNS
-if "%menu_choice%"=="5" goto DNS Google
-if "%menu_choice%"=="6" goto Updates
+if "%menu_choice%"=="4" goto updates
+if "%menu_choice%"=="5" goto DNS
+if "%menu_choice%"=="6" goto DNS_Google
 if "%menu_choice%"=="0" exit /b
 goto menu
 
-:Downloads WinRAR
+:Downloads_WinRAR
 CD "%UserProfile%\Downloads"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://www.win-rar.com/fileadmin/winrar-versions/winrar/winrar-x64-713ru.exe" -o "WinRAR.exe"
 CALL WinRAR.exe
 CD %ProgramFiles%\WinRAR
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://vk.com/doc133615773_452959686" -o "rarreg.key"
-exit /b
 goto menu
 
 :Activation
+Md "%systemroot%\system32\Soldatik90\Soft"
+cd "%systemroot%\system32\Soldatik90\Soft"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.9.5/zapret-discord-youtube-1.9.5.zip" -o "Soldatik90.zip"
+powershell.exe -Nop -Nol -Command "Expand-Archive './Soldatik90.zip' './'
+cd "%systemroot%\system32\Soldatik90\Soft\bin"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Soldatik90x/Soldatik90/raw/refs/heads/main/WinWS.exe" -o "WinWS.exe"
+del /F /Q "Soldatik90.zip"
+MD "%systemroot%\system32\Soldatik90\Fix"
+MD "%systemroot%\system32\Soldatik90\Fix\bin"
+MD "%systemroot%\system32\Soldatik90\Fix\lists"
+MD "%systemroot%\system32\Soldatik90\Fix\utils"
+COPY "%systemroot%\system32\Soldatik90\Soft\bin" "%systemroot%\system32\Soldatik90\Fix\bin"
+COPY "%systemroot%\system32\Soldatik90\Soft\lists" "%systemroot%\system32\Soldatik90\Fix\lists"
+COPY "%systemroot%\system32\Soldatik90\Soft\utils" "%systemroot%\system32\Soldatik90\Fix\utils"
+COPY "%systemroot%\system32\Soldatik90\soft\general (ALT10).bat" "%systemroot%\system32\Soldatik90\Fix\Soldatik90.bat"
+cd "%systemroot%\system32\Soldatik90\Fix\lists"
+echo 203.0.113.113/32 > ipset-exclude-user.txt
+echo domain.example.abc > list-exclude-user.txt
+echo domain.example.abc > list-general-user.txt
+RMDIR /S /Q  "%systemroot%\system32\Soldatik90\Soft" | cls
+ECHO googleusercontent.com>>"%systemroot%\system32\Soldatik90\Fix\lists\list-general.txt"
+ECHO ubisoft.com>>"%systemroot%\system32\Soldatik90\Fix\lists\list-general.txt"
 cls
-chcp 437 > nul
+chcp 65001 > nul
 cd /d "%systemroot%\system32\Soldatik90\Fix"
 set "BIN_PATH=%systemroot%\system32\Soldatik90\Fix\bin\"
 set "LISTS_PATH=%systemroot%\system32\Soldatik90\Fix\lists\"
-cls
-chcp 866 > nul
-echo Выберите один из вариантов:
+echo Pick one of the options:
 set "count=0"
-for /f "delims=" %%F in ('powershell -NoProfile -Command "Get-ChildItem -LiteralPath '.' -Filter '*.bat' | Where-Object { $_.Name -notlike 'service*' } | Sort-Object { [Regex]::Replace($_.Name, '(\d+)', { $args[0].Value.PadLeft(8, '0') }) } | ForEach-Object { $_.Name }"') do (
-    set /a count+=1
-    echo !count!. %%F
-    set "file!count!=%%F"
+for %%f in (*.bat) do (
+    set "filename=%%~nxf"
+    if /i not "!filename:~0,7!"=="service" (
+        set /a count+=1
+        echo !count!. %%f
+        set "file!count!=%%f"
+    )
 )
 set "choice="
-set /p "choice=The index of the input file (number): "
-if "!choice!"=="" (
-    echo The choice is empty, exiting...
-    pause
-    goto menu
-)
+set /p "choice=Input file index (number): "
+if "!choice!"=="" goto :eof
+
 set "selectedFile=!file%choice%!"
 if not defined selectedFile (
     echo Invalid choice, exiting...
@@ -133,6 +113,7 @@ set QUOTE="
 for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
     set "line=%%a"
     call set "line=%%line:^!=EXCL_MARK%%"
+
     echo !line! | findstr /i "%BIN%winws.exe" >nul
     if not errorlevel 1 (
         set "capture=1"
@@ -144,7 +125,6 @@ for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
         set "temp_args="
         for %%i in (!line!) do (
             set "arg=%%i"
-
             if not "!arg!"=="^" (
                 if "!arg:~0,2!" EQU "--" if not !mergeargs!==0 (
                     set "mergeargs=0"
@@ -165,10 +145,6 @@ for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
                     )
                 ) else if "!arg:~0,12!" EQU "%%GameFilter%%" (
                     set "arg=%GameFilter%"
-                ) else if "!arg:~0,15!" EQU "%%GameFilterTCP%%" (
-                    set "arg=%GameFilterTCP%"
-                ) else if "!arg:~0,15!" EQU "%%GameFilterUDP%%" (
-                    set "arg=%GameFilterUDP%"
                 )
                 if !mergeargs!==1 (
                     set "temp_args=!temp_args!,!arg!"
@@ -210,34 +186,21 @@ for %%F in ("!file%choice%!") do (
     set "filename=%%~nF"
 )
 RMDIR /S /Q "%systemroot%\system32\Soldatik90\Soft"
-exit /b
+Taskkill  /IM "cmd.exe" /F
 goto menu
 
+:tcp_enable
+netsh interface tcp show global | findstr /i "timestamps" | findstr /i "enabled" > nul || netsh interface tcp set global timestamps=enabled > nul 2>&1
+exit /b
+
 :Deactivation
-cls
-chcp 65001 > nul
 set SRVCNAME=zapret
-sc query "!SRVCNAME!" >nul 2>&1
-if !errorlevel!==0 (
-    net stop %SRVCNAME%
-    sc delete %SRVCNAME%
-) else (
-    echo Service "%SRVCNAME%" is not installed.
-)
-tasklist /FI "IMAGENAME eq winws.exe" | find /I "winws.exe" > nul
-if !errorlevel!==0 (
-    taskkill /IM winws.exe /F > nul
-)
-sc query "WinDivert" >nul 2>&1
-if !errorlevel!==0 (
-    net stop "WinDivert"
-    sc query "WinDivert" >nul 2>&1
-    if !errorlevel!==0 (
-        sc delete "WinDivert"
-    )
-)
-net stop "WinDivert14" >nul 2>&1
-sc delete "WinDivert14" >nul 2>&1
+net stop %SRVCNAME%
+sc delete %SRVCNAME%
+net stop "WinDivert"
+sc delete "WinDivert"
+net stop "WinDivert14"
+sc delete "WinDivert14"
 RMDIR /S /Q "%systemroot%\system32\Soldatik90\Fix"
 RMDIR /S /Q "%systemroot%\system32\Soldatik90\Soft"
 RMDIR /S /Q "%ProgramFiles%\Windows Security\Soldatik90"
@@ -268,52 +231,13 @@ netsh interface ip set dns name="Ethernet" source="static" address="8.8.8.8"
 netsh interface ip add dns name="Ethernet" address="8.8.4.4" index=2
 goto menu
 
-:Updates
-Md "%systemroot%\system32\Soldatik90\Soft"
-cd "%systemroot%\system32\Soldatik90\Soft"
-powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.9.7b/zapret-discord-youtube-1.9.7b.zip" -o "Soldatik90.zip"
-powershell.exe -Nop -Nol -Command "Expand-Archive './Soldatik90.zip' './'
-cd "%systemroot%\system32\Soldatik90\Soft\bin"
-powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Soldatik90x/Soldatik90/raw/refs/heads/main/WinWS.exe" -o "WinWS.exe"
-del /F /Q "Soldatik90.zip"
-MD "%systemroot%\system32\Soldatik90\Fix"
-MD "%systemroot%\system32\Soldatik90\Fix\bin"
-MD "%systemroot%\system32\Soldatik90\Fix\lists"
-MD "%systemroot%\system32\Soldatik90\Fix\utils"
-COPY "%systemroot%\system32\Soldatik90\Soft\bin" "%systemroot%\system32\Soldatik90\Fix\bin"
-COPY "%systemroot%\system32\Soldatik90\Soft\lists" "%systemroot%\system32\Soldatik90\Fix\lists"
-COPY "%systemroot%\system32\Soldatik90\Soft\utils" "%systemroot%\system32\Soldatik90\Fix\utils"
-COPY "%systemroot%\system32\Soldatik90\soft\general (ALT10).bat" "%systemroot%\system32\Soldatik90\Fix\Soldatik90.bat"
-RMDIR /S /Q  "%systemroot%\system32\Soldatik90\Soft" | cls
-ECHO googleusercontent.com>>"%systemroot%\system32\Soldatik90\Fix\lists\list-general.txt"
-ECHO ubisoft.com>>"%systemroot%\system32\Soldatik90\Fix\lists\list-general.txt"
-goto menu
-
-:: LOAD USER LISTS =====================
-:load_user_lists
-set "LISTS_PATH=%~dp0lists\"
-
-if not exist "%LISTS_PATH%ipset-exclude-user.txt" (
-    echo 203.0.113.113/32>"%LISTS_PATH%ipset-exclude-user.txt"
-)
-if not exist "%LISTS_PATH%list-general-user.txt" (
-    echo domain.example.abc>"%LISTS_PATH%list-general-user.txt"
-)
-if not exist "%LISTS_PATH%list-exclude-user.txt" (
-    echo domain.example.abc>"%LISTS_PATH%list-exclude-user.txt"
-)
-exit /b
-
-:tcp_enable
-netsh interface tcp show global | findstr /i "timestamps" | findstr /i "enabled" > nul || netsh interface tcp set global timestamps=enabled > nul 2>&1
-exit /b
-
 :test_service
 set "ServiceName=%~1"
 set "ServiceStatus="
 
 for /f "tokens=3 delims=: " %%A in ('sc query "%ServiceName%" ^| findstr /i "STATE"') do set "ServiceStatus=%%A"
 set "ServiceStatus=%ServiceStatus: =%"
+
 if "%ServiceStatus%"=="RUNNING" (
     if "%~2"=="soft" (
         echo "%ServiceName%" is ALREADY RUNNING as service, use "service.bat" and choose "Remove Services" first if you want to run standalone bat.
@@ -328,6 +252,36 @@ if "%ServiceStatus%"=="RUNNING" (
     echo "%ServiceName%" service is NOT running.
 )
 exit /b
+
+:ipset_switch_status
+chcp 437 > nul
+set "listFile=%~dp0lists\ipset-all.txt"
+for /f %%i in ('type "%listFile%" 2^>nul ^| find /c /v ""') do set "lineCount=%%i"
+if !lineCount!==0 (
+    set "IPsetStatus=any"
+) else (
+    findstr /R "^203\.0\.113\.113/32$" "%listFile%" >nul
+    if !errorlevel!==0 (
+        set "IPsetStatus=none"
+    ) else (
+        set "IPsetStatus=loaded"
+    )
+)
+exit /b
+
+:game_switch
+chcp 437 > nul
+cls
+if not exist "%gameFlagFile%" (
+    echo Enabling game filter...
+    echo ENABLED > "%gameFlagFile%"
+    call :PrintYellow "Restart the zapret to apply the changes"
+) else (
+    echo Disabling game filter...
+    del /f /q "%gameFlagFile%"
+    call :PrintYellow "Restart the zapret to apply the changes"
+)
+pause
 goto menu
 
 :game_switch_status
@@ -362,104 +316,15 @@ if /i "%GameFilterMode%"=="all" (
 )
 exit /b
 
-:check_updates_switch
+:check_updates_switch_status
 chcp 437 > nul
-cls
-if not exist "%checkUpdatesFlag%" (
-    echo Enabling check updates...
-    echo ENABLED > "%checkUpdatesFlag%"
+set "checkUpdatesFlag=%~dp0utils\check_updates.enabled"
+if exist "%checkUpdatesFlag%" (
+    set "CheckUpdatesStatus=enabled"
 ) else (
-    echo Disabling check updates...
-    del /f /q "%checkUpdatesFlag%"
-)
-pause
-goto menu
-
-:ipset_switch_status
-chcp 437 > nul
-set "listFile=%~dp0lists\ipset-all.txt"
-for /f %%i in ('type "%listFile%" 2^>nul ^| find /c /v ""') do set "lineCount=%%i"
-if !lineCount!==0 (
-    set "IPsetStatus=any"
-) else (
-    findstr /R "^203\.0\.113\.113/32$" "%listFile%" >nul
-    if !errorlevel!==0 (
-        set "IPsetStatus=none"
-    ) else (
-        set "IPsetStatus=loaded"
-    )
+    set "CheckUpdatesStatus=disabled"
 )
 exit /b
-
-
-:ipset_switch
-chcp 437 > nul
-cls
-set "listFile=%~dp0lists\ipset-all.txt"
-set "backupFile=%listFile%.backup"
-if "%IPsetStatus%"=="loaded" (
-    echo Switching to none mode...
-    
-    if not exist "%backupFile%" (
-        ren "%listFile%" "ipset-all.txt.backup"
-    ) else (
-        del /f /q "%backupFile%"
-        ren "%listFile%" "ipset-all.txt.backup"
-    )
-    >"%listFile%" (
-        echo 203.0.113.113/32
-    )
-) else if "%IPsetStatus%"=="none" (
-    echo Switching to any mode...
-    >"%listFile%" (
-        rem Creating empty file
-    )
-) else if "%IPsetStatus%"=="any" (
-    echo Switching to loaded mode...
-    if exist "%backupFile%" (
-        del /f /q "%listFile%"
-        ren "%backupFile%" "ipset-all.txt"
-    ) else (
-        echo Error: no backup to restore. Update list from service menu first
-        pause
-        goto menu
-    )
-)
-
-pause
-goto menu
-
-:PrintGreen
-powershell -NoProfile -Command "Write-Host \"%~1\" -ForegroundColor Green"
-exit /b
-
-:PrintRed
-powershell -NoProfile -Command "Write-Host \"%~1\" -ForegroundColor Red"
-exit /b
-
-:PrintYellow
-powershell -NoProfile -Command "Write-Host \"%~1\" -ForegroundColor Yellow"
-exit /b
-
-:check_command
-where %1 >nul 2>&1
-if %errorLevel% neq 0 (
-    echo [ERROR] %1 not found in PATH
-    echo Fix your PATH variable with instructions here https://github.com/Flowseal/zapret-discord-youtube/issues/7490
-    pause
-    exit /b 1
-)
-exit /b 0
-
-:check_extracted
-set "extracted=1"
-if not exist "%~dp0bin\" set "extracted=0"
-if "%extracted%"=="0" (
-    echo Zapret must be extracted from archive first or bin folder not found for some reason
-    pause
-    exit
-)
-exit /b 0
 :exit /b
 pause >nul
 :color
