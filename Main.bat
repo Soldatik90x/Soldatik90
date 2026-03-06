@@ -54,6 +54,7 @@ if "%menu_choice%"=="0" exit /b
 goto menu
 
 :Update
+DEL %systemroot%\system32\Soldatik90\Menu.bat"
 CD "%systemroot%\system32\Soldatik90"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://raw.githubusercontent.com/Soldatik90x/Soldatik90/refs/heads/main/Menu.bat" -o "Menu.bat"
 call "%systemroot%\system32\Soldatik90\Menu.bat"
@@ -340,3 +341,4 @@ pause >nul
   pushd "%~dp0"& <nul>"%~1_" set/p="%%i%%i  "& findstr/a:%c% . "%~1_*"
   (if "%~2" neq "/" echo.)& del "%~1_"& popd& set c=& exit/b
   )
+
