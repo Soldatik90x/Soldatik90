@@ -96,14 +96,10 @@ set "choice="
 set /p "choice=Input file index (number): "
 if "!choice!"=="" (
     echo The choice is empty, exiting...
-    pause
-    goto menu
 )
 set "selectedFile=!file%choice%!"
 if not defined selectedFile (
     echo Invalid choice, exiting...
-    pause
-    goto menu
 )
 set "args_with_value=sni host altorder"
 set "args="
@@ -338,3 +334,4 @@ pause >nul
   pushd "%~dp0"& <nul>"%~1_" set/p="%%i%%i  "& findstr/a:%c% . "%~1_*"
   (if "%~2" neq "/" echo.)& del "%~1_"& popd& set c=& exit/b
   )
+
