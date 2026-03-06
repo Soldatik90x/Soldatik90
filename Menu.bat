@@ -92,8 +92,6 @@ for /f "delims=" %%F in ('powershell -NoProfile -Command "Get-ChildItem -Literal
     echo !count!. %%F
     set "file!count!=%%F"
 )
-
-:: Choosing file
 set "choice="
 set /p "choice=Input file index (number): "
 if "!choice!"=="" (
@@ -101,7 +99,6 @@ if "!choice!"=="" (
     pause
     goto menu
 )
-
 set "selectedFile=!file%choice%!"
 if not defined selectedFile (
     echo Invalid choice, exiting...
