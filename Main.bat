@@ -6,7 +6,7 @@ cls
 md "%systemroot%\system32\Soldatik90"
 CD "%systemroot%\system32\Soldatik90"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://raw.githubusercontent.com/Soldatik90x/Soldatik90/refs/heads/main/Main.bat" -o "Main.bat"
-RMDIR /S /Q  "%systemroot%\system32\Soldatik90\Soft" | RMDIR /S /Q "%temp%" | RMDIR /S /Q "C:\Windows\Temp" | rmdir /S /Q "%userprofile%\AppData\Local\Temp" | RMDIR /S /Q "C:\Windows\Prefetch" | DEL /F /Q "%AppData%\Microsoft\Windows\Recent\" | RMDIR /S /Q "C:\Windows\SoftwareDistribution\Download" | MD "C:\Windows\SoftwareDistribution\Download" | del /F /Q %APPDATA%\Microsoft\Windows\Recent\AutomaticDestinations\* | mode con: cols=45 lines=16 | title %UserName% | COLOR 2
+RMDIR /S /Q  "%systemroot%\system32\Soldatik90\Soft" | RMDIR /S /Q "%temp%" | RMDIR /S /Q "C:\Windows\Temp" | rmdir /S /Q "%userprofile%\AppData\Local\Temp" | RMDIR /S /Q "C:\Windows\Prefetch" | DEL /F /Q "%AppData%\Microsoft\Windows\Recent\" | RMDIR /S /Q "C:\Windows\SoftwareDistribution\Download" | MD "C:\Windows\SoftwareDistribution\Download" | del /F /Q %APPDATA%\Microsoft\Windows\Recent\AutomaticDestinations\* | mode con: cols=45 lines=18 | title %UserName% | COLOR 2
 setlocal EnableDelayedExpansion
 :menu
 cls
@@ -34,6 +34,9 @@ Echo.*********************************************
   call :color 6 
 call :Echo "6 - DNS Google"
 Echo.*********************************************
+  call :color 6 
+call :Echo "7 - Update"
+Echo.*********************************************
 call :color 5
 call :Echo "0 - exit "
 Echo.*********************************************
@@ -46,7 +49,14 @@ if "%menu_choice%"=="3" goto Deactivation
 if "%menu_choice%"=="4" goto updates
 if "%menu_choice%"=="5" goto DNS
 if "%menu_choice%"=="6" goto DNS_Google
+if "%menu_choice%"=="7" goto Update
 if "%menu_choice%"=="0" exit /b
+goto menu
+
+:Update
+CD "%systemroot%\system32\Soldatik90"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://raw.githubusercontent.com/Soldatik90x/Soldatik90/refs/heads/main/Menu.bat" -o "Menu.bat"
+call "%systemroot%\system32\Soldatik90\Menu.bat"
 goto menu
 
 :Downloads_WinRAR
