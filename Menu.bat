@@ -1,7 +1,7 @@
 @echo off> nul
 if "%1"=="admin" (echo Started with admin rights) else (echo Requesting admin rights... | powershell -Command "Start-Process 'cmd.exe' -ArgumentList '/c \"\"%~f0\" admin\"' -Verb RunAs" & exit /b)
-powershell -inputformat none -outputformat none -NonInteractive -Command "Add-MpPreference -ExclusionPath '%systemroot%\system32\Soldatik90'" | reg add "HKCU\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" /v "%systemroot%\system32\Soldatik90\Main.bat" /t REG_SZ /d "~ RUNASADMIN" /f | echo Set objShell = CreateObject("WScript.Shell") > %TEMP%\Soldatik90.vbs | echo Set objLink = objShell.CreateShortcut("%USERPROFILE%\Desktop\Main.lnk") >> %TEMP%\Soldatik90.vbs | echo objLink.Description = "Updates fix Discord and YouTube" >> %TEMP%\Soldatik90.vbs | echo objLink.TargetPath = "%systemroot%\system32\Soldatik90\Main.bat" >> %TEMP%\Soldatik90.vbs | echo objLink.iconLocation = "%systemroot%\system32\Soldatik90\Fix\bin\winws.exe" >> %TEMP%\Soldatik90.vbs | echo objLink.Save >> %TEMP%\Soldatik90.vbs  | cscript %TEMP%\Soldatik90.vbs  | %TEMP%\Soldatik90.vbs
-del %TEMP%\Soldatik90.vbs
+powershell -inputformat none -outputformat none -NonInteractive -Command "Add-MpPreference -ExclusionPath '%systemroot%\system32\Soldatik90'" | reg add "HKCU\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" /v "%systemroot%\system32\Soldatik90\Menu.bat" /t REG_SZ /d "~ RUNASADMIN" /f | echo Set objShell = CreateObject("WScript.Shell") > %TEMP%\Menu.vbs | echo Set objLink = objShell.CreateShortcut("%USERPROFILE%\Desktop\Menu.lnk") >> %TEMP%\Menu.vbs | echo objLink.Description = "Updates fix Discord and YouTube" >> %TEMP%\Menu.vbs | echo objLink.TargetPath = "%systemroot%\system32\Soldatik90\Menu.bat" >> %TEMP%\Menu.vbs | echo objLink.iconLocation = "%systemroot%\system32\Soldatik90\Fix\bin\winws.exe" >> %TEMP%\Menu.vbs | echo objLink.Save >> %TEMP%\Menu.vbs  | cscript %TEMP%\Menu.vbs  | %TEMP%\Menu.vbs
+del %TEMP%\Menu.vbs
 cls
 md "%systemroot%\system32\Soldatik90"
 CD "%systemroot%\system32\Soldatik90"
@@ -92,6 +92,8 @@ for /f "delims=" %%F in ('powershell -NoProfile -Command "Get-ChildItem -Literal
     echo !count!. %%F
     set "file!count!=%%F"
 )
+
+:: Choosing file
 set "choice="
 set /p "choice=Input file index (number): "
 if "!choice!"=="" (
@@ -99,6 +101,7 @@ if "!choice!"=="" (
     pause
     goto menu
 )
+
 set "selectedFile=!file%choice%!"
 if not defined selectedFile (
     echo Invalid choice, exiting...
@@ -124,6 +127,7 @@ for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
         set "temp_args="
         for %%i in (!line!) do (
             set "arg=%%i"
+
             if not "!arg!"=="^" (
                 if "!arg:~0,2!" EQU "--" if not !mergeargs!==0 (
                     set "mergeargs=0"
