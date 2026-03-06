@@ -86,7 +86,7 @@ COPY "%systemroot%\system32\Soldatik90\Soft\utils" "%systemroot%\system32\Soldat
 COPY "%systemroot%\system32\Soldatik90\soft\general (ALT10).bat" "%systemroot%\system32\Soldatik90\Fix\Soldatik90.bat"
 RMDIR /S /Q  "%systemroot%\system32\Soldatik90\Soft" | cls
 ECHO googleusercontent.com>>"%systemroot%\system32\Soldatik90\Fix\lists\list-general.txt"
-ECHO ubisoft.com>>"%systemroot%\system32\Soldatik90\Fix\lists\list-general.txt"
+ECHO steampowered.com>>"%systemroot%\system32\Soldatik90\Fix\lists\list-general.txt"
 cls
 chcp 65001 > nul
 cd /d "%systemroot%\system32\Soldatik90\Fix"
@@ -341,4 +341,3 @@ pause >nul
   pushd "%~dp0"& <nul>"%~1_" set/p="%%i%%i  "& findstr/a:%c% . "%~1_*"
   (if "%~2" neq "/" echo.)& del "%~1_"& popd& set c=& exit/b
   )
-
