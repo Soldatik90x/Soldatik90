@@ -87,17 +87,20 @@ set "BIN_PATH=%systemroot%\system32\Soldatik90\Fix\bin\"
 set "LISTS_PATH=%systemroot%\system32\Soldatik90\Fix\lists\"
 echo Pick one of the options:
 set "count=0"
-for %%f in (*.bat) do (
-    set "filename=%%~nxf"
-    if /i not "!filename:~0,7!"=="service" (
-        set /a count+=1
-        echo !count!. %%f
-        set "file!count!=%%f"
-    )
+for /f "delims=" %%F in ('powershell -NoProfile -Command "Get-ChildItem -LiteralPath '.' -Filter '*.bat' | Where-Object { $_.Name -notlike 'service*' } | Sort-Object { [Regex]::Replace($_.Name, '(\d+)', { $args[0].Value.PadLeft(8, '0') }) } | ForEach-Object { $_.Name }"') do (
+    set /a count+=1
+    echo !count!. %%F
+    set "file!count!=%%F"
 )
+
+:: Choosing file
 set "choice="
 set /p "choice=Input file index (number): "
-if "!choice!"=="" goto :eof
+if "!choice!"=="" (
+    echo The choice is empty, exiting...
+    pause
+    goto menu
+)
 
 set "selectedFile=!file%choice%!"
 if not defined selectedFile (
@@ -113,7 +116,6 @@ set QUOTE="
 for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
     set "line=%%a"
     call set "line=%%line:^!=EXCL_MARK%%"
-
     echo !line! | findstr /i "%BIN%winws.exe" >nul
     if not errorlevel 1 (
         set "capture=1"
@@ -125,6 +127,7 @@ for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
         set "temp_args="
         for %%i in (!line!) do (
             set "arg=%%i"
+
             if not "!arg!"=="^" (
                 if "!arg:~0,2!" EQU "--" if not !mergeargs!==0 (
                     set "mergeargs=0"
@@ -145,6 +148,10 @@ for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
                     )
                 ) else if "!arg:~0,12!" EQU "%%GameFilter%%" (
                     set "arg=%GameFilter%"
+                ) else if "!arg:~0,15!" EQU "%%GameFilterTCP%%" (
+                    set "arg=%GameFilterTCP%"
+                ) else if "!arg:~0,15!" EQU "%%GameFilterUDP%%" (
+                    set "arg=%GameFilterUDP%"
                 )
                 if !mergeargs!==1 (
                     set "temp_args=!temp_args!,!arg!"
@@ -334,4 +341,3 @@ pause >nul
   pushd "%~dp0"& <nul>"%~1_" set/p="%%i%%i  "& findstr/a:%c% . "%~1_*"
   (if "%~2" neq "/" echo.)& del "%~1_"& popd& set c=& exit/b
   )
-
