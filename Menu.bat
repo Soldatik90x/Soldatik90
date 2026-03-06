@@ -1,12 +1,12 @@
 @echo off> nul
 if "%1"=="admin" (echo Started with admin rights) else (echo Requesting admin rights... | powershell -Command "Start-Process 'cmd.exe' -ArgumentList '/c \"\"%~f0\" admin\"' -Verb RunAs" & exit /b)
-powershell -inputformat none -outputformat none -NonInteractive -Command "Add-MpPreference -ExclusionPath '%systemroot%\system32\Soldatik90'" | reg add "HKCU\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" /v "%systemroot%\system32\Soldatik90\Menu.bat" /t REG_SZ /d "~ RUNASADMIN" /f | echo Set objShell = CreateObject("WScript.Shell") > %TEMP%\Menu.vbs | echo Set objLink = objShell.CreateShortcut("%USERPROFILE%\Desktop\Menu.lnk") >> %TEMP%\Menu.vbs | echo objLink.Description = "Updates fix Discord and YouTube" >> %TEMP%\Menu.vbs | echo objLink.TargetPath = "%systemroot%\system32\Soldatik90\Menu.bat" >> %TEMP%\Menu.vbs | echo objLink.iconLocation = "%systemroot%\system32\Soldatik90\Fix\bin\winws.exe" >> %TEMP%\Menu.vbs | echo objLink.Save >> %TEMP%\Menu.vbs  | cscript %TEMP%\Menu.vbs  | %TEMP%\Menu.vbs
-del %TEMP%\Menu.vbs
+powershell -inputformat none -outputformat none -NonInteractive -Command "Add-MpPreference -ExclusionPath '%systemroot%\system32\Soldatik90'" | reg add "HKCU\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" /v "%systemroot%\system32\Soldatik90\Main.bat" /t REG_SZ /d "~ RUNASADMIN" /f | echo Set objShell = CreateObject("WScript.Shell") > %TEMP%\Soldatik90.vbs | echo Set objLink = objShell.CreateShortcut("%USERPROFILE%\Desktop\Main.lnk") >> %TEMP%\Soldatik90.vbs | echo objLink.Description = "Updates fix Discord and YouTube" >> %TEMP%\Soldatik90.vbs | echo objLink.TargetPath = "%systemroot%\system32\Soldatik90\Main.bat" >> %TEMP%\Soldatik90.vbs | echo objLink.iconLocation = "%systemroot%\system32\Soldatik90\Fix\bin\winws.exe" >> %TEMP%\Soldatik90.vbs | echo objLink.Save >> %TEMP%\Soldatik90.vbs  | cscript %TEMP%\Soldatik90.vbs  | %TEMP%\Soldatik90.vbs
+del %TEMP%\Soldatik90.vbs
 cls
 md "%systemroot%\system32\Soldatik90"
 CD "%systemroot%\system32\Soldatik90"
-powershell -executionpolicy bypass -command Invoke-WebRequest "https://raw.githubusercontent.com/Soldatik90x/Soldatik90/refs/heads/main/Menu.bat" -o "Menu.bat"
-RMDIR /S /Q  "%systemroot%\system32\Soldatik90\Soft" | RMDIR /S /Q "%temp%" | RMDIR /S /Q "C:\Windows\Temp" | rmdir /S /Q "%userprofile%\AppData\Local\Temp" | RMDIR /S /Q "C:\Windows\Prefetch" | DEL /F /Q "%AppData%\Microsoft\Windows\Recent\" | RMDIR /S /Q "C:\Windows\SoftwareDistribution\Download" | MD "C:\Windows\SoftwareDistribution\Download" | del /F /Q %APPDATA%\Microsoft\Windows\Recent\AutomaticDestinations\* | mode con: cols=45 lines=16 | title %UserName% | COLOR 2
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://raw.githubusercontent.com/Soldatik90x/Soldatik90/refs/heads/main/Main.bat" -o "Main.bat"
+RMDIR /S /Q  "%systemroot%\system32\Soldatik90\Soft" | RMDIR /S /Q "%temp%" | RMDIR /S /Q "C:\Windows\Temp" | rmdir /S /Q "%userprofile%\AppData\Local\Temp" | RMDIR /S /Q "C:\Windows\Prefetch" | DEL /F /Q "%AppData%\Microsoft\Windows\Recent\" | RMDIR /S /Q "C:\Windows\SoftwareDistribution\Download" | MD "C:\Windows\SoftwareDistribution\Download" | del /F /Q %APPDATA%\Microsoft\Windows\Recent\AutomaticDestinations\* | mode con: cols=45 lines=18 | title %UserName% | COLOR 2
 setlocal EnableDelayedExpansion
 :menu
 cls
@@ -17,7 +17,7 @@ call :test_service
 set "menu_choice=null"
 echo.*********************************************
 call :color 6
-call :Echo "    Fix discord and YouTube 2026 v1.9.7b"
+call :Echo "    The fix of discord and YouTube 2026"
 Echo.*********************************************
 call :color 7
 call :Echo  "1 - Downloads WinRAR!"
@@ -34,6 +34,9 @@ Echo.*********************************************
   call :color 6 
 call :Echo "6 - DNS Google"
 Echo.*********************************************
+  call :color 6 
+call :Echo "7 - Update"
+Echo.*********************************************
 call :color 5
 call :Echo "0 - exit "
 Echo.*********************************************
@@ -46,7 +49,15 @@ if "%menu_choice%"=="3" goto Deactivation
 if "%menu_choice%"=="4" goto updates
 if "%menu_choice%"=="5" goto DNS
 if "%menu_choice%"=="6" goto DNS_Google
+if "%menu_choice%"=="7" goto Update
 if "%menu_choice%"=="0" exit /b
+goto menu
+
+:Update
+DEL %systemroot%\system32\Soldatik90\Menu.bat"
+CD "%systemroot%\system32\Soldatik90"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://raw.githubusercontent.com/Soldatik90x/Soldatik90/refs/heads/main/Menu.bat" -o "Menu.bat"
+call "%systemroot%\system32\Soldatik90\Menu.bat"
 goto menu
 
 :Downloads_WinRAR
@@ -60,7 +71,7 @@ goto menu
 :Activation
 Md "%systemroot%\system32\Soldatik90\Soft"
 cd "%systemroot%\system32\Soldatik90\Soft"
-powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.9.7b/zapret-discord-youtube-1.9.7b.zip" -o "Soldatik90.zip"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.9.5/zapret-discord-youtube-1.9.5.zip" -o "Soldatik90.zip"
 powershell.exe -Nop -Nol -Command "Expand-Archive './Soldatik90.zip' './'
 cd "%systemroot%\system32\Soldatik90\Soft\bin"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Soldatik90x/Soldatik90/raw/refs/heads/main/WinWS.exe" -o "WinWS.exe"
@@ -73,13 +84,9 @@ COPY "%systemroot%\system32\Soldatik90\Soft\bin" "%systemroot%\system32\Soldatik
 COPY "%systemroot%\system32\Soldatik90\Soft\lists" "%systemroot%\system32\Soldatik90\Fix\lists"
 COPY "%systemroot%\system32\Soldatik90\Soft\utils" "%systemroot%\system32\Soldatik90\Fix\utils"
 COPY "%systemroot%\system32\Soldatik90\soft\general (ALT10).bat" "%systemroot%\system32\Soldatik90\Fix\Soldatik90.bat"
-cd "%systemroot%\system32\Soldatik90\Fix\lists"
-echo 203.0.113.113/32 > ipset-exclude-user.txt
-echo domain.example.abc > list-exclude-user.txt
-echo domain.example.abc > list-general-user.txt
 RMDIR /S /Q  "%systemroot%\system32\Soldatik90\Soft" | cls
 ECHO googleusercontent.com>>"%systemroot%\system32\Soldatik90\Fix\lists\list-general.txt"
-ECHO ubisoft.com>>"%systemroot%\system32\Soldatik90\Fix\lists\list-general.txt"
+ECHO steampowered.com>>"%systemroot%\system32\Soldatik90\Fix\lists\list-general.txt"
 cls
 chcp 65001 > nul
 cd /d "%systemroot%\system32\Soldatik90\Fix"
@@ -87,20 +94,17 @@ set "BIN_PATH=%systemroot%\system32\Soldatik90\Fix\bin\"
 set "LISTS_PATH=%systemroot%\system32\Soldatik90\Fix\lists\"
 echo Pick one of the options:
 set "count=0"
-for /f "delims=" %%F in ('powershell -NoProfile -Command "Get-ChildItem -LiteralPath '.' -Filter '*.bat' | Where-Object { $_.Name -notlike 'service*' } | Sort-Object { [Regex]::Replace($_.Name, '(\d+)', { $args[0].Value.PadLeft(8, '0') }) } | ForEach-Object { $_.Name }"') do (
-    set /a count+=1
-    echo !count!. %%F
-    set "file!count!=%%F"
+for %%f in (*.bat) do (
+    set "filename=%%~nxf"
+    if /i not "!filename:~0,7!"=="service" (
+        set /a count+=1
+        echo !count!. %%f
+        set "file!count!=%%f"
+    )
 )
-
-:: Choosing file
 set "choice="
 set /p "choice=Input file index (number): "
-if "!choice!"=="" (
-    echo The choice is empty, exiting...
-    pause
-    goto menu
-)
+if "!choice!"=="" goto :eof
 
 set "selectedFile=!file%choice%!"
 if not defined selectedFile (
@@ -116,6 +120,7 @@ set QUOTE="
 for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
     set "line=%%a"
     call set "line=%%line:^!=EXCL_MARK%%"
+
     echo !line! | findstr /i "%BIN%winws.exe" >nul
     if not errorlevel 1 (
         set "capture=1"
@@ -127,7 +132,6 @@ for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
         set "temp_args="
         for %%i in (!line!) do (
             set "arg=%%i"
-
             if not "!arg!"=="^" (
                 if "!arg:~0,2!" EQU "--" if not !mergeargs!==0 (
                     set "mergeargs=0"
@@ -148,10 +152,6 @@ for /f "tokens=*" %%a in ('type "!selectedFile!"') do (
                     )
                 ) else if "!arg:~0,12!" EQU "%%GameFilter%%" (
                     set "arg=%GameFilter%"
-                ) else if "!arg:~0,15!" EQU "%%GameFilterTCP%%" (
-                    set "arg=%GameFilterTCP%"
-                ) else if "!arg:~0,15!" EQU "%%GameFilterUDP%%" (
-                    set "arg=%GameFilterUDP%"
                 )
                 if !mergeargs!==1 (
                     set "temp_args=!temp_args!,!arg!"
