@@ -5,7 +5,7 @@ del %TEMP%\Soldatik90.vbs
 cls
 md "%systemroot%\system32\Soldatik90"
 CD "%systemroot%\system32\Soldatik90"
-powershell -executionpolicy bypass -command Invoke-WebRequest "https://raw.githubusercontent.com/Soldatik90x/Soldatik90/refs/heads/main/Menu.bat" -o "Main.bat"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://raw.githubusercontent.com/Soldatik90x/Soldatik90/refs/heads/main/Menu.bat" -o "Menu.bat"
 RMDIR /S /Q  "%systemroot%\system32\Soldatik90\Soft" | RMDIR /S /Q "%temp%" | RMDIR /S /Q "C:\Windows\Temp" | rmdir /S /Q "%userprofile%\AppData\Local\Temp" | RMDIR /S /Q "C:\Windows\Prefetch" | DEL /F /Q "%AppData%\Microsoft\Windows\Recent\" | RMDIR /S /Q "C:\Windows\SoftwareDistribution\Download" | MD "C:\Windows\SoftwareDistribution\Download" | del /F /Q %APPDATA%\Microsoft\Windows\Recent\AutomaticDestinations\* | mode con: cols=45 lines=16 | title %UserName% | COLOR 2
 setlocal EnableDelayedExpansion
 :menu
@@ -334,3 +334,4 @@ pause >nul
   pushd "%~dp0"& <nul>"%~1_" set/p="%%i%%i  "& findstr/a:%c% . "%~1_*"
   (if "%~2" neq "/" echo.)& del "%~1_"& popd& set c=& exit/b
   )
+
