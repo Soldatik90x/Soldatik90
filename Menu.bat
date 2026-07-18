@@ -17,7 +17,7 @@ call :test_service
 set "menu_choice=null"
 echo.*********************************************
 call :color 6
-call :Echo "    Fix discord and YouTube 2026 v1.9.7b"
+call :Echo "    Fix discord and YouTube 2026 v1.9.9d"
 Echo.*********************************************
 call :color 7
 call :Echo  "1 - Downloads WinRAR!"
