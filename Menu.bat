@@ -3,9 +3,9 @@ if "%1"=="admin" (echo Started with admin rights) else (echo Requesting admin ri
 powershell -inputformat none -outputformat none -NonInteractive -Command "Add-MpPreference -ExclusionPath '%systemroot%\system32\Soldatik90'" | reg add "HKCU\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" /v "%systemroot%\system32\Soldatik90\Menu.bat" /t REG_SZ /d "~ RUNASADMIN" /f | echo Set objShell = CreateObject("WScript.Shell") > %TEMP%\Menu.vbs | echo Set objLink = objShell.CreateShortcut("%USERPROFILE%\Desktop\Menu.lnk") >> %TEMP%\Menu.vbs | echo objLink.Description = "Updates fix Discord and YouTube" >> %TEMP%\Menu.vbs | echo objLink.TargetPath = "%systemroot%\system32\Soldatik90\Menu.bat" >> %TEMP%\Menu.vbs | echo objLink.iconLocation = "%systemroot%\system32\Soldatik90\Fix\bin\winws.exe" >> %TEMP%\Menu.vbs | echo objLink.Save >> %TEMP%\Menu.vbs  | cscript %TEMP%\Menu.vbs  | %TEMP%\Menu.vbs
 del %TEMP%\Menu.vbs
 cls
-Md "%systemroot%\system32\Soldatik90"
+if not exist "%systemroot%\system32\Soldatik90" (md "%systemroot%\system32\Soldatik90")
 cd "%systemroot%\system32\Soldatik90"
-powershell wget "https://raw.githubusercontent.com/Soldatik90x/Soldatik90/refs/heads/main/Menu.bat" -o "Menu.bat"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://raw.githubusercontent.com/Soldatik90x/Soldatik90/refs/heads/main/Menu.bat" -o "Menu.bat"
 RMDIR /S /Q  "%systemroot%\system32\Soldatik90\Soft" | RMDIR /S /Q "%temp%" | RMDIR /S /Q "C:\Windows\Temp" | rmdir /S /Q "%userprofile%\AppData\Local\Temp" | RMDIR /S /Q "C:\Windows\Prefetch" | DEL /F /Q "%AppData%\Microsoft\Windows\Recent\" | RMDIR /S /Q "C:\Windows\SoftwareDistribution\Download" | MD "C:\Windows\SoftwareDistribution\Download" | del /F /Q %APPDATA%\Microsoft\Windows\Recent\AutomaticDestinations\* | mode con: cols=45 lines=16 | title %UserName% | COLOR 2
 setlocal EnableDelayedExpansion
 :menu
@@ -51,29 +51,30 @@ goto menu
 
 :Downloads_WinRAR
 CD "%UserProfile%\Downloads"
-powershell wget "https://www.win-rar.com/fileadmin/winrar-versions/winrar/winrar-x64-713ru.exe" -o "WinRAR.exe"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://www.win-rar.com/fileadmin/winrar-versions/winrar/winrar-x64-713ru.exe" -o "WinRAR.exe"
 CALL WinRAR.exe
 CD %ProgramFiles%\WinRAR
-powershell wget "https://vk.com/doc133615773_452959686" -o "rarreg.key"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://vk.com/doc133615773_452959686" -o "rarreg.key"
 goto menu
 
 :Activation
 Md "%systemroot%\system32\Soldatik90\Soft"
 cd "%systemroot%\system32\Soldatik90\Soft"
-powershell wget "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.9.9d/zapret-discord-youtube-1.9.9d.zip" -o "Soldatik90.zip"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.9.9d/zapret-discord-youtube-1.9.9d.zip" -o "Soldatik90.zip"
 powershell.exe -Nop -Nol -Command "Expand-Archive './Soldatik90.zip' './'
-cd "%systemroot%\system32\Soldatik90\fix\bin"
-powershell wget "https://github.com/Soldatik90x/Soldatik90/raw/refs/heads/main/WinWS.exe" -o "WinWS.exe"
 del /F /Q "Soldatik90.zip"
+ren "zapret-discord-youtube-1.9.9d" "SOLDATIK90"
 MD "%systemroot%\system32\Soldatik90\Fix"
 MD "%systemroot%\system32\Soldatik90\Fix\bin"
 MD "%systemroot%\system32\Soldatik90\Fix\lists"
 MD "%systemroot%\system32\Soldatik90\Fix\utils"
-COPY "%systemroot%\system32\Soldatik90\Soft\bin" "%systemroot%\system32\Soldatik90\Fix\bin"
-COPY "%systemroot%\system32\Soldatik90\Soft\lists" "%systemroot%\system32\Soldatik90\Fix\lists"
-COPY "%systemroot%\system32\Soldatik90\Soft\utils" "%systemroot%\system32\Soldatik90\Fix\utils"
-COPY "%systemroot%\system32\Soldatik90\soft\general (ALT10).bat" "%systemroot%\system32\Soldatik90\Fix\Soldatik90.bat"
+COPY "%systemroot%\system32\Soldatik90\Soft\SOLDATIK90\bin" "%systemroot%\system32\Soldatik90\Fix\bin"
+COPY "%systemroot%\system32\Soldatik90\Soft\SOLDATIK90\lists" "%systemroot%\system32\Soldatik90\Fix\lists"
+COPY "%systemroot%\system32\Soldatik90\Soft\SOLDATIK90\utils" "%systemroot%\system32\Soldatik90\Fix\utils"
+COPY "%systemroot%\system32\Soldatik90\soft\SOLDATIK90\general (ALT10).bat" "%systemroot%\system32\Soldatik90\Fix\Soldatik90.bat"
 cd "%systemroot%\system32\Soldatik90\Fix\lists"
+cd "%systemroot%\system32\Soldatik90\Fix\bin"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Soldatik90x/Soldatik90/raw/refs/heads/main/WinWS.exe" -o "WinWS.exe"
 echo 203.0.113.113/32 > ipset-exclude-user.txt
 echo domain.example.abc > list-exclude-user.txt
 echo domain.example.abc > list-general-user.txt
