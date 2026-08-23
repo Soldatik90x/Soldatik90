@@ -102,55 +102,10 @@ if "%menu_choice%"=="0" exit /b
 goto menu
 
 :Update_VERSION
-if not exist "%systemroot%\system32\Soldatik90" (md "%systemroot%\system32\Soldatik90")
-Md "%systemroot%\system32\Soldatik90\Soft"
-cd "%systemroot%\system32\Soldatik90\Soft"
-powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.9.9d/zapret-discord-youtube-1.9.9d.zip" -o "Soldatik90.zip"
-powershell -Nop -Nol -Command "Expand-Archive './Soldatik90.zip' './'
-del /F /Q "Soldatik90.zip"
-ren "zapret-discord-youtube-1.9.9d" "SOLDATIK90"
-cd "%systemroot%\system32\Soldatik90\Soft\SOLDATIK90\bin"
-powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Soldatik90x/Soldatik90/raw/refs/heads/main/WinWS.exe" -o "WinWS.exe"
-MD "%systemroot%\system32\Soldatik90\Fix"
-MD "%systemroot%\system32\Soldatik90\Fix\bin"
-MD "%systemroot%\system32\Soldatik90\Fix\lists"
-MD "%systemroot%\system32\Soldatik90\Fix\utils"
-COPY "%systemroot%\system32\Soldatik90\Soft\SOLDATIK90\bin" "%systemroot%\system32\Soldatik90\Fix\bin"
-COPY "%systemroot%\system32\Soldatik90\Soft\SOLDATIK90\lists" "%systemroot%\system32\Soldatik90\Fix\lists"
-COPY "%systemroot%\system32\Soldatik90\Soft\SOLDATIK90\utils" "%systemroot%\system32\Soldatik90\Fix\utils"
-COPY "%systemroot%\system32\Soldatik90\soft\SOLDATIK90\general (ALT10).bat" "%systemroot%\system32\Soldatik90\Fix\Soldatik90.bat"
-RMDIR /S /Q  "%systemroot%\system32\Soldatik90\Soft" | cls
-echo 203.0.113.113/32 > ipset-exclude-user.txt
-echo domain.example.abc > list-exclude-user.txt
-echo domain.example.abc > list-general-user.txt
-ECHO googleusercontent.com>>"%systemroot%\system32\Soldatik90\Fix\lists\list-general.txt"
-ECHO steampowered.com>>"%systemroot%\system32\Soldatik90\Fix\lists\list-general.txt"
-goto menu
-
-:DNS_Google
-netsh interface ip set dns name="Ethernet" source="static" address="8.8.8.8"
-netsh interface ip add dns name="Ethernet" address="8.8.4.4" index=2
-goto menu
-
-:Reset_Cache_DNS
-netsh interface ip set dns name="Ethernet" source="static" address=""
-netsh interface ip add dns name="Ethernet" address="" index=2
-Taskkill  /IM "Discord.exe" /F
-rmdir /S /Q %userprofile%\AppData\Roaming\discord\Cache
-rmdir /S /Q %userprofile%\AppData\Roaming\discord\Code Cache
-rmdir /S /Q %userprofile%\AppData\Roaming\discord\GPUCache
-ipconfig /flushdns
-ipconfig /registerdns
-ipconfig /release
-ipconfig /renew
-netsh int ip reset
-netsh int ip reset resettcpip.txt
-netsh int ipv4 reset reset.log
-netsh int ipv6 reset reset.log
-netsh winsock reset
-netsh winsock reset catalog
-shutdown /r /t 0
-goto menu
+cd "%systemroot%\system32\Soldatik90"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Soldatik90x/Soldatik90/raw/refs/heads/main/Update.BAT" -o "Update.BAT"
+call "%systemroot%\system32\Soldatik90\Update.BAT"
+exit /b
 
 :: LOAD USER LISTS =====================
 :load_user_lists
