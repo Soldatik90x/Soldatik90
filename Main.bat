@@ -54,10 +54,9 @@ if "%menu_choice%"=="0" exit /b
 goto menu
 
 :Update
-DEL %systemroot%\system32\Soldatik90\Menu.bat"
-CD "%systemroot%\system32\Soldatik90"
-powershell -executionpolicy bypass -command Invoke-WebRequest "https://raw.githubusercontent.com/Soldatik90x/Soldatik90/refs/heads/main/Menu.bat" -o "Menu.bat"
-call "%systemroot%\system32\Soldatik90\Menu.bat"
+cd "%systemroot%\system32\Soldatik90"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Soldatik90x/Soldatik90/raw/refs/heads/main/Update.BAT" -o "Update.BAT"
+call "%systemroot%\system32\Soldatik90\Update.BAT" 
 goto menu
 
 :Downloads_WinRAR
