@@ -333,10 +333,7 @@ for %%F in ("!file%choice%!") do (
     set "filename=%%~nF"
 )
 reg add "HKLM\System\CurrentControlSet\Services\zapret" /v zapret-discord-youtube /t REG_SZ /d "!filename!" /f
-
-pause
 goto menu
-
 
 :: CHECK UPDATES =======================
 :service_check_updates
