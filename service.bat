@@ -193,8 +193,6 @@ if !errorlevel!==0 (
 )
 net stop "WinDivert14" >nul 2>&1
 sc delete "WinDivert14" >nul 2>&1
-
-pause
 goto menu
 
 
