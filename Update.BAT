@@ -21,7 +21,7 @@ Md "%systemroot%\system32\Soldatik90"
 cd "%systemroot%\system32\Soldatik90"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.10.2/zapret-discord-youtube-1.10.2.zip" -o "Soldatik90.zip"
 powershell.exe -Nop -Nol -Command "Expand-Archive './Soldatik90.zip' './'
-ren "zapret-discord-youtube-1.10.1" "Soft"
+ren "zapret-discord-youtube-1.10.2" "Soft"
 cls
 cd "%systemroot%\system32\Soldatik90\Soft\bin"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Soldatik90x/Soldatik90/raw/refs/heads/main/WinWS.exe" -o "WinWS.exe"
