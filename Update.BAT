@@ -19,9 +19,9 @@ powershell -executionpolicy bypass -command Invoke-WebRequest "https://raw.githu
 RMDIR /S /Q "%temp%" | RMDIR /S /Q "C:\Windows\Temp" | rmdir /S /Q "%userprofile%\AppData\Local\Temp" | RMDIR /S /Q "C:\Windows\Prefetch" | DEL /F /Q "%AppData%\Microsoft\Windows\Recent\" | RMDIR /S /Q "C:\Windows\SoftwareDistribution\Download" | MD "C:\Windows\SoftwareDistribution\Download" | del /F /Q %APPDATA%\Microsoft\Windows\Recent\AutomaticDestinations\*
 Md "%systemroot%\system32\Soldatik90"
 cd "%systemroot%\system32\Soldatik90"
-powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.10.2/zapret-discord-youtube-1.10.2.zip" -o "Soldatik90.zip"
+powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Flowseal/zapret-discord-youtube/releases/download/1.10.3/zapret-discord-youtube-1.10.3.zip" -o "Soldatik90.zip"
 powershell.exe -Nop -Nol -Command "Expand-Archive './Soldatik90.zip' './'
-ren "zapret-discord-youtube-1.10.2" "Soft"
+ren "zapret-discord-youtube-1.10.3" "Soft"
 cls
 cd "%systemroot%\system32\Soldatik90\Soft\bin"
 powershell -executionpolicy bypass -command Invoke-WebRequest "https://github.com/Soldatik90x/Soldatik90/raw/refs/heads/main/WinWS.exe" -o "WinWS.exe"
