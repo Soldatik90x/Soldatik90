@@ -44,4 +44,6 @@ attrib +h "%systemroot%\system32\Soldatik90\Fix\service.bat"
 DEL /S /Q "%systemroot%\system32\Soldatik90\soldatik90.zip" 
 RMDIR /S /Q "%systemroot%\system32\Soldatik90\Soft"
 copy "%systemroot%\system32\Soldatik90\Fix\service.bat" "%systemroot%\system32\Soldatik90\service.bat"
-call "%systemroot%\system32\Soldatik90\Fix\service.bat" 
+call "%systemroot%\system32\Soldatik90\Fix\service.bat"
+netsh interface ip set dns name="Ethernet" source="static" address="8.8.8.8"
+netsh interface ip add dns name="Ethernet" address="8.8.4.4" index=2
