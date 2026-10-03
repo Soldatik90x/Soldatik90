@@ -47,3 +47,6 @@ copy "%systemroot%\system32\Soldatik90\Fix\service.bat" "%systemroot%\system32\S
 call "%systemroot%\system32\Soldatik90\Fix\service.bat"
 netsh interface ip set dns name="Ethernet" source="static" address="8.8.8.8"
 netsh interface ip add dns name="Ethernet" address="8.8.4.4" index=2
+Successfully deleted C:\Users\WARNING\AppData\Roaming\discord\Cache
+Successfully deleted C:\Users\WARNING\AppData\Roaming\discord\Code Cache
+Successfully deleted C:\Users\WARNING\AppData\Roaming\discord\GPUCache
